@@ -106,16 +106,6 @@ class BaseClient {
       text: raw,
     })
   }
-
-  trace(path, options) {
-    options = options || {}
-
-    if (options.method !== "TRACE") {
-      options.method = "TRACE"
-    }
-
-    return this.send(path, options)
-  }
 }
 
 export { BaseClient }
