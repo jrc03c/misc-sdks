@@ -65,28 +65,8 @@ class MailTmClient extends BaseClient {
     return this.delete(`/messages/${id}`)
   }
 
-  async getAllMessages() {
-    const out = []
-    let page = 1
-    let isStillFetching = true
-
-    while (isStillFetching) {
-      const response = await this.get(`/messages?page=${page}`)
-
-      if (response.status >= 200 && response.status <= 204) {
-        out.push(...response.json["hydra:member"])
-
-        if (out.length >= response.json["hydra:totalItems"]) {
-          isStillFetching = false
-        } else {
-          page++
-        }
-      } else {
-        return response
-      }
-    }
-
-    return out
+  getMessages(page) {
+    return this.get(`/messages?page=${page || 1}`)
   }
 
   getMessage(id) {

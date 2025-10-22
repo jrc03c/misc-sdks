@@ -5,7 +5,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
-    "@jrc03c/fake-jest": "^0.0.18",
+    "@jrc03c/fake-jest": "^0.0.19",
     "@jrc03c/make-key": "^0.0.40",
     "@jrc03c/pause": "^0.0.12",
     "@jrc03c/watch": "^0.0.18",

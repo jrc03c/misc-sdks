@@ -66,7 +66,8 @@ test("MailTmClient", async () => {
   let messages
 
   await (async () => {
-    messages = await mailtm.getAllMessages()
+    const response = await mailtm.getMessages()
+    messages = response.json["hydra:member"]
     expect(messages.length).toBe(1)
   })()
 

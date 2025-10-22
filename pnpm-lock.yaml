@@ -19,8 +19,8 @@ importers:
         specifier: ^9.12.0
         version: 9.38.0
       '@jrc03c/fake-jest':
-        specifier: ^0.0.18
-        version: 0.0.18
+        specifier: ^0.0.19
+        version: 0.0.19
       '@jrc03c/make-key':
         specifier: ^0.0.40
         version: 0.0.40
@@ -112,8 +112,8 @@ packages:
   '@jrc03c/exponential-backoff@0.0.3':
     resolution: {integrity: sha512-QqvkmmDzDs+jk/VpHEmyD5yZOZd4UXTL3MbcRAULxZWRkF3VMGX7AIidrTO2VUK+DF+8rfRXYnTEV+6628o4Cg==}
 
-  '@jrc03c/fake-jest@0.0.18':
-    resolution: {integrity: sha512-Ot/2m9DZvN19dMFYLxXf/5d5BYcS/QIiB2mTeXW2fx9imBEt4GXR2Aqcx4SjWDUKtIXO2SKTjVZ0pfCoeKHt4w==}
+  '@jrc03c/fake-jest@0.0.19':
+    resolution: {integrity: sha512-/n0Lztb5ZPnWjXkAZh/QV4+ZPGGQA/DGBY98Wm4lDj6UXQSKrnMte8gaLomLFE21jPfsrDk6GhSJ9cH4134s2w==}
     hasBin: true
 
   '@jrc03c/fs-extras@0.0.21':
@@ -772,7 +772,7 @@ snapshots:
     dependencies:
       '@jrc03c/pause': 0.0.12
 
-  '@jrc03c/fake-jest@0.0.18':
+  '@jrc03c/fake-jest@0.0.19':
     dependencies:
       '@jrc03c/bash-colors': 0.0.8
 
