@@ -85,6 +85,10 @@ class MailTmClient extends BaseClient {
     return out
   }
 
+  getMessage(id) {
+    return this.get(`/messages/${id}`)
+  }
+
   async getTotalMessageCount() {
     const response = await this.get("/messages")
 
