@@ -10,19 +10,75 @@ class BaseClient {
     this.baseUrl = data.baseUrl || this.baseUrl
   }
 
-  delete() {}
+  delete(path, options) {
+    options = options || {}
 
-  get() {}
+    if (options.method !== "DELETE") {
+      options.method = "DELETE"
+    }
 
-  head() {}
+    return this.send(path, options)
+  }
 
-  options() {}
+  get(path, options) {
+    options = options || {}
 
-  patch() {}
+    if (options.method !== "GET") {
+      options.method = "GET"
+    }
 
-  post() {}
+    return this.send(path, options)
+  }
 
-  put() {}
+  head(path, options) {
+    options = options || {}
+
+    if (options.method !== "HEAD") {
+      options.method = "HEAD"
+    }
+
+    return this.send(path, options)
+  }
+
+  options(path, options) {
+    options = options || {}
+
+    if (options.method !== "OPTIONS") {
+      options.method = "OPTIONS"
+    }
+
+    return this.send(path, options)
+  }
+
+  patch(path, options) {
+    options = options || {}
+
+    if (options.method !== "PATCH") {
+      options.method = "PATCH"
+    }
+
+    return this.send(path, options)
+  }
+
+  post(path, options) {
+    options = options || {}
+
+    if (options.method !== "POST") {
+      options.method = "POST"
+    }
+
+    return this.send(path, options)
+  }
+
+  put(path, options) {
+    options = options || {}
+
+    if (options.method !== "PUT") {
+      options.method = "PUT"
+    }
+
+    return this.send(path, options)
+  }
 
   async send(path, options) {
     options = options || {}
@@ -32,14 +88,23 @@ class BaseClient {
     const data = safeParse(raw)
 
     return new BaseClientResponse({
-      data,
       endpoint: url,
-      raw,
+      json: data,
+      method: options.method || "GET",
       status: response.status,
+      text: raw,
     })
   }
 
-  trace() {}
+  trace(path, options) {
+    options = options || {}
+
+    if (options.method !== "TRACE") {
+      options.method = "TRACE"
+    }
+
+    return this.send(path, options)
+  }
 }
 
 export { BaseClient }
