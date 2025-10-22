@@ -1,14 +1,17 @@
 {
   "devDependencies": {
     "@eslint/js": "^9.12.0",
+    "@jrc03c/fake-jest": "^0.0.18",
     "@jrc03c/watch": "^0.0.18",
     "eslint": "^9.12.0",
     "eslint-plugin-html": "^7.1.0",
+    "express": "^5.1.0",
     "globals": "^15.11.0",
     "prettier": "^3.1.0"
   },
   "type": "module",
   "dependencies": {
+    "@jrc03c/exponential-backoff": "^0.0.3",
     "@jrc03c/js-text-tools": "^0.0.102"
   }
 }

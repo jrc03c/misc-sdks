@@ -1,13 +1,18 @@
 import { BaseClientResponse } from "./response.mjs"
+import { ExponentialBackoffHelper } from "@jrc03c/exponential-backoff"
 import { safeParse } from "./utils.mjs"
 import { urlPathJoin } from "@jrc03c/js-text-tools"
 
 class BaseClient {
   baseUrl = ""
+  exponentialBackoffHelper = null
 
   constructor(data) {
     data = data || {}
     this.baseUrl = data.baseUrl || this.baseUrl
+
+    this.exponentialBackoffHelper =
+      data.exponentialBackoffHelper || new ExponentialBackoffHelper()
   }
 
   delete(path, options) {
@@ -83,7 +88,13 @@ class BaseClient {
   async send(path, options) {
     options = options || {}
     const url = urlPathJoin(this.baseUrl, path)
-    const response = await fetch(url, options)
+    let response
+
+    await this.exponentialBackoffHelper.exec(async () => {
+      response = await fetch(url, options)
+      return response.status !== 429
+    })
+
     const raw = await response.text()
     const data = safeParse(raw)
 
