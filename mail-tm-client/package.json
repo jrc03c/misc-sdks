@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "@eslint/js": "^9.12.0",
+    "@jrc03c/fake-jest": "^0.0.18",
+    "eslint": "^9.12.0",
+    "globals": "^15.11.0",
+    "prettier": "^3.1.0"
+  },
+  "scripts": {
+    "test": "npx fake-jest"
+  },
+  "type": "module",
+  "dependencies": {
+    "@jrc03c/exponential-backoff": "^0.0.3",
+    "@jrc03c/js-text-tools": "^0.0.102"
+  }
+}

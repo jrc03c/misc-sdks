@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "@jrc03c/js-text-tools": "^0.0.96",
+    "@jrc03c/make-key": "^0.0.40",
+    "@jrc03c/pause": "^0.0.11"
+  },
+  "devDependencies": {
+    "@eslint/css": "^0.10.0",
+    "@eslint/js": "^9.33.0",
+    "@eslint/json": "^0.13.1",
+    "@eslint/markdown": "^7.1.0",
+    "@jrc03c/fake-jest": "^0.0.18",
+    "@jrc03c/js-math-tools": "^0.0.99",
+    "eslint": "^9.33.0",
+    "eslint-plugin-html": "^8.1.3",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2"
+  },
+  "main": "src/index.mjs",
+  "module": "src/index.mjs",
+  "name": "@jrc03c/mailchimp-client",
+  "type": "module",
+  "version": "0.0.1"
+}
