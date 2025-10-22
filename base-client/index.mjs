@@ -89,11 +89,15 @@ class BaseClient {
     options = options || {}
     const url = urlPathJoin(this.baseUrl, path)
     let response
+    let wasSuccessful = false
 
-    await this.exponentialBackoffHelper.exec(async () => {
-      response = await fetch(url, options)
-      return response.status !== 429
-    })
+    while (!wasSuccessful) {
+      await this.exponentialBackoffHelper.exec(async () => {
+        response = await fetch(url, options)
+        wasSuccessful = response.status !== 429
+        return wasSuccessful
+      })
+    }
 
     const raw = await response.text()
     const data = safeParse(raw)

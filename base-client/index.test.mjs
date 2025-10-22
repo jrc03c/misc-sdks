@@ -94,7 +94,7 @@ test("BaseClient", () => {
           }
         }
 
-        expect(encounteredAtLeastOne429Status).toBe(true)
+        expect(encounteredAtLeastOne429Status).toBe(false)
 
         server.close()
         resolve()
