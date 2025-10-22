@@ -97,7 +97,7 @@ class MailTmClient extends BaseClient {
     const response = await this.get("/messages")
 
     if (response.status >= 200 && response.status <= 204) {
-      const count = response.json["hydra:totalItems"]
+      const count = response.json["hydra:totalItems"] || 0
 
       return new MailTmClientResponse({
         ...response,

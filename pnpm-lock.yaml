@@ -21,6 +21,9 @@ importers:
       '@jrc03c/fake-jest':
         specifier: ^0.0.18
         version: 0.0.18
+      '@jrc03c/make-key':
+        specifier: ^0.0.40
+        version: 0.0.40
       '@jrc03c/pause':
         specifier: ^0.0.12
         version: 0.0.12

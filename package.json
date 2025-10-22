@@ -1,7 +1,12 @@
 {
+  "dependencies": {
+    "@jrc03c/exponential-backoff": "^0.0.3",
+    "@jrc03c/js-text-tools": "^0.0.102"
+  },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
     "@jrc03c/fake-jest": "^0.0.18",
+    "@jrc03c/make-key": "^0.0.40",
     "@jrc03c/pause": "^0.0.12",
     "@jrc03c/watch": "^0.0.18",
     "eslint": "^9.12.0",
@@ -11,9 +16,5 @@
     "nodemailer": "^7.0.9",
     "prettier": "^3.1.0"
   },
-  "type": "module",
-  "dependencies": {
-    "@jrc03c/exponential-backoff": "^0.0.3",
-    "@jrc03c/js-text-tools": "^0.0.102"
-  }
+  "type": "module"
 }
