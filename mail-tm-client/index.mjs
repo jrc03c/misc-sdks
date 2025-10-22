@@ -20,13 +20,13 @@ class MailTmClient extends BaseClient {
 
     if (!this.address) {
       throw new Error(
-        "The data object passed into the `MailTmClient` constructor must have an 'address' property with a string value representing an email address!",
+        "The object passed into the `MailTmClient` constructor must have an 'address' property with a string value representing an email address!",
       )
     }
 
     if (!this.password) {
       throw new Error(
-        "The data object passed into the `MailTmClient` constructor must have a 'password' property with a string value!",
+        "The object passed into the `MailTmClient` constructor must have a 'password' property with a string value!",
       )
     }
   }
