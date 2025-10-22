@@ -7,5 +7,8 @@
     "globals": "^15.11.0",
     "prettier": "^3.1.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@jrc03c/js-text-tools": "^0.0.102"
+  }
 }
