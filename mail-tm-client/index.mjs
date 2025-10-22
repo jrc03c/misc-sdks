@@ -1,104 +1,84 @@
-import { ExponentialBackoffHelper } from "@jrc03c/exponential-backoff"
+import { BaseClient } from "../base-client/index.mjs"
 import { MailTmClientResponse } from "./response.mjs"
+import { safeParse } from "../base-client/utils.mjs"
 import { urlPathJoin } from "@jrc03c/js-text-tools"
 
 const BASE_URL = "https://api.mail.tm"
 
-function safeParse(x) {
-  try {
-    return JSON.parse(x)
-  } catch (e) {
-    return x
-  }
-}
-
-class MailTmClient {
-  backoff = new ExponentialBackoffHelper()
-  id = null
-  token = null
+class MailTmClient extends BaseClient {
+  address = ""
+  password = ""
+  token = ""
 
   constructor(data) {
     data = data || {}
-    this.id = data.id || this.id
+    super(data)
+    this.address = data.address || this.address
+    this.baseUrl = data.baseUrl || BASE_URL
+    this.password = data.password || this.password
     this.token = data.token || this.token
+
+    if (!this.address) {
+      throw new Error(
+        "The data object passed into the `MailTmClient` constructor must have an 'address' property with a string value representing an email address!",
+      )
+    }
+
+    if (!this.password) {
+      throw new Error(
+        "The data object passed into the `MailTmClient` constructor must have a 'password' property with a string value!",
+      )
+    }
   }
 
-  async authenticate(address, password) {
-    const url = urlPathJoin(BASE_URL, "/token")
+  async authenticate() {
+    const url = urlPathJoin(this.baseUrl, "/token")
 
     const response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        address,
-        password,
+        address: this.address,
+        password: this.password,
       }),
     })
 
     const raw = await response.text()
     const data = safeParse(raw)
 
-    if (response.status >= 200 && response.status <= 204) {
-      this.id = data.id
+    const out = new MailTmClientResponse({
+      endpoint: url,
+      json: data,
+      method: "POST",
+      status: response.status,
+      text: raw,
+    })
+
+    if (out.status >= 200 && out.status <= 204) {
       this.token = data.token
     }
 
-    return new MailTmClientResponse({
-      data,
-      method: "POST",
-      path: "/token",
-      status: response.status,
-    })
+    return out
   }
 
-  async deleteAllMessages() {}
-
-  deleteMessage(id) {
-    return this.fetch(`/messages/${id}`, {
-      method: "DELETE",
-    })
-  }
-
-  async fetch(path, options) {
+  async send(path, options) {
     if (!this.token) {
-      throw new Error(
-        "The `MailTmClient` instance has not yet been authenticated! Please call its `authenticate` method before calling its other methods.",
-      )
+      const authResponse = await this.authenticate()
+
+      if (authResponse.status > 204) {
+        return authResponse
+      }
     }
 
     options = options || {}
 
-    if (typeof options.headers === "undefined") {
-      options.headers = {}
+    if (!options.headers) {
+      options.headers = {
+        Authorization: `Bearer ${this.token}`,
+      }
     }
 
-    if (typeof options.headers["Authorization"] === "undefined") {
-      options.headers["Authorization"] = `Bearer ${this.token}`
-    }
-
-    const url = urlPathJoin(BASE_URL, path)
-    let response
-
-    await this.backoff.exec(async () => {
-      response = await fetch(url, options)
-      return response.status !== 429
-    })
-
-    const raw = await response.text()
-    const data = safeParse(raw)
-
-    return new MailTmClientResponse({
-      data,
-      method: options.method || "GET",
-      path,
-      status: response.status,
-    })
-  }
-
-  getAllMessages() {}
-
-  getMessage(id) {
-    return this.fetch(`/messages/${id}`)
+    return new MailTmClientResponse(await super.send(path, options))
   }
 }
 
