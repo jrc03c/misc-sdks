@@ -61,6 +61,46 @@ class MailTmClient extends BaseClient {
     return out
   }
 
+  async getAllMessages() {
+    const out = []
+    let page = 1
+    let isStillFetching = true
+
+    while (isStillFetching) {
+      const response = await this.get(`/messages?page=${page}`)
+
+      if (response.status >= 200 && response.status <= 204) {
+        out.push(...response.json["hydra:member"])
+
+        if (out.length >= response.json["hydra:totalItems"]) {
+          isStillFetching = false
+        } else {
+          page++
+        }
+      } else {
+        return response
+      }
+    }
+
+    return out
+  }
+
+  async getTotalMessageCount() {
+    const response = await this.get("/messages")
+
+    if (response.status >= 200 && response.status <= 204) {
+      const count = response.json["hydra:totalItems"]
+
+      return new MailTmClientResponse({
+        ...response,
+        json: count,
+        text: count.toString(),
+      })
+    } else {
+      return response
+    }
+  }
+
   async send(path, options) {
     if (!this.token) {
       const authResponse = await this.authenticate()
