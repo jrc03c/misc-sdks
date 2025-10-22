@@ -61,6 +61,10 @@ class MailTmClient extends BaseClient {
     return out
   }
 
+  deleteMessage(id) {
+    return this.delete(`/messages/${id}`)
+  }
+
   async getAllMessages() {
     const out = []
     let page = 1
