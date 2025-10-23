@@ -101,9 +101,11 @@ class MailTmClient extends BaseClient {
     options = options || {}
 
     if (!options.headers) {
-      options.headers = {
-        Authorization: `Bearer ${this.token}`,
-      }
+      options.headers = {}
+    }
+
+    if (!options.headers["Authorization"]) {
+      options.headers["Authorization"] = `Bearer ${this.token}`
     }
 
     return new MailTmClientResponse(await super.send(path, options))
