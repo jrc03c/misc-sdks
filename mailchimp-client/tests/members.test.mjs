@@ -1,4 +1,3 @@
-// batch-add-members-to-list.mjs
 // search-members.mjs
 // update-list-member-info.mjs
 
@@ -55,4 +54,33 @@ test("MailchimpClient.archiveListMember", async () => {
   expect((await client.getListMemberStatus(listId, emailAddress)).json).toBe(
     MailchimpClient.MemberStatus.ARCHIVED,
   )
+})
+
+test("Mailchimp.batchAddMembersToList", async () => {
+  await (async () => {
+    const response = await client.batchAddMembersToList(listId, [emailAddress])
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+  })()
+
+  expect((await client.getListMemberStatus(listId, emailAddress)).json).toBe(
+    MailchimpClient.MemberStatus.SUBSCRIBED,
+  )
+
+  await (async () => {
+    const response = await client.archiveListMember(listId, emailAddress)
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+  })()
+
+  expect((await client.getListMemberStatus(listId, emailAddress)).json).toBe(
+    MailchimpClient.MemberStatus.ARCHIVED,
+  )
+})
+
+test("Mailchimp.searchMembers", async () => {
+  const response = await client.searchMembers(emailAddress)
+  expect(response.status).toBeGreaterThanOrEqualTo(200)
+  expect(response.status).toBeLessThanOrEqualTo(204)
+  expect(response.json.exact_matches.members.length).toBeGreaterThan(0)
 })
