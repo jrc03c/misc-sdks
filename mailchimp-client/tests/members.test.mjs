@@ -1,5 +1,6 @@
 import { expect, test } from "@jrc03c/fake-jest"
 import { MailchimpClient } from "../index.mjs"
+import { makeKey } from "@jrc03c/make-key"
 import process from "node:process"
 
 if (typeof process.env.MAILCHIMP_API_KEY === "undefined") {
@@ -27,6 +28,13 @@ test("MailchimpClient.getListMemberStatus", async () => {
   expect(
     (await client.getListMemberStatus(listId, emailAddress)).json,
   ).not.toBe(MailchimpClient.MemberStatus.SUBSCRIBED)
+
+  await (async () => {
+    const tempEmailAddress = makeKey(8) + "@" + makeKey(8) + ".com"
+    const response = await client.getListMemberStatus(listId, tempEmailAddress)
+    expect(response.status).toBe(404)
+    expect(response.json).toBe(MailchimpClient.MemberStatus.NOT_FOUND)
+  })()
 })
 
 test("MailchimpClient.addMemberToList", async () => {
