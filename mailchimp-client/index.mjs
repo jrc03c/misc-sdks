@@ -6,6 +6,7 @@ import { getListInfo } from "./methods/get-list-info.mjs"
 import { getListMemberInfo } from "./methods/get-list-member-info.mjs"
 import { getListMemberStatus } from "./methods/get-list-member-status.mjs"
 import { MailchimpClientResponse } from "./response.mjs"
+import { searchListTags } from "./methods/search-list-tags.mjs"
 import { searchMembers } from "./methods/search-members.mjs"
 import { updateListMemberInfo } from "./methods/update-list-member-info.mjs"
 
@@ -48,6 +49,7 @@ class MailchimpClient extends BaseClient {
     this.getListInfo = getListInfo.bind(this)
     this.getListMemberInfo = getListMemberInfo.bind(this)
     this.getListMemberStatus = getListMemberStatus.bind(this)
+    this.searchListTags = searchListTags.bind(this)
     this.searchMembers = searchMembers.bind(this)
     this.updateListMemberInfo = updateListMemberInfo.bind(this)
   }
