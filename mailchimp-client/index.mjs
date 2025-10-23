@@ -10,6 +10,7 @@ import { updateListMemberInfo } from "./methods/update-list-member-info.mjs"
 
 class MailchimpClient extends BaseClient {
   static Status = {
+    ARCHIVED: "archived",
     CLEANED: "cleaned",
     PENDING: "pending",
     SUBSCRIBED: "subscribed",
