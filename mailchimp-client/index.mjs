@@ -18,6 +18,7 @@ class MailchimpClient extends BaseClient {
   static MemberStatus = {
     ARCHIVED: "archived",
     CLEANED: "cleaned",
+    NOT_FOUND: "not-found", // unofficial
     PENDING: "pending",
     SUBSCRIBED: "subscribed",
     TRANSACTIONAL: "transactional",

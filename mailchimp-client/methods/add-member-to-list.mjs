@@ -12,15 +12,12 @@ function addMemberToList(listId, member, options) {
     }
   }
 
+  member.status = this.constructor.MemberStatus.SUBSCRIBED
   options = options || {}
 
   const path =
     `/lists/${listId}/members` +
     (options.shouldSkipMergeValidation ? "?skip_merge_validation=true" : "")
-
-  if (!member.status) {
-    member.status = this.constructor.MemberStatus.SUBSCRIBED
-  }
 
   return this.post(path, {
     headers: { "Content-Type": "application/json" },
