@@ -13,6 +13,28 @@ function batchAddMembersToList(listId, members, options) {
     )
   }
 
+  // if the members array contains email address strings instead of member
+  // objects, then convert the email address strings into member objects
+  members = (() => {
+    const temp = []
+
+    for (let i = 0; i < members.length; i++) {
+      const member = members[i]
+
+      if (typeof member === "string") {
+        temp.push({
+          email_address: member,
+          email_type: "html",
+          status: this.constructor.Status.SUBSCRIBED,
+        })
+      } else {
+        temp.push(member)
+      }
+    }
+
+    return temp
+  })()
+
   options = options || {}
   const queryParams = []
 
