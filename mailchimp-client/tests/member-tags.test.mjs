@@ -1,3 +1,9 @@
+// add-tags-to-list-member.mjs
+// get-list-member-tags.mjs
+// remove-tags-from-list-member.mjs
+// search-list-tags.mjs
+// update-list-member-tags.mjs
+
 import { expect, test } from "@jrc03c/fake-jest"
 import { MailchimpClient } from "../index.mjs"
 import process from "node:process"
