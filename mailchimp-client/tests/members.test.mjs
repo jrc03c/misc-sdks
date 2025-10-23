@@ -1,6 +1,3 @@
-// search-members.mjs
-// update-list-member-info.mjs
-
 import { expect, test } from "@jrc03c/fake-jest"
 import { MailchimpClient } from "../index.mjs"
 import process from "node:process"
@@ -83,4 +80,35 @@ test("Mailchimp.searchMembers", async () => {
   expect(response.status).toBeGreaterThanOrEqualTo(200)
   expect(response.status).toBeLessThanOrEqualTo(204)
   expect(response.json.exact_matches.members.length).toBeGreaterThan(0)
+})
+
+test("Mailchimp.updateListMemberInfo", async () => {
+  const language = "fr"
+
+  await (async () => {
+    const response = await client.updateListMemberInfo(listId, {
+      email_address: emailAddress,
+      language,
+    })
+
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+  })()
+
+  await (async () => {
+    const response = await client.getListMemberInfo(listId, emailAddress)
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+    expect(response.json.language).toBe(language)
+  })()
+
+  await (async () => {
+    const response = await client.updateListMemberInfo(listId, {
+      email_address: emailAddress,
+      language: "en",
+    })
+
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+  })()
 })
