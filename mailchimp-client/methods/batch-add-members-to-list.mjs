@@ -19,17 +19,17 @@ function batchAddMembersToList(listId, members, options) {
     const temp = []
 
     for (let i = 0; i < members.length; i++) {
-      const member = members[i]
+      let member = members[i]
 
       if (typeof member === "string") {
-        temp.push({
+        member = {
           email_address: member,
           email_type: "html",
-          status: this.constructor.Status.SUBSCRIBED,
-        })
-      } else {
-        temp.push(member)
+        }
       }
+
+      member.status = this.constructor.Status.SUBSCRIBED
+      temp.push(member)
     }
 
     return temp
