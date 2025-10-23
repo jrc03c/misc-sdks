@@ -1,4 +1,5 @@
 import { addMemberToList } from "./methods/add-member-to-list.mjs"
+import { addTagsToListMember } from "./methods/add-tags-to-list-member.mjs"
 import { archiveListMember } from "./methods/archive-list-member.mjs"
 import { BaseClient } from "../base-client/index.mjs"
 import { batchAddMembersToList } from "./methods/batch-add-members-to-list.mjs"
@@ -7,18 +8,25 @@ import { getListMemberInfo } from "./methods/get-list-member-info.mjs"
 import { getListMemberStatus } from "./methods/get-list-member-status.mjs"
 import { getListMemberTags } from "./methods/get-list-member-tags.mjs"
 import { MailchimpClientResponse } from "./response.mjs"
+import { removeTagsFromListMember } from "./methods/remove-tags-from-list-member.mjs"
 import { searchListTags } from "./methods/search-list-tags.mjs"
 import { searchMembers } from "./methods/search-members.mjs"
 import { updateListMemberInfo } from "./methods/update-list-member-info.mjs"
+import { updateListMemberTags } from "./methods/update-list-member-tags.mjs"
 
 class MailchimpClient extends BaseClient {
-  static Status = {
+  static MemberStatus = {
     ARCHIVED: "archived",
     CLEANED: "cleaned",
     PENDING: "pending",
     SUBSCRIBED: "subscribed",
     TRANSACTIONAL: "transactional",
     UNSUBSCRIBED: "unsubscribed",
+  }
+
+  static TagStatus = {
+    ACTIVE: "active",
+    INACTIVE: "inactive",
   }
 
   apiKey = ""
@@ -45,15 +53,18 @@ class MailchimpClient extends BaseClient {
 
     // bind methods
     this.addMemberToList = addMemberToList.bind(this)
+    this.addTagsToListMember = addTagsToListMember.bind(this)
     this.archiveListMember = archiveListMember.bind(this)
     this.batchAddMembersToList = batchAddMembersToList.bind(this)
     this.getListInfo = getListInfo.bind(this)
     this.getListMemberInfo = getListMemberInfo.bind(this)
     this.getListMemberStatus = getListMemberStatus.bind(this)
     this.getListMemberTags = getListMemberTags.bind(this)
+    this.removeTagsFromListMember = removeTagsFromListMember.bind(this)
     this.searchListTags = searchListTags.bind(this)
     this.searchMembers = searchMembers.bind(this)
     this.updateListMemberInfo = updateListMemberInfo.bind(this)
+    this.updateListMemberTags = updateListMemberTags.bind(this)
   }
 
   ping() {

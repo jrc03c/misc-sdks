@@ -8,7 +8,7 @@ function addMemberToList(listId, member, options) {
     member = {
       email_address: member,
       email_type: "html",
-      status: this.constructor.Status.SUBSCRIBED,
+      status: this.constructor.MemberStatus.SUBSCRIBED,
     }
   }
 
@@ -19,7 +19,7 @@ function addMemberToList(listId, member, options) {
     (options.shouldSkipMergeValidation ? "?skip_merge_validation=true" : "")
 
   if (!member.status) {
-    member.status = this.constructor.Status.SUBSCRIBED
+    member.status = this.constructor.MemberStatus.SUBSCRIBED
   }
 
   return this.post(path, {

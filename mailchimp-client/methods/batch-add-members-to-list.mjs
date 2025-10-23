@@ -28,7 +28,7 @@ function batchAddMembersToList(listId, members, options) {
         }
       }
 
-      member.status = this.constructor.Status.SUBSCRIBED
+      member.status = this.constructor.MemberStatus.SUBSCRIBED
       temp.push(member)
     }
 
