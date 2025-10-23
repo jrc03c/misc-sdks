@@ -1,8 +1,17 @@
 import { BaseClient } from "../base-client/index.mjs"
+import { batchAddMembersToList } from "./methods/batch-add-members-to-list.mjs"
 import { getListInfo } from "./methods/get-list-info.mjs"
 import { MailchimpClientResponse } from "./response.mjs"
 
 class MailchimpClient extends BaseClient {
+  static Status = {
+    CLEANED: "cleaned",
+    PENDING: "pending",
+    SUBSCRIBED: "subscribed",
+    TRANSACTIONAL: "transactional",
+    UNSUBSCRIBED: "unsubscribed",
+  }
+
   apiKey = ""
   apiVersion = "3.0"
   datacenter = "us0"
@@ -26,6 +35,7 @@ class MailchimpClient extends BaseClient {
       `https://${this.datacenter}.api.mailchimp.com/${this.apiVersion}`
 
     // bind methods
+    this.batchAddMembersToList = batchAddMembersToList.bind(this)
     this.getListInfo = getListInfo.bind(this)
   }
 
