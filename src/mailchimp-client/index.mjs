@@ -88,4 +88,4 @@ class MailchimpClient extends BaseClient {
   }
 }
 
-export { MailchimpClient }
+export { MailchimpClient, MailchimpClientResponse }

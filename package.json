@@ -1,4 +1,5 @@
 {
+  "author": "jrc03c",
   "dependencies": {
     "@jrc03c/exponential-backoff": "^0.0.3",
     "@jrc03c/js-text-tools": "^0.0.102"
@@ -16,6 +17,9 @@
     "nodemailer": "^7.0.9",
     "prettier": "^3.1.0"
   },
+  "main": "./src/index.mjs",
+  "module": "./src/index.mjs",
   "name": "@jrc03c/misc-sdks",
-  "type": "module"
+  "type": "module",
+  "version": "0.0.1"
 }

@@ -112,4 +112,4 @@ class MailTmClient extends BaseClient {
   }
 }
 
-export { MailTmClient }
+export { MailTmClient, MailTmClientResponse }
