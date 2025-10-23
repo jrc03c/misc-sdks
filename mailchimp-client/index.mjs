@@ -3,6 +3,7 @@ import { BaseClient } from "../base-client/index.mjs"
 import { batchAddMembersToList } from "./methods/batch-add-members-to-list.mjs"
 import { getListInfo } from "./methods/get-list-info.mjs"
 import { getListMemberInfo } from "./methods/get-list-member-info.mjs"
+import { getListMemberStatus } from "./methods/get-list-member-status.mjs"
 import { MailchimpClientResponse } from "./response.mjs"
 
 class MailchimpClient extends BaseClient {
@@ -41,6 +42,7 @@ class MailchimpClient extends BaseClient {
     this.batchAddMembersToList = batchAddMembersToList.bind(this)
     this.getListInfo = getListInfo.bind(this)
     this.getListMemberInfo = getListMemberInfo.bind(this)
+    this.getListMemberStatus = getListMemberStatus.bind(this)
   }
 
   ping() {
