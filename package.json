@@ -16,5 +16,6 @@
     "nodemailer": "^7.0.9",
     "prettier": "^3.1.0"
   },
+  "name": "@jrc03c/misc-sdks",
   "type": "module"
 }
