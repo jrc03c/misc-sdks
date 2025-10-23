@@ -1,4 +1,5 @@
 import { BaseClient } from "../base-client/index.mjs"
+import { getListInfo } from "./methods/get-list-info.mjs"
 import { MailchimpClientResponse } from "./response.mjs"
 
 class MailchimpClient extends BaseClient {
@@ -23,6 +24,9 @@ class MailchimpClient extends BaseClient {
     this.baseUrl =
       data.baseUrl ||
       `https://${this.datacenter}.api.mailchimp.com/${this.apiVersion}`
+
+    // bind methods
+    this.getListInfo = getListInfo.bind(this)
   }
 
   ping() {
