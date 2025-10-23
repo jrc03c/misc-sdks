@@ -1,3 +1,4 @@
+import { addMemberToList } from "./methods/add-member-to-list.mjs"
 import { BaseClient } from "../base-client/index.mjs"
 import { batchAddMembersToList } from "./methods/batch-add-members-to-list.mjs"
 import { getListInfo } from "./methods/get-list-info.mjs"
@@ -35,6 +36,7 @@ class MailchimpClient extends BaseClient {
       `https://${this.datacenter}.api.mailchimp.com/${this.apiVersion}`
 
     // bind methods
+    this.addMemberToList = addMemberToList.bind(this)
     this.batchAddMembersToList = batchAddMembersToList.bind(this)
     this.getListInfo = getListInfo.bind(this)
   }
