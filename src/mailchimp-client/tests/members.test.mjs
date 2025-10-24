@@ -61,7 +61,7 @@ test("MailchimpClient.archiveListMember", async () => {
   )
 })
 
-test("Mailchimp.batchAddMembersToList", async () => {
+test("MailchimpClient.batchAddMembersToList", async () => {
   await (async () => {
     const response = await client.batchAddMembersToList(listId, [emailAddress])
     expect(response.status).toBeGreaterThanOrEqualTo(200)
@@ -83,14 +83,65 @@ test("Mailchimp.batchAddMembersToList", async () => {
   )
 })
 
-test("Mailchimp.searchMembers", async () => {
+test("MailchimpClient.searchMembers", async () => {
   const response = await client.searchMembers(emailAddress)
   expect(response.status).toBeGreaterThanOrEqualTo(200)
   expect(response.status).toBeLessThanOrEqualTo(204)
   expect(response.json.exact_matches.members.length).toBeGreaterThan(0)
 })
 
-test("Mailchimp.updateListMemberInfo", async () => {
+test("MailchimpClient.updateListMemberStatus", async () => {
+  await (async () => {
+    const response = await client.getListMemberStatus(listId, emailAddress)
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+    expect(response.json).toBe(MailchimpClient.MemberStatus.ARCHIVED)
+  })()
+
+  await (async () => {
+    const response = await client.updateListMemberStatus(
+      listId,
+      emailAddress,
+      MailchimpClient.MemberStatus.PENDING,
+    )
+
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+  })()
+
+  await (async () => {
+    const response = await client.getListMemberStatus(listId, emailAddress)
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+    expect(response.json).toBe(MailchimpClient.MemberStatus.PENDING)
+  })()
+
+  await (async () => {
+    const response = await client.updateListMemberStatus(
+      listId,
+      emailAddress,
+      MailchimpClient.MemberStatus.SUBSCRIBED,
+    )
+
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+  })()
+
+  await (async () => {
+    const response = await client.archiveListMember(listId, emailAddress)
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+  })()
+
+  await (async () => {
+    const response = await client.getListMemberStatus(listId, emailAddress)
+    expect(response.status).toBeGreaterThanOrEqualTo(200)
+    expect(response.status).toBeLessThanOrEqualTo(204)
+    expect(response.json).toBe(MailchimpClient.MemberStatus.ARCHIVED)
+  })()
+})
+
+test("MailchimpClient.updateListMemberInfo", async () => {
   const language = "fr"
 
   await (async () => {

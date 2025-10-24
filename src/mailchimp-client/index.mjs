@@ -12,6 +12,7 @@ import { removeTagsFromListMember } from "./methods/remove-tags-from-list-member
 import { searchListTags } from "./methods/search-list-tags.mjs"
 import { searchMembers } from "./methods/search-members.mjs"
 import { updateListMemberInfo } from "./methods/update-list-member-info.mjs"
+import { updateListMemberStatus } from "./methods/update-list-member-status.mjs"
 import { updateListMemberTags } from "./methods/update-list-member-tags.mjs"
 
 class MailchimpClient extends BaseClient {
@@ -65,6 +66,7 @@ class MailchimpClient extends BaseClient {
     this.searchListTags = searchListTags.bind(this)
     this.searchMembers = searchMembers.bind(this)
     this.updateListMemberInfo = updateListMemberInfo.bind(this)
+    this.updateListMemberStatus = updateListMemberStatus.bind(this)
     this.updateListMemberTags = updateListMemberTags.bind(this)
   }
 
