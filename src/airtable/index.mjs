@@ -1,5 +1,5 @@
 import { AirtableClientResponse } from "./response.mjs"
-import { AirtableBase } from "./airtable-base.mjs"
+import { AirtableBase } from "./base/index.mjs"
 import { BaseClient } from "../base/index.mjs"
 import { urlPathJoin } from "@jrc03c/js-text-tools"
 

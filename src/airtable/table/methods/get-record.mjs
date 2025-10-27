@@ -1,4 +1,4 @@
-import { superEncodeURIComponent } from "../utils.mjs"
+import { superEncodeURIComponent } from "../../utils.mjs"
 
 function getRecord(id, options) {
   // https://airtable.com/developers/web/api/get-record#query

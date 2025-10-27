@@ -1,4 +1,4 @@
-import { AirtableTable } from "./airtable-table.mjs"
+import { AirtableTable } from "../table/index.mjs"
 
 class AirtableBase {
   client = null

@@ -1,4 +1,4 @@
-import { superEncodeURIComponent } from "../utils.mjs"
+import { superEncodeURIComponent } from "../../utils.mjs"
 
 function deleteRecords(ids) {
   if (!(ids instanceof Array) || !ids.every(v => typeof v === "string")) {
