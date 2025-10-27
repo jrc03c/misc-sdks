@@ -54,8 +54,13 @@ class AirtableTable {
 
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i]
-      const value = options[key]
-      queryParams.push(`${key}=${encodeURIComponent(value)}`)
+      let value = options[key]
+
+      if (typeof value === "string") {
+        value = encodeURIComponent(value)
+      }
+
+      queryParams.push(`${key}=${value}`)
     }
 
     const path =
