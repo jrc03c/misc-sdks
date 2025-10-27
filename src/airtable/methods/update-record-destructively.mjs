@@ -1,7 +1,5 @@
-import { updateRecordsDestructively } from "./update-records-destructively.mjs"
-
 function updateRecordDestructively(record, options) {
-  return updateRecordsDestructively.bind(this)([record], options)
+  return this.updateRecordsDestructively([record], options)
 }
 
 export { updateRecordDestructively }

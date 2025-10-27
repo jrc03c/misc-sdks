@@ -1,7 +1,5 @@
-import { updateRecordsSafely } from "./update-records-safely.mjs"
-
 function updateRecordSafely(record, options) {
-  return updateRecordsSafely.bind(this)([record], options)
+  return this.updateRecordsSafely([record], options)
 }
 
 export { updateRecordSafely }

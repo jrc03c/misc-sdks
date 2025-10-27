@@ -1,7 +1,5 @@
-import { createRecords } from "./create-records.mjs"
-
 function createRecord(record, options) {
-  return createRecords.bind(this)([record], options)
+  return this.createRecords([record], options)
 }
 
 export { createRecord }
