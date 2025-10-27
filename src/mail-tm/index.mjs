@@ -1,6 +1,6 @@
-import { BaseClient } from "../base-client/index.mjs"
+import { BaseClient } from "../base/index.mjs"
 import { MailTmClientResponse } from "./response.mjs"
-import { safeParse } from "../base-client/utils.mjs"
+import { safeParse } from "../base/utils.mjs"
 import { urlPathJoin } from "@jrc03c/js-text-tools"
 
 const BASE_URL = "https://api.mail.tm"

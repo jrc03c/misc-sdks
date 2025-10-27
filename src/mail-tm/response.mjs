@@ -1,4 +1,4 @@
-import { BaseClientResponse } from "../base-client/response.mjs"
+import { BaseClientResponse } from "../base/response.mjs"
 
 class MailTmClientResponse extends BaseClientResponse {}
 

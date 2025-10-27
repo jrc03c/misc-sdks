@@ -1,7 +1,7 @@
 import { addMemberToList } from "./methods/add-member-to-list.mjs"
 import { addTagsToListMember } from "./methods/add-tags-to-list-member.mjs"
 import { archiveListMember } from "./methods/archive-list-member.mjs"
-import { BaseClient } from "../base-client/index.mjs"
+import { BaseClient } from "../base/index.mjs"
 import { batchAddMembersToList } from "./methods/batch-add-members-to-list.mjs"
 import { getListInfo } from "./methods/get-list-info.mjs"
 import { getListMemberInfo } from "./methods/get-list-member-info.mjs"

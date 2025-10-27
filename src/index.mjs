@@ -1,11 +1,6 @@
-import { BaseClient, BaseClientResponse } from "./base-client/index.mjs"
-
-import {
-  MailchimpClient,
-  MailchimpClientResponse,
-} from "./mailchimp-client/index.mjs"
-
-import { MailTmClient, MailTmClientResponse } from "./mail-tm-client/index.mjs"
+import { BaseClient, BaseClientResponse } from "./base/index.mjs"
+import { MailchimpClient, MailchimpClientResponse } from "./mailchimp/index.mjs"
+import { MailTmClient, MailTmClientResponse } from "./mail-tm/index.mjs"
 
 export {
   BaseClient,

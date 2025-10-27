@@ -1,5 +1,5 @@
 import { expect, test } from "@jrc03c/fake-jest"
-import { GmailMessageSender } from "../base-client/utils.mjs"
+import { GmailMessageSender } from "../base/utils.mjs"
 import { MailTmClient } from "./index.mjs"
 import { MailTmClientResponse } from "./response.mjs"
 import { makeKey } from "@jrc03c/make-key"
