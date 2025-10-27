@@ -21,6 +21,9 @@ importers:
       '@jrc03c/fake-jest':
         specifier: ^0.0.19
         version: 0.0.19
+      '@jrc03c/js-math-tools':
+        specifier: ^0.0.104
+        version: 0.0.104
       '@jrc03c/make-key':
         specifier: ^0.0.40
         version: 0.0.40
@@ -118,6 +121,9 @@ packages:
 
   '@jrc03c/fs-extras@0.0.21':
     resolution: {integrity: sha512-M++w/WVxVzL7AetCf510hgvyGfilTvwHPfcaMvWN8YHdZp7RQN1juNdxk+sUD7nl41RSSMgHYLlLBouFZ9aSfQ==}
+
+  '@jrc03c/js-math-tools@0.0.104':
+    resolution: {integrity: sha512-DS4rQRua0bLiCG/mpm61mwA3YjCyoBj/lbEou3biMyLhdq3wZHtsdgxB7qGaBrmiKw+QpojvJzwqC4XVm1Mfeg==}
 
   '@jrc03c/js-math-tools@0.0.87':
     resolution: {integrity: sha512-Ub8QWkdOq908M7/ImbcJ7hezUi3U5C/s/FjzljxehBJqmZB9K4GdOy+jg6Yq+V72nz49Kne9dc+TlEExwJTE8A==}
@@ -779,6 +785,8 @@ snapshots:
   '@jrc03c/fs-extras@0.0.21':
     dependencies:
       '@jrc03c/js-math-tools': 0.0.87
+
+  '@jrc03c/js-math-tools@0.0.104': {}
 
   '@jrc03c/js-math-tools@0.0.87': {}
 
