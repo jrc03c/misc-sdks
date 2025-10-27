@@ -29,24 +29,32 @@ function updateRecordsCore(method, records, options) {
     )
   }
 
+  records = records || []
+
   if (records.length > MAX_RECORDS_PER_REQUEST) {
     throw new Error(
-      `The array passed into the \`AirtableTable.updateRecordsDestructively\` method must contain no more than ${MAX_RECORDS_PER_REQUEST} record objects!`,
+      `The array passed into the \`updateRecordsCore\` function must contain no more than ${MAX_RECORDS_PER_REQUEST} record objects!`,
     )
   }
 
   for (let i = 0; i < records.length; i++) {
     const record = records[i]
 
+    if (typeof record !== "object") {
+      throw new Error(
+        "The array passed into the `updateRecordsCore` function must contain objects (representing records) with 'fields' properties!",
+      )
+    }
+
     if (typeof record.id === "undefined") {
       throw new Error(
-        "Each record object included in the array passed into the `AirtableTable.updateRecordsDestructively` method must have an 'id' property with a string value representing the ID of an Airtable record!",
+        "Each record object included in the array passed into the `updateRecordsCore` function must have an 'id' property with a string value representing the ID of an Airtable record!",
       )
     }
 
     if (typeof record.fields === "undefined") {
       throw new Error(
-        "Each record object included in the array passed into the `AirtableTable.updateRecordsDestructively` method must have a 'fields' property with an object value whose key-value pairs correspond to field names and values in the given table!",
+        "Each record object included in the array passed into the `updateRecordsCore` function must have a 'fields' property with an object value whose key-value pairs correspond to field names and values in the given table!",
       )
     }
   }
