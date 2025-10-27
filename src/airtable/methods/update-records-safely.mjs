@@ -1,7 +1,7 @@
 import { updateRecordsCore } from "./update-records-core.mjs"
 
-function updateRecords(records, options) {
+function updateRecordsSafely(records, options) {
   return updateRecordsCore.bind(this)("PATCH", records, options)
 }
 
-export { updateRecords }
+export { updateRecordsSafely }
