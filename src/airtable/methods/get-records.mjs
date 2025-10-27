@@ -1,4 +1,4 @@
-import { convertQueryParamsObjectToString } from "../../base/utils.mjs"
+import { superEncodeURIComponent } from "../utils.mjs"
 
 function getRecords(options) {
   // https://airtable.com/developers/web/api/list-records#query
@@ -19,7 +19,7 @@ function getRecords(options) {
   // - view
 
   options = options || {}
-  const queryParams = convertQueryParamsObjectToString(options)
+  const queryParams = superEncodeURIComponent(options)
 
   const path =
     `/${this.base.id}/${this.id}` + (queryParams ? "?" + queryParams : "")
