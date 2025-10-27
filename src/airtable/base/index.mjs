@@ -1,4 +1,6 @@
 import { AirtableTable } from "../table/index.mjs"
+import { getTableSchema } from "./methods/get-table-schema.mjs"
+import { getTableSchemas } from "./methods/get-table-schemas.mjs"
 
 class AirtableBase {
   client = null
@@ -21,6 +23,10 @@ class AirtableBase {
 
     this.client = data.client
     this.id = data.id
+
+    // methods
+    this.getTableSchema = getTableSchema.bind(this)
+    this.getTableSchemas = getTableSchemas.bind(this)
   }
 
   getTable(id) {
