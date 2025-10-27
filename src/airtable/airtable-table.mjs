@@ -1,5 +1,6 @@
 import { getRecord } from "./methods/get-record.mjs"
 import { getRecords } from "./methods/get-records.mjs"
+import { updateRecords } from "./methods/update-records.mjs"
 
 class AirtableTable {
   base = null
@@ -34,6 +35,7 @@ class AirtableTable {
     // methods
     this.getRecord = getRecord.bind(this)
     this.getRecords = getRecords.bind(this)
+    this.updateRecords = updateRecords.bind(this)
   }
 }
 
