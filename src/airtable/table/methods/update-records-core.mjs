@@ -11,7 +11,8 @@ function updateRecordsCore(method, records, options) {
   // -----
   // https://airtable.com/developers/web/api/update-multiple-records#request
   // options include:
-  // - performUpsert (ignored)
+  // - performUpsert
+  //   - fieldsToMergeOn
   // - returnFieldsByFieldId
   // - typecast
 
@@ -46,7 +47,10 @@ function updateRecordsCore(method, records, options) {
       )
     }
 
-    if (typeof record.id === "undefined") {
+    if (
+      typeof options.performUpsert === "undefined" &&
+      typeof record.id === "undefined"
+    ) {
       throw new Error(
         "Each record object included in the array passed into the `updateRecordsCore` function must have an 'id' property with a string value representing the ID of an Airtable record!",
       )
@@ -60,7 +64,6 @@ function updateRecordsCore(method, records, options) {
   }
 
   options = options || {}
-  delete options.performUpsert
 
   return this.client[method](`/${this.base.id}/${this.id}`, {
     headers: { "Content-Type": "application/json" },
