@@ -26,6 +26,7 @@ class AirtableBase {
   getTable(id) {
     return new AirtableTable({
       base: this,
+      client: this.client,
       id,
     })
   }
