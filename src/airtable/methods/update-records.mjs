@@ -10,8 +10,9 @@ function updateRecords(records, options) {
   // - the `records` array must contain objects with 'id' and 'fields'
   //   properties
   // -----
+  // https://airtable.com/developers/web/api/update-multiple-records#request
   // options include:
-  // - performUpsert
+  // - performUpsert (ignored)
   // - returnFieldsByFieldId
   // - typecast
 
