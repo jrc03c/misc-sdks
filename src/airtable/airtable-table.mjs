@@ -1,5 +1,6 @@
 import { createRecord } from "./methods/create-record.mjs"
 import { createRecords } from "./methods/create-records.mjs"
+import { deleteRecords } from "./methods/delete-records.mjs"
 import { getRecord } from "./methods/get-record.mjs"
 import { getRecords } from "./methods/get-records.mjs"
 import { updateRecordDestructively } from "./methods/update-record-destructively.mjs"
@@ -40,6 +41,7 @@ class AirtableTable {
     // methods
     this.createRecord = createRecord.bind(this)
     this.createRecords = createRecords.bind(this)
+    this.deleteRecords = deleteRecords.bind(this)
     this.getRecord = getRecord.bind(this)
     this.getRecords = getRecords.bind(this)
     this.updateRecordDestructively = updateRecordDestructively.bind(this)
