@@ -29,8 +29,40 @@ class AirtableTable {
     this.id = data.id
   }
 
-  listRecords() {
-    return this.client.get(`/${this.base.id}/${this.id}`)
+  listRecords(options) {
+    // https://airtable.com/developers/web/api/list-records#query
+    // options include:
+    // - cellFormat
+    // - direction
+    // - field
+    // - fields
+    // - filterByFormula
+    // - maxRecords
+    // - offset
+    // - pageSize
+    // - recordMetadata
+    // - returnFieldsByFieldId
+    // - sort
+    // - timeZone
+    // - userLocale
+    // - view
+
+    options = options || {}
+
+    let queryParams = []
+    const keys = Object.keys(options)
+
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i]
+      const value = options[key]
+      queryParams.push(`${key}=${encodeURIComponent(value)}`)
+    }
+
+    const path =
+      `/${this.base.id}/${this.id}` +
+      (queryParams.length > 0 ? "?" + queryParams.join("&") : "")
+
+    return this.client.get(path)
   }
 }
 
