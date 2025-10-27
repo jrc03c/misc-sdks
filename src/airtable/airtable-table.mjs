@@ -1,3 +1,4 @@
+import { getRecord } from "./methods/get-record.mjs"
 import { getRecords } from "./methods/get-records.mjs"
 
 class AirtableTable {
@@ -31,6 +32,7 @@ class AirtableTable {
     this.id = data.id
 
     // methods
+    this.getRecord = getRecord.bind(this)
     this.getRecords = getRecords.bind(this)
   }
 }

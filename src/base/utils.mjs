@@ -1,5 +1,34 @@
 import nodemailer from "nodemailer"
 
+function convertQueryParamsObjectToString(obj) {
+  // note:
+  // - automatically passes keys through `encodeURIComponent`
+  // - automatically passes values through `encodeURIComponent` only if they're
+  //   strings
+  // - ignores undefined values
+
+  const keys = Object.keys(obj)
+  const temp = []
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = encodeURIComponent(keys[i])
+    let value = obj[key]
+    const type = typeof value
+
+    if (type === "undefined") {
+      continue
+    }
+
+    if (type === "string") {
+      value = encodeURIComponent(value)
+    }
+
+    temp.push(`${key}=${value}`)
+  }
+
+  return temp.join("&")
+}
+
 class GmailMessageSender {
   transport = null
 
@@ -43,4 +72,4 @@ function safeParse(x) {
   }
 }
 
-export { GmailMessageSender, safeParse }
+export { convertQueryParamsObjectToString, GmailMessageSender, safeParse }
