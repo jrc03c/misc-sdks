@@ -65,7 +65,7 @@ A string representing an API authentication token. This property _must_ be defin
 
 ##### `getBaseRef(id: string): AirtableBase`
 
-Given the ID of a particular Airtable base, returns an `AirtableBase` instance.
+Given the ID of a particular Airtable base, returns an [`AirtableBase`](./base/readme.md) instance.
 
 ##### `send(path: string, options: object): Promise<AirtableClientResponse>`
 
