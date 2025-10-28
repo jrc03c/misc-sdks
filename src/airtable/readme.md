@@ -77,8 +77,28 @@ The `AirtableClientResponse` class is a subclass of [`BaseClientResponse`](../ba
 
 ## Tests
 
-To run the unit tests, do:
+The unit tests for this SDK rely on three environment variables:
+
+- `AIRTABLE_API_TOKEN`
+- `AIRTABLE_BASE_ID`
+- `AIRTABLE_TABLE_ID`
+
+I recommend defining those variables in an `.env` file, like this:
+
+```
+export AIRTABLE_API_TOKEN="<YOUR_API_TOKEN>";
+export AIRTABLE_BASE_ID="<YOUR_BASE_ID>";
+export AIRTABLE_TABLE_ID="<YOUR_TABLE_ID>";
+```
+
+> **NOTE:** The API calls in the unit tests create, read, update, and delete records; so please only define the above environment variables with the IDs of bases and tables that aren't important to you!
+
+And then run the unit tests:
 
 ```bash
+# load the environment variables:
+source path/to/.env
+
+# run the tests
 npx fake-jest src/airtable
 ```
