@@ -1,6 +1,7 @@
 import { afterAll, expect, test } from "@jrc03c/fake-jest"
 import { AirtableClient } from "../index.mjs"
 import { AirtableClientResponse } from "../response.mjs"
+import { range, shuffle } from "@jrc03c/js-math-tools"
 import process from "node:process"
 
 if (typeof process.env.AIRTABLE_API_TOKEN === "undefined") {
@@ -262,6 +263,34 @@ test("AirtableTable", async () => {
   })()
 
   // update multiple records safely
+  await (async () => {
+    const indices = shuffle(range(0, existingRecords.length).toArray()).slice(
+      0,
+      3,
+    )
+
+    const originals = indices.map(i => existingRecords[i])
+
+    const records = originals.map(r => {
+      r = r.copy()
+      r.fields.Notes = Math.random().toString()
+      return r
+    })
+
+    const response1 = await table.updateRecordsSafely(records)
+    expect(response1.status).toBe(200)
+
+    const response2 = await table.getRecords(records.map(r => r.id))
+    expect(response2.status).toBe(200)
+    confirmRecordsAreEqual(response2.json.records, records)
+
+    const response3 = await table.updateRecordsSafely(originals)
+    expect(response3.status).toBe(200)
+
+    const response4 = await table.getRecords(originals.map(r => r.id))
+    expect(response4.status).toBe(200)
+    confirmRecordsAreEqual(response4.json.records, originals)
+  })()
 
   // update a single record destructively
 
