@@ -32,7 +32,99 @@ class TestRecord {
     this.fields.Status = data.Status || this.fields.Status
     this.fields.DueDate = data.DueDate || this.fields.DueDate
   }
+
+  get formattedDueDate() {
+    if (!this.fields.DueDate) {
+      return ""
+    }
+
+    const [month, day, year] = this.fields.DueDate.split("/")
+    return [year, month, day].map(v => v.padStart(2, "0")).join("-")
+  }
 }
+
+function confirmRecordsAreEqual(rpred, rtrue) {
+  if (rpred instanceof Array) {
+    expect(rtrue instanceof Array).toBe(true)
+    expect(rpred.length).toBe(rtrue.length)
+
+    rpred.sort((a, b) => (a.fields["Assignee"] < b.fields["Assignee"] ? -1 : 1))
+    rtrue.sort((a, b) => (a.fields["Assignee"] < b.fields["Assignee"] ? -1 : 1))
+
+    for (let i = 0; i < rpred.length; i++) {
+      confirmRecordsAreEqual(rpred[i], rtrue[i])
+    }
+
+    return
+  }
+
+  const keysPred = Object.keys(rpred.fields)
+
+  for (let i = 0; i < keysPred.length; i++) {
+    const key = keysPred[i]
+
+    if (key.includes("DueDate")) {
+      continue
+    }
+
+    const valuePred =
+      typeof rpred.fields[key] === "undefined"
+        ? new TestRecord().fields[key]
+        : rpred.fields[key]
+
+    const valueTrue = rtrue.fields[key]
+    expect(valuePred).toBe(valueTrue)
+  }
+
+  const datePred = rpred.fields["DueDate"] || ""
+  const dateTrue = rtrue.formattedDueDate
+  expect(datePred).toBe(dateTrue)
+}
+
+const existingRecords = [
+  new TestRecord({
+    Name: "Build the website",
+    Notes: "No notes.",
+    Assignee: "Alice",
+    Status: "In progress",
+    DueDate: "10/15/2025",
+  }),
+  new TestRecord({
+    Name: "Rotate the widgets",
+    Notes: "Hurry!",
+    Assignee: "Betty",
+    Status: "Todo",
+    DueDate: "10/2/2025",
+  }),
+  new TestRecord({
+    Name: "Analyze the data",
+    Notes: "...",
+    Assignee: "Cheryl",
+    Status: "Todo",
+    DueDate: "9/3/2025",
+  }),
+  new TestRecord({
+    Name: "Check and respond to emails",
+    Notes: "[none]",
+    Assignee: "Dana",
+    Status: "In progress",
+    DueDate: "10/5/2025",
+  }),
+  new TestRecord({
+    Name: "Foo all the bars",
+    Notes: "???",
+    Assignee: "Emily",
+    Status: "Done",
+    DueDate: "1/1/1970",
+  }),
+  new TestRecord({
+    Name: "Chuck wood",
+    Notes: "",
+    Assignee: "Fatima",
+    Status: "Todo",
+    DueDate: "",
+  }),
+]
 
 const client = new AirtableClient({
   token: process.env.AIRTABLE_API_TOKEN,
@@ -50,20 +142,24 @@ afterAll(async () => {
 test("AirtableTable", async () => {
   const recordIds = []
 
+  // get multiple records
   await (async () => {
     const response = await table.getRecords()
     expect(response instanceof AirtableClientResponse).toBe(true)
     expect(response.status).toBe(200)
-    expect(response.json.records.length).toBeGreaterThan(0)
+    expect(response.json.records.length).toBe(existingRecords.length)
+    confirmRecordsAreEqual(response.json.records, existingRecords)
     recordIds.push(...response.json.records.map(r => r.id))
   })()
 
+  // get a single record
   await (async () => {
     const response = await table.getRecord(recordIds[0])
     expect(response.status).toBe(200)
-    expect(response.json.id).toBe(recordIds[0])
+    confirmRecordsAreEqual(response.json, existingRecords[0])
   })()
 
+  // create multiple records
   await (async () => {
     const records = [
       new TestRecord({
@@ -84,22 +180,28 @@ test("AirtableTable", async () => {
 
     const response = await table.createRecords(records)
     expect(response.status).toBe(200)
-    expect(response.json.records.length).toBe(records.length)
+    confirmRecordsAreEqual(response.json.records, records)
 
-    for (let i = 0; i < records.length; i++) {
-      const rtrue = records[i]
-      const rpred = response.json.records[i]
-      const keys = Object.keys(rtrue.fields).filter(v => v !== "DueDate")
+    const ids = response.json.records.map(r => r.id)
+    recordIds.push(...ids)
+    recordsIdsToDelete.push(...ids)
+  })()
 
-      for (let j = 0; j < keys.length; j++) {
-        const key = keys[j]
-        expect(rpred.fields[key]).toBe(rtrue.fields[key])
-      }
-    }
+  // create a single record
+  await (async () => {
+    const record = new TestRecord({
+      Name: "X all the Ys",
+      Notes: Math.random().toString(),
+      Assignee: "Isabel",
+      Status: "Done",
+      DueDate: "1/1/2026",
+    })
 
-    expect(response.json.records[0].fields["DueDate"]).toBe("2025-03-15")
-    expect(response.json.records[1].fields["DueDate"]).toBe("2025-06-09")
+    const response = await table.createRecord(record)
+    expect(response.status).toBe(200)
+    confirmRecordsAreEqual(response.json, record)
 
-    recordsIdsToDelete.push(...response.json.records.map(r => r.id))
+    recordIds.push(response.json.id)
+    recordsIdsToDelete.push(response.json.id)
   })()
 })
