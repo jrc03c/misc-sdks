@@ -142,6 +142,13 @@ afterAll(async () => {
 test("AirtableTable", async () => {
   const recordIds = []
 
+  // get a single record
+  await (async () => {
+    const response = await table.getRecord("recVtAq7FyF3aiPn2")
+    expect(response.status).toBe(200)
+    confirmRecordsAreEqual(response.json, existingRecords[0])
+  })()
+
   // get multiple records
   await (async () => {
     const response = await table.getRecords()
@@ -152,11 +159,22 @@ test("AirtableTable", async () => {
     recordIds.push(...response.json.records.map(r => r.id))
   })()
 
-  // get a single record
+  // create a single record
   await (async () => {
-    const response = await table.getRecord(recordIds[0])
+    const record = new TestRecord({
+      Name: "X all the Ys",
+      Notes: Math.random().toString(),
+      Assignee: "Isabel",
+      Status: "Done",
+      DueDate: "1/1/2026",
+    })
+
+    const response = await table.createRecord(record)
     expect(response.status).toBe(200)
-    confirmRecordsAreEqual(response.json, existingRecords[0])
+    confirmRecordsAreEqual(response.json, record)
+
+    recordIds.push(response.json.id)
+    recordsIdsToDelete.push(response.json.id)
   })()
 
   // create multiple records
@@ -187,21 +205,15 @@ test("AirtableTable", async () => {
     recordsIdsToDelete.push(...ids)
   })()
 
-  // create a single record
-  await (async () => {
-    const record = new TestRecord({
-      Name: "X all the Ys",
-      Notes: Math.random().toString(),
-      Assignee: "Isabel",
-      Status: "Done",
-      DueDate: "1/1/2026",
-    })
+  // update a single record safely
 
-    const response = await table.createRecord(record)
-    expect(response.status).toBe(200)
-    confirmRecordsAreEqual(response.json, record)
+  // update a single record destructively
 
-    recordIds.push(response.json.id)
-    recordsIdsToDelete.push(response.json.id)
-  })()
+  // update multiple records safely
+
+  // update multiple records destructively
+
+  // delete a single record
+
+  // delete multiple records
 })
