@@ -43,7 +43,7 @@ The core classes, `AirtableClient` and `AirtableClientResponse`, are documented 
 
 The `AirtableClient` class is a subclass of [`BaseClient`](../base/readme.md). The properties and methods inherited from that class will not be described below except where they override values or behaviors in some significant way.
 
-#### `AirtableClient(config)` (constructor)
+#### `AirtableClient(config: object)` (constructor)
 
 The properties of the `config` object passed into the constructor match the instance properties described below. The only property that's _required_ is `token`.
 
