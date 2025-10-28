@@ -77,7 +77,7 @@ The `AirtableClientResponse` class is a subclass of [`BaseClientResponse`](../ba
 
 ## Tests
 
-The unit tests can be run like this:
+To run the unit tests, do:
 
 ```bash
 npx fake-jest src/airtable
