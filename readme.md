@@ -18,10 +18,3 @@ import {
   MailchimpClient,
 } from "@jrc03c/misc-sdks"
 ```
-
-# Documentation
-
-- [Airtable](./src/airtable/readme.md)
-- [Base](./src/base/readme.md)
-- [Mail.tm](./src/mail-tm/readme.md)
-- [Mailchimp](./src/mailchimp/readme.md)
