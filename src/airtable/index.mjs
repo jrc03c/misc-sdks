@@ -29,7 +29,7 @@ class AirtableClient extends BaseClient {
     this.token = data.token
   }
 
-  getBase(id) {
+  getBaseRef(id) {
     return new AirtableBase({
       client: this,
       id,

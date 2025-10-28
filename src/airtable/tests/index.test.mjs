@@ -11,7 +11,7 @@ test("AirtableClient", () => {
   expect(client.exponentialBackoffHelper.ms).toBe(1000 / 50)
   expect(client.token).toBe("foobar")
 
-  const base = client.getBase("whatevs")
+  const base = client.getBaseRef("whatevs")
   expect(base instanceof AirtableBase).toBe(true)
   expect(base.client).toBe(client)
   expect(base.id).toBe("whatevs")

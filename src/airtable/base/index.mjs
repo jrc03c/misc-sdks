@@ -29,7 +29,7 @@ class AirtableBase {
     this.getTableSchemas = getTableSchemas.bind(this)
   }
 
-  getTable(id) {
+  getTableRef(id) {
     return new AirtableTable({
       base: this,
       client: this.client,

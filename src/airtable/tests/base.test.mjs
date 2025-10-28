@@ -22,7 +22,7 @@ test("AirtableBase", async () => {
     token: process.env.AIRTABLE_API_TOKEN,
   })
 
-  const base = client.getBase(process.env.AIRTABLE_BASE_ID)
+  const base = client.getBaseRef(process.env.AIRTABLE_BASE_ID)
   const response1 = await base.getTableSchemas()
 
   expect(response1 instanceof AirtableClientResponse).toBe(true)
@@ -34,7 +34,7 @@ test("AirtableBase", async () => {
   expect(response2.status).toBe(200)
   expect(isEqual(response2.json, response1.json.tables[0])).toBe(true)
 
-  const table = base.getTable(process.env.AIRTABLE_TABLE_ID)
+  const table = base.getTableRef(process.env.AIRTABLE_TABLE_ID)
   expect(table instanceof AirtableTable).toBe(true)
   expect(table.base).toBe(base)
   expect(table.client).toBe(client)

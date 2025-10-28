@@ -165,8 +165,8 @@ const client = new AirtableClient({
   token: process.env.AIRTABLE_API_TOKEN,
 })
 
-const base = client.getBase(process.env.AIRTABLE_BASE_ID)
-const table = base.getTable(process.env.AIRTABLE_TABLE_ID)
+const base = client.getBaseRef(process.env.AIRTABLE_BASE_ID)
+const table = base.getTableRef(process.env.AIRTABLE_TABLE_ID)
 
 const recordsIdsToDelete = []
 
