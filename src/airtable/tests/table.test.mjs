@@ -207,9 +207,9 @@ test("AirtableTable", async () => {
 
   // update a single record safely
 
-  // update a single record destructively
-
   // update multiple records safely
+
+  // update a single record destructively
 
   // update multiple records destructively
 
