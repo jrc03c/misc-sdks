@@ -360,6 +360,26 @@ test("AirtableTable", async () => {
   })()
 
   // delete a single record
+  await (async () => {
+    const record = new TestRecord({
+      fields: {
+        Name: "How about this?",
+        Notes: Math.random().toString(),
+        Assignee: "Karen",
+        Status: "Done",
+        DueDate: "1/1/1970",
+      },
+    })
+
+    const response1 = await table.createRecord(record)
+    expect(response1.status).toBe(200)
+
+    const response2 = await table.deleteRecord(response1.json.id)
+    expect(response2.status).toBe(200)
+
+    const response3 = await table.getRecord(record.id)
+    expect(response3.status).toBe(404)
+  })()
 
   // delete multiple records
 })
