@@ -74,3 +74,11 @@ Given a path and an options object (of the kind that's usually passed into `fetc
 ### `AirtableClientResponse`
 
 The `AirtableClientResponse` class is a subclass of [`BaseClientResponse`](../base/readme.md). It does not override any properties or methods of that class.
+
+## Tests
+
+The unit tests can be run like this:
+
+```bash
+npx fake-jest src/airtable
+```
