@@ -264,10 +264,9 @@ test("AirtableTable", async () => {
 
   // update multiple records safely
   await (async () => {
-    const indices = shuffle(range(0, existingRecords.length).toArray()).slice(
-      0,
-      3,
-    )
+    const indices = shuffle(
+      range(0, existingRecords.length - 1).toArray(),
+    ).slice(0, 3)
 
     const originals = indices.map(i => existingRecords[i])
 
@@ -293,6 +292,32 @@ test("AirtableTable", async () => {
   })()
 
   // update a single record destructively
+  await (async () => {
+    const index = Math.floor(Math.random() * existingRecords.length)
+    const original = existingRecords[index]
+
+    const record = new TestRecord({
+      id: original.id,
+      fields: {
+        Name: "Update destructively!",
+        Assignee: "Josh",
+      },
+    })
+
+    const response1 = await table.updateRecordDestructively(record)
+    expect(response1.status).toBe(200)
+
+    const response2 = await table.getRecord(original.id)
+    expect(response2.status).toBe(200)
+    confirmRecordsAreEqual(response2.json, record)
+
+    const response3 = await table.updateRecordDestructively(original)
+    expect(response3.status).toBe(200)
+
+    const response4 = await table.getRecord(original.id)
+    expect(response4.status).toBe(200)
+    confirmRecordsAreEqual(response4.json, original)
+  })()
 
   // update multiple records destructively
 
