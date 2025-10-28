@@ -16,6 +16,8 @@ if (typeof process.env.AIRTABLE_TABLE_ID === "undefined") {
 }
 
 class TestRecord {
+  id = ""
+
   fields = {
     Name: "",
     Notes: "",
@@ -26,11 +28,14 @@ class TestRecord {
 
   constructor(data) {
     data = data || {}
-    this.fields.Name = data.Name || this.fields.Name
-    this.fields.Notes = data.Notes || this.fields.Notes
-    this.fields.Assignee = data.Assignee || this.fields.Assignee
-    this.fields.Status = data.Status || this.fields.Status
-    this.fields.DueDate = data.DueDate || this.fields.DueDate
+    data.fields = data.fields || {}
+
+    this.id = data.id || this.id
+    this.fields.Name = data.fields.Name || this.fields.Name
+    this.fields.Notes = data.fields.Notes || this.fields.Notes
+    this.fields.Assignee = data.fields.Assignee || this.fields.Assignee
+    this.fields.Status = data.fields.Status || this.fields.Status
+    this.fields.DueDate = data.fields.DueDate || this.fields.DueDate
   }
 
   get formattedDueDate() {
@@ -40,6 +45,10 @@ class TestRecord {
 
     const [month, day, year] = this.fields.DueDate.split("/")
     return [year, month, day].map(v => v.padStart(2, "0")).join("-")
+  }
+
+  copy() {
+    return new TestRecord(this)
   }
 }
 
@@ -83,46 +92,64 @@ function confirmRecordsAreEqual(rpred, rtrue) {
 
 const existingRecords = [
   new TestRecord({
-    Name: "Build the website",
-    Notes: "No notes.",
-    Assignee: "Alice",
-    Status: "In progress",
-    DueDate: "10/15/2025",
+    id: "recVtAq7FyF3aiPn2",
+    fields: {
+      Name: "Build the website",
+      Notes: "No notes.",
+      Assignee: "Alice",
+      Status: "In progress",
+      DueDate: "10/15/2025",
+    },
   }),
   new TestRecord({
-    Name: "Rotate the widgets",
-    Notes: "Hurry!",
-    Assignee: "Betty",
-    Status: "Todo",
-    DueDate: "10/2/2025",
+    id: "recULFTi5IauwT0vt",
+    fields: {
+      Name: "Rotate the widgets",
+      Notes: "Hurry!",
+      Assignee: "Betty",
+      Status: "Todo",
+      DueDate: "10/2/2025",
+    },
   }),
   new TestRecord({
-    Name: "Analyze the data",
-    Notes: "...",
-    Assignee: "Cheryl",
-    Status: "Todo",
-    DueDate: "9/3/2025",
+    id: "recMfGDoQVhB3GU8G",
+    fields: {
+      Name: "Analyze the data",
+      Notes: "...",
+      Assignee: "Cheryl",
+      Status: "Todo",
+      DueDate: "9/3/2025",
+    },
   }),
   new TestRecord({
-    Name: "Check and respond to emails",
-    Notes: "[none]",
-    Assignee: "Dana",
-    Status: "In progress",
-    DueDate: "10/5/2025",
+    id: "recOumm7q9VhjZk1I",
+    fields: {
+      Name: "Check and respond to emails",
+      Notes: "[none]",
+      Assignee: "Dana",
+      Status: "In progress",
+      DueDate: "10/5/2025",
+    },
   }),
   new TestRecord({
-    Name: "Foo all the bars",
-    Notes: "???",
-    Assignee: "Emily",
-    Status: "Done",
-    DueDate: "1/1/1970",
+    id: "recdinOb9A5ZlrfBn",
+    fields: {
+      Name: "Foo all the bars",
+      Notes: "???",
+      Assignee: "Emily",
+      Status: "Done",
+      DueDate: "1/1/1970",
+    },
   }),
   new TestRecord({
-    Name: "Chuck wood",
-    Notes: "",
-    Assignee: "Fatima",
-    Status: "Todo",
-    DueDate: "",
+    id: "recMhOGIFcMOXAixO",
+    fields: {
+      Name: "Chuck wood",
+      Notes: "",
+      Assignee: "Fatima",
+      Status: "Todo",
+      DueDate: "",
+    },
   }),
 ]
 
@@ -162,11 +189,13 @@ test("AirtableTable", async () => {
   // create a single record
   await (async () => {
     const record = new TestRecord({
-      Name: "X all the Ys",
-      Notes: Math.random().toString(),
-      Assignee: "Isabel",
-      Status: "Done",
-      DueDate: "1/1/2026",
+      fields: {
+        Name: "X all the Ys",
+        Notes: Math.random().toString(),
+        Assignee: "Isabel",
+        Status: "Done",
+        DueDate: "1/1/2026",
+      },
     })
 
     const response = await table.createRecord(record)
@@ -181,18 +210,22 @@ test("AirtableTable", async () => {
   await (async () => {
     const records = [
       new TestRecord({
-        Name: "Find the meaning of life, the universe, and everything",
-        Notes: Math.random().toString(),
-        Assignee: "Gertrude",
-        Status: "In progress",
-        DueDate: "3/15/2025",
+        fields: {
+          Name: "Find the meaning of life, the universe, and everything",
+          Notes: Math.random().toString(),
+          Assignee: "Gertrude",
+          Status: "In progress",
+          DueDate: "3/15/2025",
+        },
       }),
       new TestRecord({
-        Name: "Clean your room",
-        Notes: Math.random().toString(),
-        Assignee: "Hilda",
-        Status: "Todo",
-        DueDate: "6/9/2025",
+        fields: {
+          Name: "Clean your room",
+          Notes: Math.random().toString(),
+          Assignee: "Hilda",
+          Status: "Todo",
+          DueDate: "6/9/2025",
+        },
       }),
     ]
 
@@ -206,6 +239,27 @@ test("AirtableTable", async () => {
   })()
 
   // update a single record safely
+  await (async () => {
+    const index = Math.floor(Math.random() * existingRecords.length)
+    const original = existingRecords[index]
+    const record = original.copy()
+    record.fields.Name = "Update safely!"
+    record.fields.Assignee = "Josh"
+
+    const response1 = await table.updateRecordSafely(record)
+    expect(response1.status).toBe(200)
+
+    const response2 = await table.getRecord(original.id)
+    expect(response2.status).toBe(200)
+    confirmRecordsAreEqual(response2.json, record)
+
+    const response3 = await table.updateRecordSafely(original)
+    expect(response3.status).toBe(200)
+
+    const response4 = await table.getRecord(original.id)
+    expect(response4.status).toBe(200)
+    confirmRecordsAreEqual(response4.json, original)
+  })()
 
   // update multiple records safely
 

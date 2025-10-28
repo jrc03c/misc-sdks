@@ -8,6 +8,8 @@ function updateRecordsCore(method, records, options) {
   //   "upsert" behavior
   // - the `records` array must contain objects with 'id' and 'fields'
   //   properties
+  // - deletes any undefined or empty string values in the records; otherwise
+  //   airtable returns a 422 response
   // -----
   // https://airtable.com/developers/web/api/update-multiple-records#request
   // options include:
@@ -38,6 +40,8 @@ function updateRecordsCore(method, records, options) {
     )
   }
 
+  options = options || {}
+
   for (let i = 0; i < records.length; i++) {
     const record = records[i]
 
@@ -61,9 +65,20 @@ function updateRecordsCore(method, records, options) {
         "Each record object included in the array passed into the `updateRecordsCore` function must have a 'fields' property with an object value whose key-value pairs correspond to field names and values in the given table!",
       )
     }
-  }
 
-  options = options || {}
+    const keys = Object.keys(record.fields)
+
+    for (let j = 0; j < keys.length; j++) {
+      const key = keys[j]
+
+      if (
+        typeof record.fields[key] === "undefined" ||
+        record.fields[key] === ""
+      ) {
+        delete record.fields[key]
+      }
+    }
+  }
 
   return this.client[method](`/${this.base.id}/${this.id}`, {
     headers: { "Content-Type": "application/json" },
