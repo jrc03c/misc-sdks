@@ -382,4 +382,29 @@ test("AirtableTable", async () => {
   })()
 
   // delete multiple records
+  await (async () => {
+    const records = range(0, 3).map(
+      () =>
+        new TestRecord({
+          fields: {
+            Name: Math.random().toString(),
+            Notes: Math.random().toString(),
+            Assignee: Math.random().toString(),
+            Status: "Todo",
+            DueDate: "1/1/1970",
+          },
+        }),
+    )
+
+    const response1 = await table.createRecords(records)
+    expect(response1.status).toBe(200)
+
+    const ids = response1.json.records.map(r => r.id)
+    const response2 = await table.deleteRecords(ids)
+    expect(response2.status).toBe(200)
+
+    const response3 = await table.getRecords(ids)
+    expect(response3.status).toBe(200)
+    expect(response3.json.records.length).toBe(0)
+  })()
 })

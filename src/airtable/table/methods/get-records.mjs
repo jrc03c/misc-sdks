@@ -1,6 +1,9 @@
 import { superEncodeURIComponent } from "../../utils.mjs"
 
 function getRecords(ids, options) {
+  // note: be aware that this function will return a 200 response even when that
+  // response contains 0 records!
+  // -----
   // https://airtable.com/developers/web/api/list-records#query
   // options include:
   // - cellFormat
