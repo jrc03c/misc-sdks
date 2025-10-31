@@ -6,7 +6,11 @@ class MailgunEmailPayload {
     )
   }
 
-  // NOTE: Only the `to` and `subject` values are required
+  // NOTE: Only the `to` and `subject` values are required. (Technically, the
+  // 'from' value is required as well, though in practice the `MailgunClient`
+  // class will generate a 'from' value from scratch (in the form
+  // "noreply@<senderDomain>") if one isn't supplied.)
+
   _replyTo = ""
   from = ""
   html = ""
