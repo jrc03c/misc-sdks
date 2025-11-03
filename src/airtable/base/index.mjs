@@ -23,10 +23,6 @@ class AirtableBase {
 
     this.client = data.client
     this.id = data.id
-
-    // methods
-    this.getTableSchema = getTableSchema.bind(this)
-    this.getTableSchemas = getTableSchemas.bind(this)
   }
 
   getTableRef(id) {
@@ -35,6 +31,14 @@ class AirtableBase {
       client: this.client,
       id,
     })
+  }
+
+  getTableSchema() {
+    return getTableSchema(this, ...arguments)
+  }
+
+  getTableSchemas() {
+    return getTableSchemas(this, ...arguments)
   }
 }
 

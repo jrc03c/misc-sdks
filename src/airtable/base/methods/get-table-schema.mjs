@@ -1,7 +1,7 @@
 import { AirtableClientResponse } from "../../response.mjs"
 
-async function getTableSchema(id) {
-  const response = await this.getTableSchemas()
+async function getTableSchema(client, id) {
+  const response = await client.getTableSchemas()
 
   if (response.status > 204) {
     return response
