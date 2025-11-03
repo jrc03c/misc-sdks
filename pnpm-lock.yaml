@@ -19,8 +19,8 @@ importers:
         specifier: ^9.12.0
         version: 9.38.0
       '@jrc03c/fake-jest':
-        specifier: ^0.0.19
-        version: 0.0.19
+        specifier: ^0.0.21
+        version: 0.0.21
       '@jrc03c/js-math-tools':
         specifier: ^0.0.104
         version: 0.0.104
@@ -112,11 +112,15 @@ packages:
     resolution: {integrity: sha512-VyGXA1zUqtjap/JuOVHZW+jbvjyCI1i+9GNM4QAcHZWOxrAyxGEOILfyuZH1ezlaKdgmIKv8GRHWKBbIKkNSkA==}
     hasBin: true
 
+  '@jrc03c/bash-colors@0.0.9':
+    resolution: {integrity: sha512-9ZXLRBes94L9tMgNt9sTg0XPfcz4xDMjEcHv7gNqzzL5DIAhLqC3BqBc+r95Y/+kA0ubLbrjIcHhVJefZrFHPw==}
+    hasBin: true
+
   '@jrc03c/exponential-backoff@0.0.3':
     resolution: {integrity: sha512-QqvkmmDzDs+jk/VpHEmyD5yZOZd4UXTL3MbcRAULxZWRkF3VMGX7AIidrTO2VUK+DF+8rfRXYnTEV+6628o4Cg==}
 
-  '@jrc03c/fake-jest@0.0.19':
-    resolution: {integrity: sha512-/n0Lztb5ZPnWjXkAZh/QV4+ZPGGQA/DGBY98Wm4lDj6UXQSKrnMte8gaLomLFE21jPfsrDk6GhSJ9cH4134s2w==}
+  '@jrc03c/fake-jest@0.0.21':
+    resolution: {integrity: sha512-plSM47r6+ExuGKFx1U2nJevqtsFKQQtm1MGJJevVAIvQXqyE0LLjKc6kYR515rKuyKxOIIsSqcCEpEYGk9iRJQ==}
     hasBin: true
 
   '@jrc03c/fs-extras@0.0.21':
@@ -774,13 +778,15 @@ snapshots:
 
   '@jrc03c/bash-colors@0.0.8': {}
 
+  '@jrc03c/bash-colors@0.0.9': {}
+
   '@jrc03c/exponential-backoff@0.0.3':
     dependencies:
       '@jrc03c/pause': 0.0.12
 
-  '@jrc03c/fake-jest@0.0.19':
+  '@jrc03c/fake-jest@0.0.21':
     dependencies:
-      '@jrc03c/bash-colors': 0.0.8
+      '@jrc03c/bash-colors': 0.0.9
 
   '@jrc03c/fs-extras@0.0.21':
     dependencies:
