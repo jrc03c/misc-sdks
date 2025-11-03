@@ -22,8 +22,8 @@
   "module": "./src/index.mjs",
   "name": "@jrc03c/misc-sdks",
   "scripts": {
-    "pub": "npm version patch --force && npm publish --access=public"
+    "pub": "pnpm version patch --force && pnpm publish --access=public"
   },
   "type": "module",
-  "version": "0.0.9"
+  "version": "0.0.10"
 }
