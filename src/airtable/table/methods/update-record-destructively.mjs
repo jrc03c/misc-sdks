@@ -1,5 +1,5 @@
-function updateRecordDestructively(record, options) {
-  return this.updateRecordsDestructively([record], options)
+function updateRecordDestructively(client, record, options) {
+  return client.updateRecordsDestructively([record], options)
 }
 
 export { updateRecordDestructively }

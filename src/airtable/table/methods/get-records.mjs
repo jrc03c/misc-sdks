@@ -1,6 +1,6 @@
 import { superEncodeURIComponent } from "../../utils.mjs"
 
-function getRecords(ids, options) {
+function getRecords(client, ids, options) {
   // note: be aware that this function will return a 200 response even when that
   // response contains 0 records!
   // -----
@@ -31,9 +31,9 @@ function getRecords(ids, options) {
   const queryParams = superEncodeURIComponent(options)
 
   const path =
-    `/${this.base.id}/${this.id}` + (queryParams ? "?" + queryParams : "")
+    `/${client.base.id}/${client.id}` + (queryParams ? "?" + queryParams : "")
 
-  return this.client.get(path)
+  return client.client.get(path)
 }
 
 export { getRecords }

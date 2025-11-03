@@ -1,7 +1,5 @@
-import { updateRecordsCore } from "./update-records-core.mjs"
-
-function updateRecordsDestructively(records, options) {
-  return updateRecordsCore.bind(this)("PUT", records, options)
+function updateRecordsDestructively(client, records, options) {
+  return client.updateRecordsCore("PUT", records, options)
 }
 
 export { updateRecordsDestructively }

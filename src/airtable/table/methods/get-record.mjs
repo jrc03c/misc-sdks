@@ -1,6 +1,6 @@
 import { superEncodeURIComponent } from "../../utils.mjs"
 
-function getRecord(id, options) {
+function getRecord(client, id, options) {
   // https://airtable.com/developers/web/api/get-record#query
   // options include:
   // - cellFormat
@@ -10,9 +10,10 @@ function getRecord(id, options) {
   const queryParams = superEncodeURIComponent(options)
 
   const path =
-    `/${this.base.id}/${this.id}/${id}` + (queryParams ? "?" + queryParams : "")
+    `/${client.base.id}/${client.id}/${id}` +
+    (queryParams ? "?" + queryParams : "")
 
-  return this.client.get(path)
+  return client.client.get(path)
 }
 
 export { getRecord }

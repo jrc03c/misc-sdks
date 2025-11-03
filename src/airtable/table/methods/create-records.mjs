@@ -1,6 +1,6 @@
 const MAX_RECORDS_PER_REQUEST = 10
 
-function createRecords(records, options) {
+function createRecords(client, records, options) {
   // note:
   // - the `records` array must contain objects with 'fields' properties
   // -----
@@ -39,7 +39,7 @@ function createRecords(records, options) {
   options = options || {}
   delete options.fields
 
-  return this.client.post(`/${this.base.id}/${this.id}`, {
+  return client.client.post(`/${client.base.id}/${client.id}`, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...options,

@@ -1,5 +1,5 @@
-function updateRecordSafely(record, options) {
-  return this.updateRecordsSafely([record], options)
+function updateRecordSafely(client, record, options) {
+  return client.updateRecordsSafely([record], options)
 }
 
 export { updateRecordSafely }

@@ -7,6 +7,7 @@ import { getRecords } from "./methods/get-records.mjs"
 import { getSchema } from "./methods/get-schema.mjs"
 import { updateRecordDestructively } from "./methods/update-record-destructively.mjs"
 import { updateRecordSafely } from "./methods/update-record-safely.mjs"
+import { updateRecordsCore } from "./methods/update-records-core.mjs"
 import { updateRecordsDestructively } from "./methods/update-records-destructively.mjs"
 import { updateRecordsSafely } from "./methods/update-records-safely.mjs"
 
@@ -39,19 +40,54 @@ class AirtableTable {
     this.base = data.base
     this.client = data.client
     this.id = data.id
+  }
 
-    // methods
-    this.createRecord = createRecord.bind(this)
-    this.createRecords = createRecords.bind(this)
-    this.deleteRecord = deleteRecord.bind(this)
-    this.deleteRecords = deleteRecords.bind(this)
-    this.getRecord = getRecord.bind(this)
-    this.getRecords = getRecords.bind(this)
-    this.getSchema = getSchema.bind(this)
-    this.updateRecordDestructively = updateRecordDestructively.bind(this)
-    this.updateRecordSafely = updateRecordSafely.bind(this)
-    this.updateRecordsDestructively = updateRecordsDestructively.bind(this)
-    this.updateRecordsSafely = updateRecordsSafely.bind(this)
+  createRecord() {
+    return createRecord(this, ...arguments)
+  }
+
+  createRecords() {
+    return createRecords(this, ...arguments)
+  }
+
+  deleteRecord() {
+    return deleteRecord(this, ...arguments)
+  }
+
+  deleteRecords() {
+    return deleteRecords(this, ...arguments)
+  }
+
+  getRecord() {
+    return getRecord(this, ...arguments)
+  }
+
+  getRecords() {
+    return getRecords(this, ...arguments)
+  }
+
+  getSchema() {
+    return getSchema(this, ...arguments)
+  }
+
+  updateRecordDestructively() {
+    return updateRecordDestructively(this, ...arguments)
+  }
+
+  updateRecordSafely() {
+    return updateRecordSafely(this, ...arguments)
+  }
+
+  updateRecordsCore() {
+    return updateRecordsCore(this, ...arguments)
+  }
+
+  updateRecordsDestructively() {
+    return updateRecordsDestructively(this, ...arguments)
+  }
+
+  updateRecordsSafely() {
+    return updateRecordsSafely(this, ...arguments)
   }
 }
 
