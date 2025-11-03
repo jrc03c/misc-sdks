@@ -17,7 +17,7 @@ if (typeof process.env.AIRTABLE_TABLE_ID === "undefined") {
   throw new Error("The environment variable `AIRTABLE_TABLE_ID` is undefined!")
 }
 
-test("AirtableBase", async () => {
+test("AirtableBaseRef", async () => {
   const client = new AirtableClient({
     token: process.env.AIRTABLE_API_TOKEN,
   })

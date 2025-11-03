@@ -175,7 +175,7 @@ afterAll(async () => {
   await table.updateRecordsDestructively(existingRecords)
 })
 
-test("AirtableTable", async () => {
+test("AirtableTableRef", async () => {
   const recordIds = []
 
   // get a single record
@@ -406,5 +406,32 @@ test("AirtableTable", async () => {
     const response3 = await table.getRecords(ids)
     expect(response3.status).toBe(200)
     expect(response3.json.records.length).toBe(0)
+  })()
+
+  // throw errors
+  await (async () => {
+    const records = []
+
+    for (let i = 0; i < 100; i++) {
+      records.push(
+        new TestRecord({
+          id: Math.random().toString(),
+          fields: {
+            Name: Math.random().toString(),
+            Notes: Math.random().toString(),
+            Assignee: Math.random().toString(),
+            Status: Math.random().toString(),
+            DueDate: Math.random().toString(),
+          },
+        }),
+      )
+    }
+
+    expect(async () => await table.createRecords(records)).toThrow()
+    expect(async () => await table.updateRecordsSafely(records)).toThrow()
+
+    expect(
+      async () => await table.deleteRecords(records.map(r => r.id)),
+    ).toThrow()
   })()
 })

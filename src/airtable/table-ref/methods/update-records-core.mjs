@@ -1,4 +1,4 @@
-const MAX_RECORDS_PER_REQUEST = 10
+import { MAX_RECORDS_PER_REQUEST } from "../common.mjs"
 
 function updateRecordsCore(tableRef, method, records, options) {
   // note:
