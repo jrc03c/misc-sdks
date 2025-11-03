@@ -1,4 +1,4 @@
-function superEncodeURIComponent(x) {
+function customEncodeURIComponent(x) {
   // note: this uses php-style array and object encodings
 
   const helper = x => {
@@ -50,4 +50,4 @@ function superEncodeURIComponent(x) {
   return helper(x).join("&")
 }
 
-export { superEncodeURIComponent }
+export { customEncodeURIComponent }

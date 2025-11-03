@@ -1,8 +1,8 @@
-import { AirtableTable } from "../table/index.mjs"
+import { AirtableTableRef } from "../table-ref/index.mjs"
 import { getTableSchema } from "./methods/get-table-schema.mjs"
 import { getTableSchemas } from "./methods/get-table-schemas.mjs"
 
-class AirtableBase {
+class AirtableBaseRef {
   client = null
   id = null
 
@@ -11,13 +11,13 @@ class AirtableBase {
 
     if (!data.client) {
       throw new Error(
-        "The object passed into the `AirtableBase` constructor must have a 'client' property that points to an `AirtableClient` instance!",
+        "The object passed into the `AirtableBaseRef` constructor must have a 'client' property that points to an `AirtableClient` instance!",
       )
     }
 
     if (!data.id) {
       throw new Error(
-        "The object passed into the `AirtableBase` constructor must have an 'id' property with a string value representing the ID of an Airtable base!",
+        "The object passed into the `AirtableBaseRef` constructor must have an 'id' property with a string value representing the ID of an Airtable base!",
       )
     }
 
@@ -26,7 +26,7 @@ class AirtableBase {
   }
 
   getTableRef(id) {
-    return new AirtableTable({
+    return new AirtableTableRef({
       base: this,
       client: this.client,
       id,
@@ -42,4 +42,4 @@ class AirtableBase {
   }
 }
 
-export { AirtableBase }
+export { AirtableBaseRef }

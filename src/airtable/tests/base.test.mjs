@@ -1,6 +1,6 @@
 import { AirtableClient } from "../index.mjs"
 import { AirtableClientResponse } from "../response.mjs"
-import { AirtableTable } from "../table/index.mjs"
+import { AirtableTableRef } from "../table-ref/index.mjs"
 import { expect, test } from "@jrc03c/fake-jest"
 import { isEqual } from "@jrc03c/js-math-tools"
 import process from "node:process"
@@ -35,7 +35,7 @@ test("AirtableBase", async () => {
   expect(isEqual(response2.json, response1.json.tables[0])).toBe(true)
 
   const table = base.getTableRef(process.env.AIRTABLE_TABLE_ID)
-  expect(table instanceof AirtableTable).toBe(true)
+  expect(table instanceof AirtableTableRef).toBe(true)
   expect(table.base).toBe(base)
   expect(table.client).toBe(client)
   expect(table.id).toBe(process.env.AIRTABLE_TABLE_ID)

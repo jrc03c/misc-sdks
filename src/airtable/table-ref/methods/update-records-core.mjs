@@ -1,6 +1,6 @@
 const MAX_RECORDS_PER_REQUEST = 10
 
-function updateRecordsCore(client, method, records, options) {
+function updateRecordsCore(tableRef, method, records, options) {
   // note:
   // - based on the `method` parameter, either performs a non-destructive update
   //   (PATCH) or a destructive update (PUT)
@@ -80,7 +80,7 @@ function updateRecordsCore(client, method, records, options) {
     }
   }
 
-  return client.client[method](`/${client.base.id}/${client.id}`, {
+  return tableRef.client[method](`/${tableRef.base.id}/${tableRef.id}`, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...options,

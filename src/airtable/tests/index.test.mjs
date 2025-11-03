@@ -1,5 +1,5 @@
 import { AirtableClient } from "../index.mjs"
-import { AirtableBase } from "../base/index.mjs"
+import { AirtableBaseRef } from "../base-ref/index.mjs"
 import { expect, test } from "@jrc03c/fake-jest"
 
 test("AirtableClient", () => {
@@ -12,7 +12,7 @@ test("AirtableClient", () => {
   expect(client.token).toBe("foobar")
 
   const base = client.getBaseRef("whatevs")
-  expect(base instanceof AirtableBase).toBe(true)
+  expect(base instanceof AirtableBaseRef).toBe(true)
   expect(base.client).toBe(client)
   expect(base.id).toBe("whatevs")
 })

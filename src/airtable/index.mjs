@@ -1,5 +1,6 @@
+import { AirtableBaseRef } from "./base-ref/index.mjs"
 import { AirtableClientResponse } from "./response.mjs"
-import { AirtableBase } from "./base/index.mjs"
+import { AirtableTableRef } from "./table-ref/index.mjs"
 import { BaseClient } from "../base/index.mjs"
 import { urlPathJoin } from "@jrc03c/js-text-tools"
 
@@ -30,7 +31,7 @@ class AirtableClient extends BaseClient {
   }
 
   getBaseRef(id) {
-    return new AirtableBase({
+    return new AirtableBaseRef({
       client: this,
       id,
     })
@@ -51,4 +52,9 @@ class AirtableClient extends BaseClient {
   }
 }
 
-export { AirtableClient, AirtableClientResponse }
+export {
+  AirtableBaseRef,
+  AirtableClient,
+  AirtableClientResponse,
+  AirtableTableRef,
+}

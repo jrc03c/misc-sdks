@@ -1,14 +1,16 @@
-import { superEncodeURIComponent } from "../../utils.mjs"
+import { customEncodeURIComponent } from "../../utils.mjs"
 
-function deleteRecords(client, ids) {
+function deleteRecords(tableRef, ids) {
   if (!(ids instanceof Array) || !ids.every(v => typeof v === "string")) {
     throw new Error(
       "The value passed into the `AirtableTable.deleteRecords` method must be an array of strings representing record IDs!",
     )
   }
 
-  return client.client.delete(
-    `/${client.base.id}/${client.id}?${superEncodeURIComponent({ records: ids })}`,
+  const queryParams = customEncodeURIComponent({ records: ids })
+
+  return tableRef.client.delete(
+    `/${tableRef.base.id}/${tableRef.id}?${queryParams}`,
   )
 }
 

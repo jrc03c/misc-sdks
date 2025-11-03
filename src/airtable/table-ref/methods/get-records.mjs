@@ -1,6 +1,6 @@
-import { superEncodeURIComponent } from "../../utils.mjs"
+import { customEncodeURIComponent } from "../../utils.mjs"
 
-function getRecords(client, ids, options) {
+function getRecords(tableRef, ids, options) {
   // note: be aware that this function will return a 200 response even when that
   // response contains 0 records!
   // -----
@@ -28,12 +28,13 @@ function getRecords(client, ids, options) {
     options.filterByFormula = `FIND(RECORD_ID(), "${ids.join(", ")}") > 0`
   }
 
-  const queryParams = superEncodeURIComponent(options)
+  const queryParams = customEncodeURIComponent(options)
 
   const path =
-    `/${client.base.id}/${client.id}` + (queryParams ? "?" + queryParams : "")
+    `/${tableRef.base.id}/${tableRef.id}` +
+    (queryParams ? "?" + queryParams : "")
 
-  return client.client.get(path)
+  return tableRef.client.get(path)
 }
 
 export { getRecords }

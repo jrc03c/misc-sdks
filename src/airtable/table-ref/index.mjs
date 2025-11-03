@@ -11,7 +11,7 @@ import { updateRecordsCore } from "./methods/update-records-core.mjs"
 import { updateRecordsDestructively } from "./methods/update-records-destructively.mjs"
 import { updateRecordsSafely } from "./methods/update-records-safely.mjs"
 
-class AirtableTable {
+class AirtableTableRef {
   base = null
   client = null
   id = null
@@ -21,19 +21,19 @@ class AirtableTable {
 
     if (!data.base) {
       throw new Error(
-        "The object passed into the `AirtableTable` constructor must have a 'base' property pointing to an `AirtableBase` instance!",
+        "The object passed into the `AirtableTableRef` constructor must have a 'base' property pointing to an `AirtableBase` instance!",
       )
     }
 
     if (!data.client) {
       throw new Error(
-        "The object passed into the `AirtableTable` constructor must have a 'client' property pointing to an `AirtableClient` instance!",
+        "The object passed into the `AirtableTableRef` constructor must have a 'client' property pointing to an `AirtableClient` instance!",
       )
     }
 
     if (!data.id) {
       throw new Error(
-        "The object passed into the `AirtableTable` constructor must have an 'id' property with a string value representing the ID of an Airtable table!",
+        "The object passed into the `AirtableTableRef` constructor must have an 'id' property with a string value representing the ID of an Airtable table!",
       )
     }
 
@@ -91,4 +91,4 @@ class AirtableTable {
   }
 }
 
-export { AirtableTable }
+export { AirtableTableRef }

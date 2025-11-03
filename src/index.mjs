@@ -1,4 +1,10 @@
-import { AirtableClient, AirtableClientResponse } from "./airtable/index.mjs"
+import {
+  AirtableBaseRef,
+  AirtableClient,
+  AirtableClientResponse,
+  AirtableTableRef,
+} from "./airtable/index.mjs"
+
 import { BaseClient, BaseClientResponse } from "./base/index.mjs"
 import { MailchimpClient, MailchimpClientResponse } from "./mailchimp/index.mjs"
 
@@ -11,8 +17,10 @@ import {
 import { MailTmClient, MailTmClientResponse } from "./mail-tm/index.mjs"
 
 export {
+  AirtableBaseRef,
   AirtableClient,
   AirtableClientResponse,
+  AirtableTableRef,
   BaseClient,
   BaseClientResponse,
   MailchimpClient,
