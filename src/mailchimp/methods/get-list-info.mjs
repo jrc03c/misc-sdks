@@ -1,5 +1,5 @@
-function getListInfo(listId) {
-  return this.get(`/lists/${listId}`)
+function getListInfo(client, listId) {
+  return client.get(`/lists/${listId}`)
 }
 
 export { getListInfo }

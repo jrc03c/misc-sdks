@@ -1,4 +1,4 @@
-function removeTagsFromListMember(listId, emailAddress, tags, options) {
+function removeTagsFromListMember(client, listId, emailAddress, tags, options) {
   // if the tags array contains tag strings instead of tag objects, then convert
   // the tag strings to tag objects
   tags = (() => {
@@ -13,14 +13,14 @@ function removeTagsFromListMember(listId, emailAddress, tags, options) {
         }
       }
 
-      tag.status = this.constructor.TagStatus.INACTIVE
+      tag.status = client.constructor.TagStatus.INACTIVE
       temp.push(tag)
     }
 
     return temp
   })()
 
-  return this.updateListMemberTags(listId, emailAddress, tags, options)
+  return client.updateListMemberTags(listId, emailAddress, tags, options)
 }
 
 export { removeTagsFromListMember }

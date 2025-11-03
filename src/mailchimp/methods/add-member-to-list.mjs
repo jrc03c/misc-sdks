@@ -1,4 +1,4 @@
-function addMemberToList(listId, member, options) {
+function addMemberToList(client, listId, member, options) {
   // options include:
   // - shouldSkipMergeValidation (boolean; default = false)
 
@@ -8,18 +8,18 @@ function addMemberToList(listId, member, options) {
     member = {
       email_address: member,
       email_type: "html",
-      status: this.constructor.MemberStatus.SUBSCRIBED,
+      status: client.constructor.MemberStatus.SUBSCRIBED,
     }
   }
 
-  member.status = this.constructor.MemberStatus.SUBSCRIBED
+  member.status = client.constructor.MemberStatus.SUBSCRIBED
   options = options || {}
 
   const path =
     `/lists/${listId}/members` +
     (options.shouldSkipMergeValidation ? "?skip_merge_validation=true" : "")
 
-  return this.post(path, {
+  return client.post(path, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(member),
   })

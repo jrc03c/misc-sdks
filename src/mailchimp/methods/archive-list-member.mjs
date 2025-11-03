@@ -1,5 +1,5 @@
-function archiveListMember(listId, emailAddress) {
-  return this.delete(
+function archiveListMember(client, listId, emailAddress) {
+  return client.delete(
     `/lists/${listId}/members/${encodeURIComponent(emailAddress)}`,
   )
 }

@@ -1,11 +1,11 @@
 import { MailchimpClientResponse } from "../response.mjs"
 
-async function getListMemberStatus(listId, emailAddress) {
-  const response = await this.getListMemberInfo(listId, emailAddress)
+async function getListMemberStatus(client, listId, emailAddress) {
+  const response = await client.getListMemberInfo(listId, emailAddress)
 
   const status =
     response.status === 404
-      ? this.constructor.MemberStatus.NOT_FOUND
+      ? client.constructor.MemberStatus.NOT_FOUND
       : response.json.status
 
   return new MailchimpClientResponse({

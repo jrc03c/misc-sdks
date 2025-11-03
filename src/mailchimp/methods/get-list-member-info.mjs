@@ -1,4 +1,4 @@
-function getListMemberInfo(listId, emailAddress, options) {
+function getListMemberInfo(client, listId, emailAddress, options) {
   // options include:
   // - fieldsToInclude (array of strings)
   // - fieldsToExclude (array of strings)
@@ -18,7 +18,7 @@ function getListMemberInfo(listId, emailAddress, options) {
     `/lists/${listId}/members/${encodeURIComponent(emailAddress)}` +
     (queryParams.length > 0 ? "?" + queryParams.join("&") : "")
 
-  return this.get(path)
+  return client.get(path)
 }
 
 export { getListMemberInfo }

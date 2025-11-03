@@ -1,4 +1,4 @@
-function batchAddMembersToList(listId, members, options) {
+function batchAddMembersToList(client, listId, members, options) {
   // note: can send no more than 500 members per request
 
   // options include:
@@ -28,7 +28,7 @@ function batchAddMembersToList(listId, members, options) {
         }
       }
 
-      member.status = this.constructor.MemberStatus.SUBSCRIBED
+      member.status = client.constructor.MemberStatus.SUBSCRIBED
       temp.push(member)
     }
 
@@ -50,7 +50,7 @@ function batchAddMembersToList(listId, members, options) {
     `/lists/${listId}` +
     (queryParams.length > 0 ? "?" + queryParams.join("&") : "")
 
-  return this.post(path, {
+  return client.post(path, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       members,

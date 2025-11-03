@@ -1,4 +1,4 @@
-function searchMembers(query, options) {
+function searchMembers(client, query, options) {
   // options include:
   // - fieldsToInclude (array of strings)
   // - fieldsToExclude (array of strings)
@@ -21,7 +21,7 @@ function searchMembers(query, options) {
 
   queryParams.push(`query=${encodeURIComponent(query)}`)
   const path = `/search-members?` + queryParams.join("&")
-  return this.get(path)
+  return client.get(path)
 }
 
 export { searchMembers }

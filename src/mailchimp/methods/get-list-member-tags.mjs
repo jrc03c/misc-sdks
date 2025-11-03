@@ -1,5 +1,5 @@
-function getListMemberTags(listId, emailAddress) {
-  return this.get(
+function getListMemberTags(client, listId, emailAddress) {
+  return client.get(
     `/lists/${listId}/members/${encodeURIComponent(emailAddress)}/tags`,
   )
 }

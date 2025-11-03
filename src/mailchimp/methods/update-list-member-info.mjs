@@ -1,4 +1,4 @@
-function updateListMemberInfo(listId, member, options) {
+function updateListMemberInfo(client, listId, member, options) {
   // options include:
   // - shouldSkipMergeValidation (boolean; default = false)
 
@@ -13,7 +13,7 @@ function updateListMemberInfo(listId, member, options) {
     `/lists/${listId}/members/${encodeURIComponent(member.email_address)}` +
     (queryParams.length > 0 ? "?" + queryParams.join("&") : "")
 
-  return this.patch(path, {
+  return client.patch(path, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(member),
   })

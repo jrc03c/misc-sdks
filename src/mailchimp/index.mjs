@@ -52,26 +52,54 @@ class MailchimpClient extends BaseClient {
     this.baseUrl =
       data.baseUrl ||
       `https://${this.datacenter}.api.mailchimp.com/${this.apiVersion}`
+  }
 
-    // bind methods
-    this.addMemberToList = addMemberToList.bind(this)
-    this.addTagsToListMember = addTagsToListMember.bind(this)
-    this.archiveListMember = archiveListMember.bind(this)
-    this.batchAddMembersToList = batchAddMembersToList.bind(this)
-    this.getListInfo = getListInfo.bind(this)
-    this.getListMemberInfo = getListMemberInfo.bind(this)
-    this.getListMemberStatus = getListMemberStatus.bind(this)
-    this.getListMemberTags = getListMemberTags.bind(this)
-    this.removeTagsFromListMember = removeTagsFromListMember.bind(this)
-    this.searchListTags = searchListTags.bind(this)
-    this.searchMembers = searchMembers.bind(this)
-    this.updateListMemberInfo = updateListMemberInfo.bind(this)
-    this.updateListMemberStatus = updateListMemberStatus.bind(this)
-    this.updateListMemberTags = updateListMemberTags.bind(this)
+  addMemberToList() {
+    return addMemberToList(this, ...arguments)
+  }
+
+  addTagsToListMember() {
+    return addTagsToListMember(this, ...arguments)
+  }
+
+  archiveListMember() {
+    return archiveListMember(this, ...arguments)
+  }
+
+  batchAddMembersToList() {
+    return batchAddMembersToList(this, ...arguments)
+  }
+
+  getListInfo() {
+    return getListInfo(this, ...arguments)
+  }
+
+  getListMemberInfo() {
+    return getListMemberInfo(this, ...arguments)
+  }
+
+  getListMemberStatus() {
+    return getListMemberStatus(this, ...arguments)
+  }
+
+  getListMemberTags() {
+    return getListMemberTags(this, ...arguments)
   }
 
   ping() {
     return this.get("/ping")
+  }
+
+  removeTagsFromListMember() {
+    return removeTagsFromListMember(this, ...arguments)
+  }
+
+  searchListTags() {
+    return searchListTags(this, ...arguments)
+  }
+
+  searchMembers() {
+    return searchMembers(this, ...arguments)
   }
 
   async send(path, options) {
@@ -87,6 +115,18 @@ class MailchimpClient extends BaseClient {
     }
 
     return new MailchimpClientResponse(await super.send(path, options))
+  }
+
+  updateListMemberInfo() {
+    return updateListMemberInfo(this, ...arguments)
+  }
+
+  updateListMemberStatus() {
+    return updateListMemberStatus(this, ...arguments)
+  }
+
+  updateListMemberTags() {
+    return updateListMemberTags(this, ...arguments)
   }
 }
 

@@ -1,4 +1,4 @@
-function updateListMemberTags(listId, emailAddress, tags, options) {
+function updateListMemberTags(client, listId, emailAddress, tags, options) {
   // options include:
   // - isSyncing (boolean; default = false)
 
@@ -16,7 +16,7 @@ function updateListMemberTags(listId, emailAddress, tags, options) {
       if (typeof tag === "string") {
         tag = {
           name: tag,
-          status: this.constructor.TagStatus.ACTIVE,
+          status: client.constructor.TagStatus.ACTIVE,
         }
       }
 
@@ -26,7 +26,7 @@ function updateListMemberTags(listId, emailAddress, tags, options) {
     return temp
   })()
 
-  return this.post(
+  return client.post(
     `/lists/${listId}/members/${encodeURIComponent(emailAddress)}/tags`,
     {
       headers: { "Content-Type": "application/json" },

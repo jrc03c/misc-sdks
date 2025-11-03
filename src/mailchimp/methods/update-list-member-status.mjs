@@ -1,6 +1,6 @@
-function updateListMemberStatus(listId, emailAddress, status, options) {
+function updateListMemberStatus(client, listId, emailAddress, status, options) {
   const member = { email_address: emailAddress, status }
-  return this.updateListMemberInfo(listId, member, options)
+  return client.updateListMemberInfo(listId, member, options)
 }
 
 export { updateListMemberStatus }
