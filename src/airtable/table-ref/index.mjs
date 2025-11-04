@@ -1,12 +1,8 @@
-import { createRecord } from "./methods/create-record.mjs"
 import { createRecords } from "./methods/create-records.mjs"
-import { deleteRecord } from "./methods/delete-record.mjs"
 import { deleteRecords } from "./methods/delete-records.mjs"
-import { getRecord } from "./methods/get-record.mjs"
 import { getRecords } from "./methods/get-records.mjs"
+import { getRecordsById } from "./methods/get-records-by-id.mjs"
 import { getSchema } from "./methods/get-schema.mjs"
-import { updateRecordDestructively } from "./methods/update-record-destructively.mjs"
-import { updateRecordSafely } from "./methods/update-record-safely.mjs"
 import { updateRecordsCore } from "./methods/update-records-core.mjs"
 import { updateRecordsDestructively } from "./methods/update-records-destructively.mjs"
 import { updateRecordsSafely } from "./methods/update-records-safely.mjs"
@@ -42,40 +38,24 @@ class AirtableTableRef {
     this.id = data.id
   }
 
-  createRecord() {
-    return createRecord(this, ...arguments)
-  }
-
   createRecords() {
     return createRecords(this, ...arguments)
-  }
-
-  deleteRecord() {
-    return deleteRecord(this, ...arguments)
   }
 
   deleteRecords() {
     return deleteRecords(this, ...arguments)
   }
 
-  getRecord() {
-    return getRecord(this, ...arguments)
-  }
-
   getRecords() {
     return getRecords(this, ...arguments)
   }
 
+  getRecordsById() {
+    return getRecordsById(this, ...arguments)
+  }
+
   getSchema() {
     return getSchema(this, ...arguments)
-  }
-
-  updateRecordDestructively() {
-    return updateRecordDestructively(this, ...arguments)
-  }
-
-  updateRecordSafely() {
-    return updateRecordSafely(this, ...arguments)
   }
 
   updateRecordsCore() {

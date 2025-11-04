@@ -1,6 +1,6 @@
 import { customEncodeURIComponent } from "../../utils.mjs"
 
-function getRecords(tableRef, ids, options) {
+function getRecords(tableRef, options) {
   // note: be aware that this function will return a 200 response even when that
   // response contains 0 records!
   // -----
@@ -21,12 +21,7 @@ function getRecords(tableRef, ids, options) {
   // - userLocale
   // - view
 
-  ids = ids || []
   options = options || {}
-
-  if (ids.length > 0 && !options.filterByFormula) {
-    options.filterByFormula = `FIND(RECORD_ID(), "${ids.join(", ")}") > 0`
-  }
 
   const queryParams = customEncodeURIComponent(options)
 
