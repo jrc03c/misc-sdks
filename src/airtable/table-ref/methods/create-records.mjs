@@ -37,6 +37,13 @@ function createRecords(tableRef, records, options) {
   }
 
   options = options || {}
+
+  if (typeof options !== "object") {
+    throw new Error(
+      "The second value passed into the `AirtableTableRef.createRecords` method must be null, undefined, or an options object!",
+    )
+  }
+
   delete options.fields
 
   return tableRef.client.post(`/${tableRef.base.id}/${tableRef.id}`, {

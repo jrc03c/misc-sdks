@@ -15,7 +15,9 @@ class AirtableClient extends BaseClient {
     data = data || {}
     super(data)
 
-    if (!data.token) {
+    data.token = data.token || data.apiToken
+
+    if (!data.token || typeof data.token !== "string") {
       throw new Error(
         "The object passed into the `AirtableClient` constructor must have a 'token' property with a string value corresponding to a valid Airtable authentication token!",
       )
@@ -30,7 +32,21 @@ class AirtableClient extends BaseClient {
     this.token = data.token
   }
 
+  get apiToken() {
+    return this.token
+  }
+
+  set apiToken(v) {
+    this.token = v
+  }
+
   getBaseRef(id) {
+    if (typeof id !== "string") {
+      throw new Error(
+        "The value passed into the `AirtableClient.getBaseRef` method must be a string representing a base ID!",
+      )
+    }
+
     return new AirtableBaseRef({
       client: this,
       id,

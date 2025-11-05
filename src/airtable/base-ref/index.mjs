@@ -26,6 +26,12 @@ class AirtableBaseRef {
   }
 
   getTableRef(id) {
+    if (typeof id !== "string") {
+      throw new Error(
+        "The value passed into the `AirtableBaseRef.getTableRef` method must be a string representing a table ID!",
+      )
+    }
+
     return new AirtableTableRef({
       base: this,
       client: this.client,

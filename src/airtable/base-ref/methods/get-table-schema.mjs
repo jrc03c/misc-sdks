@@ -1,9 +1,15 @@
 import { AirtableClientResponse } from "../../response.mjs"
 
 async function getTableSchema(baseRef, id) {
+  if (typeof id !== "string") {
+    throw new Error(
+      "The value passed into the `AirtableBaseRef.getTableSchema` method must be a string representing a table ID!",
+    )
+  }
+
   const response = await baseRef.getTableSchemas()
 
-  if (response.status > 204) {
+  if (response.status >= 400) {
     return response
   }
 
