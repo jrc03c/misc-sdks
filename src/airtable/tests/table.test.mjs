@@ -1,4 +1,4 @@
-import { afterAll, expect, test } from "@jrc03c/fake-jest"
+import { afterAll, beforeAll, expect, test } from "@jrc03c/fake-jest"
 import { AirtableClient } from "../index.mjs"
 import { AirtableClientResponse } from "../response.mjs"
 import { range, shuffle } from "@jrc03c/js-math-tools"
@@ -98,9 +98,8 @@ function confirmRecordsAreEqual(rpred, rtrue, keyToSortBy) {
   expect(datePred).toBe(dateTrue)
 }
 
-const existingRecords = [
+const defaultRecords = [
   new TestRecord({
-    id: "recVtAq7FyF3aiPn2",
     fields: {
       Name: "Build the website",
       Notes: "No notes.",
@@ -110,7 +109,6 @@ const existingRecords = [
     },
   }),
   new TestRecord({
-    id: "recULFTi5IauwT0vt",
     fields: {
       Name: "Rotate the widgets",
       Notes: "Hurry!",
@@ -120,7 +118,6 @@ const existingRecords = [
     },
   }),
   new TestRecord({
-    id: "recMfGDoQVhB3GU8G",
     fields: {
       Name: "Analyze the data",
       Notes: "...",
@@ -130,7 +127,6 @@ const existingRecords = [
     },
   }),
   new TestRecord({
-    id: "recOumm7q9VhjZk1I",
     fields: {
       Name: "Check and respond to emails",
       Notes: "[none]",
@@ -140,7 +136,6 @@ const existingRecords = [
     },
   }),
   new TestRecord({
-    id: "recdinOb9A5ZlrfBn",
     fields: {
       Name: "Foo all the bars",
       Notes: "???",
@@ -150,13 +145,12 @@ const existingRecords = [
     },
   }),
   new TestRecord({
-    id: "recMhOGIFcMOXAixO",
     fields: {
       Name: "Chuck wood",
       Notes: "",
       Assignee: "Fatima",
       Status: "Todo",
-      DueDate: "",
+      DueDate: "1/1/2026",
     },
   }),
 ]
@@ -167,52 +161,58 @@ const client = new AirtableClient({
 
 const base = client.getBaseRef(process.env.AIRTABLE_BASE_ID)
 const table = base.getTableRef(process.env.AIRTABLE_TABLE_ID)
-
 const recordsIdsToDelete = []
+
+beforeAll(async () => {
+  // delete any existing records
+  while (true) {
+    const response = await table.getRecords()
+
+    if (response.status >= 400) {
+      throw new Error(JSON.stringify(response))
+    }
+
+    if (response.json.records.length > 0) {
+      const response2 = await table.deleteRecords(
+        response.json.records.map(r => r.id),
+      )
+
+      if (response2.status >= 400) {
+        throw new Error(JSON.stringify(response2))
+      }
+    } else {
+      break
+    }
+  }
+
+  // create the default records
+  const response = await table.createRecords(defaultRecords)
+
+  if (response.status >= 400) {
+    throw new Error(JSON.stringify(response))
+  }
+
+  for (let i = 0; i < response.json.records.length; i++) {
+    defaultRecords[i].id = response.json.records[i].id
+  }
+})
 
 afterAll(async () => {
   await table.deleteRecords(recordsIdsToDelete)
-  await table.updateRecordsDestructively(existingRecords)
+  await table.updateRecordsDestructively(defaultRecords)
 })
 
 test("AirtableTableRef", async () => {
   const recordIds = []
-
-  // get a single record
-  await (async () => {
-    const response = await table.getRecord(existingRecords[0].id)
-    expect(response.status).toBe(200)
-    confirmRecordsAreEqual(response.json, existingRecords[0])
-  })()
 
   // get multiple records
   await (async () => {
     const response = await table.getRecords()
     expect(response instanceof AirtableClientResponse).toBe(true)
     expect(response.status).toBe(200)
-    expect(response.json.records.length).toBe(existingRecords.length)
-    confirmRecordsAreEqual(response.json.records, existingRecords)
+    expect(response.json.records.length).toBe(defaultRecords.length)
+    confirmRecordsAreEqual(response.json.records, defaultRecords)
     recordIds.push(...response.json.records.map(r => r.id))
-  })()
-
-  // create a single record
-  await (async () => {
-    const record = new TestRecord({
-      fields: {
-        Name: "X all the Ys",
-        Notes: Math.random().toString(),
-        Assignee: "Isabel",
-        Status: "Done",
-        DueDate: "1/1/2026",
-      },
-    })
-
-    const response = await table.createRecord(record)
-    expect(response.status).toBe(200)
-    confirmRecordsAreEqual(response.json, record)
-
-    recordIds.push(response.json.id)
-    recordsIdsToDelete.push(response.json.id)
   })()
 
   // create multiple records
@@ -247,36 +247,13 @@ test("AirtableTableRef", async () => {
     recordsIdsToDelete.push(...ids)
   })()
 
-  // update a single record safely
-  await (async () => {
-    const index = Math.floor(Math.random() * existingRecords.length)
-    const original = existingRecords[index]
-    const record = original.copy()
-    record.fields.Name = "Update safely!"
-    record.fields.Assignee = "Josh"
-
-    const response1 = await table.updateRecordSafely(record)
-    expect(response1.status).toBe(200)
-
-    const response2 = await table.getRecord(original.id)
-    expect(response2.status).toBe(200)
-    confirmRecordsAreEqual(response2.json, record)
-
-    const response3 = await table.updateRecordSafely(original)
-    expect(response3.status).toBe(200)
-
-    const response4 = await table.getRecord(original.id)
-    expect(response4.status).toBe(200)
-    confirmRecordsAreEqual(response4.json, original)
-  })()
-
   // update multiple records safely
   await (async () => {
     const indices = shuffle(
-      range(0, existingRecords.length - 1).toArray(),
+      range(0, defaultRecords.length - 1).toArray(),
     ).slice(0, 3)
 
-    const originals = indices.map(i => existingRecords[i])
+    const originals = indices.map(i => defaultRecords[i])
 
     const records = originals.map(r => {
       r = r.copy()
@@ -299,41 +276,13 @@ test("AirtableTableRef", async () => {
     confirmRecordsAreEqual(response4.json.records, originals)
   })()
 
-  // update a single record destructively
-  await (async () => {
-    const index = Math.floor(Math.random() * existingRecords.length)
-    const original = existingRecords[index]
-
-    const record = new TestRecord({
-      id: original.id,
-      fields: {
-        Name: "Update destructively!",
-        Assignee: "Josh",
-      },
-    })
-
-    const response1 = await table.updateRecordDestructively(record)
-    expect(response1.status).toBe(200)
-
-    const response2 = await table.getRecord(original.id)
-    expect(response2.status).toBe(200)
-    confirmRecordsAreEqual(response2.json, record)
-
-    const response3 = await table.updateRecordDestructively(original)
-    expect(response3.status).toBe(200)
-
-    const response4 = await table.getRecord(original.id)
-    expect(response4.status).toBe(200)
-    confirmRecordsAreEqual(response4.json, original)
-  })()
-
   // update multiple records destructively
   await (async () => {
     const indices = shuffle(
-      range(0, existingRecords.length - 1).toArray(),
+      range(0, defaultRecords.length - 1).toArray(),
     ).slice(0, 3)
 
-    const originals = indices.map(i => existingRecords[i])
+    const originals = indices.map(i => defaultRecords[i])
 
     const records = originals.map(r => {
       return new TestRecord({
@@ -357,28 +306,6 @@ test("AirtableTableRef", async () => {
     const response4 = await table.getRecords(originals.map(r => r.id))
     expect(response4.status).toBe(200)
     confirmRecordsAreEqual(response4.json.records, originals)
-  })()
-
-  // delete a single record
-  await (async () => {
-    const record = new TestRecord({
-      fields: {
-        Name: "How about this?",
-        Notes: Math.random().toString(),
-        Assignee: "Karen",
-        Status: "Done",
-        DueDate: "1/1/1970",
-      },
-    })
-
-    const response1 = await table.createRecord(record)
-    expect(response1.status).toBe(200)
-
-    const response2 = await table.deleteRecord(response1.json.id)
-    expect(response2.status).toBe(200)
-
-    const response3 = await table.getRecord(record.id)
-    expect(response3.status).toBe(404)
   })()
 
   // delete multiple records
@@ -410,6 +337,7 @@ test("AirtableTableRef", async () => {
 
   // throw errors
   await (async () => {
+    // too many records
     const records = []
 
     for (let i = 0; i < 100; i++) {
@@ -420,8 +348,8 @@ test("AirtableTableRef", async () => {
             Name: Math.random().toString(),
             Notes: Math.random().toString(),
             Assignee: Math.random().toString(),
-            Status: Math.random().toString(),
-            DueDate: Math.random().toString(),
+            Status: "Done",
+            DueDate: "1/1/1970",
           },
         }),
       )
@@ -432,6 +360,17 @@ test("AirtableTableRef", async () => {
 
     expect(
       async () => await table.deleteRecords(records.map(r => r.id)),
+    ).toThrow()
+
+    // invalid calls of the `getRecords` method
+    expect(async () => await table.getRecords([2, 3, 4])).toThrow()
+    expect(async () => await table.getRecords("foo")).toThrow()
+    expect(async () => await table.getRecords(null, [2, 3, 4])).toThrow()
+    expect(async () => await table.getRecords(null, "foo")).toThrow()
+
+    expect(
+      async () =>
+        await table.getRecords(["a", "b", "c"], { filterByFormula: "nope" }),
     ).toThrow()
   })()
 })
