@@ -59,6 +59,12 @@ test("MailTmClient", async () => {
   })
 
   await (async () => {
+    const response = await mailtm.getDomains()
+    expect(response.status).toBe(200)
+    expect(response.json["hydra:member"].length).toBeGreaterThan(0)
+  })()
+
+  await (async () => {
     const response = await mailtm.authenticate()
     expect(response instanceof MailTmClientResponse).toBe(true)
     expect(response.endpoint).toBe("https://api.mail.tm/token")
