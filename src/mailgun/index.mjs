@@ -12,6 +12,11 @@ class MailgunClient extends BaseClient {
 
   constructor(data) {
     data = data || {}
+
+    data.baseUrl =
+      data.baseUrl ||
+      urlPathJoin(MAILGUN_BASE_URL, "/v" + (data.apiVersion || 3))
+
     super(data)
 
     if (!data.apiKey) {
@@ -29,9 +34,6 @@ class MailgunClient extends BaseClient {
     this.apiKey = data.apiKey
     this.apiVersion = data.apiVersion || this.apiVersion
     this.senderDomain = data.senderDomain
-
-    this.baseUrl =
-      data.baseUrl || urlPathJoin(MAILGUN_BASE_URL, "/v" + this.apiVersion)
   }
 
   async send(path, options) {
