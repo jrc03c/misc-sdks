@@ -1,5 +1,5 @@
-import { AirtableClient } from "../index.mjs"
-import { AirtableBaseRef } from "../base-ref/index.mjs"
+import { AirtableClient } from "./index.mjs"
+import { AirtableBaseRef } from "./base-ref/index.mjs"
 import { expect, test } from "@jrc03c/fake-jest"
 
 test("AirtableClient", () => {
