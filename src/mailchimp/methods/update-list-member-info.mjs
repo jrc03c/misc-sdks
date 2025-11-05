@@ -1,4 +1,22 @@
+import { isEmailAddress } from "@jrc03c/js-text-tools"
+
 function updateListMemberInfo(client, listId, member, options) {
+  if (!listId || typeof listId !== "string") {
+    throw new Error(
+      "The first argument passed into the `MailchimpClient.updateListMemberInfo` method must be a string representing a list (audience) ID!",
+    )
+  }
+
+  if (
+    typeof member !== "object" ||
+    member === null ||
+    !isEmailAddress(member.email_address)
+  ) {
+    throw new Error(
+      "The second argument passed into the `MailchimpClient.updateListMemberInfo` method must be an object representing member data (e.g., including an 'email_address' property)!",
+    )
+  }
+
   // options include:
   // - shouldSkipMergeValidation (boolean; default = false)
 

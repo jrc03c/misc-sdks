@@ -1,3 +1,5 @@
+import { isEmailAddress } from "@jrc03c/js-text-tools"
+
 function addMemberToList(client, listId, member, options) {
   // options include:
   // - shouldSkipMergeValidation (boolean; default = false)
@@ -10,6 +12,12 @@ function addMemberToList(client, listId, member, options) {
       email_type: "html",
       status: client.constructor.MemberStatus.SUBSCRIBED,
     }
+  }
+
+  if (typeof member !== "object" || !isEmailAddress(member.email_address)) {
+    throw new Error(
+      "The second argument passed into the `MailchimpClient.addMemberToList` method must either be (1) a string representing an email address or (2) an options object with an 'email_address' property (with a string value representing an email address)!",
+    )
   }
 
   member.status = client.constructor.MemberStatus.SUBSCRIBED

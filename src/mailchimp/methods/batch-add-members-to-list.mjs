@@ -1,4 +1,14 @@
+import { isEmailAddress } from "@jrc03c/js-text-tools"
+
+const MAX_MEMBERS_PER_REQUEST = 500
+
 function batchAddMembersToList(client, listId, members, options) {
+  if (!listId || typeof listId !== "string") {
+    throw new Error(
+      "The first argument passed into the `MailchimpClient.batchAddMembersToList` method must be a string representing a list (audience) ID!",
+    )
+  }
+
   // note: can send no more than 500 members per request
 
   // options include:
@@ -7,9 +17,9 @@ function batchAddMembersToList(client, listId, members, options) {
   // - shouldSyncTags (boolean; default = false)
   // - shouldUpdateExisting (boolean; default = true)
 
-  if (members.length > 500) {
+  if (members.length > MAX_MEMBERS_PER_REQUEST) {
     throw new Error(
-      "The members array passed into the `MailchimpClient.batchAddMembersToList` method must contain no more than 500 member objects!",
+      `The members array passed into the \`MailchimpClient.batchAddMembersToList\` method must contain no more than ${MAX_MEMBERS_PER_REQUEST} member objects!`,
     )
   }
 
@@ -26,6 +36,12 @@ function batchAddMembersToList(client, listId, members, options) {
           email_address: member,
           email_type: "html",
         }
+      }
+
+      if (!isEmailAddress(member.email_address)) {
+        throw new Error(
+          "The second argument passed into the `MailchimpClient.batchAddMembersToList` method must be an array either of (1) strings representing email addresses or (2) objects with 'email_address' properties (with string values representing email addresses)!",
+        )
       }
 
       member.status = client.constructor.MemberStatus.SUBSCRIBED

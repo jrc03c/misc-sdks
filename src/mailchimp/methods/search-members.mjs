@@ -1,4 +1,10 @@
 function searchMembers(client, query, options) {
+  if (!query || typeof query !== "string") {
+    throw new Error(
+      "The first argument passed into the `MailchimpClient.searchMembers` method must be a string representing a query!",
+    )
+  }
+
   // options include:
   // - fieldsToInclude (array of strings)
   // - fieldsToExclude (array of strings)
