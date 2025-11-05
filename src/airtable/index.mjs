@@ -13,6 +13,11 @@ class AirtableClient extends BaseClient {
 
   constructor(data) {
     data = data || {}
+
+    data.baseUrl =
+      data.baseUrl ||
+      urlPathJoin(AIRTABLE_BASE_URL, "v" + (data.apiVersion || 0))
+
     super(data)
 
     data.token = data.token || data.apiToken
@@ -24,10 +29,6 @@ class AirtableClient extends BaseClient {
     }
 
     this.apiVersion = data.apiVersion || this.apiVersion
-
-    this.baseUrl =
-      data.baseUrl || urlPathJoin(AIRTABLE_BASE_URL, "v" + this.apiVersion)
-
     this.exponentialBackoffHelper.ms = 1000 / AIRTABLE_MAX_REQUESTS_PER_SECOND
     this.token = data.token
   }

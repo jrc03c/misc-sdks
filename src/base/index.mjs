@@ -13,6 +13,12 @@ class BaseClient {
 
     this.exponentialBackoffHelper =
       data.exponentialBackoffHelper || new ExponentialBackoffHelper()
+
+    if (!this.baseUrl || typeof this.baseUrl !== "string") {
+      throw new Error(
+        "The options object passed into the `BaseClient` constructor must have a 'baseUrl' property with a string value representing a core URL to which endpoint paths will be appended!",
+      )
+    }
   }
 
   delete(path, options) {
@@ -87,6 +93,19 @@ class BaseClient {
 
   async send(path, options) {
     options = options || {}
+
+    if (typeof path !== "string") {
+      throw new Error(
+        "The first argument passed into the `BaseClient.send` method must be a string representing an API endpoint path!",
+      )
+    }
+
+    if (typeof options !== "object") {
+      throw new Error(
+        "The second argument passed into the `BaseClient.send` method must be null, undefined, or an options object (i.e., of the type normally passed as the second argument to `fetch`)!",
+      )
+    }
+
     const url = urlPathJoin(this.baseUrl, path)
     let response
     let wasSuccessful = false
