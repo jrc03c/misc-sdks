@@ -72,8 +72,9 @@ test("MailTmClient", async () => {
   })()
 
   await (async () => {
-    const response = await mailtm.getTotalMessageCount()
-    expect(response.json).toBe(0)
+    const response = await mailtm.getMessages()
+    expect(response.status).toBe(200)
+    expect(response.json["hydra:member"].length).toBe(0)
   })()
 
   await (async () => {
@@ -104,7 +105,8 @@ test("MailTmClient", async () => {
       expect(response.status).toBeLessThanOrEqualTo(204)
     }
 
-    const response = await mailtm.getTotalMessageCount()
-    expect(response.json).toBe(0)
+    const response = await mailtm.getMessages()
+    expect(response.status).toBe(200)
+    expect(response.json["hydra:member"].length).toBe(0)
   })()
 })
