@@ -1,4 +1,4 @@
-import { expect, test } from "@jrc03c/fake-jest"
+import { beforeAll, expect, test } from "@jrc03c/fake-jest"
 import { GmailMessageSender } from "../base/utils.mjs"
 import { MailTmClient } from "./index.mjs"
 import { MailTmClientResponse } from "./response.mjs"
@@ -22,15 +22,40 @@ if (typeof process.env.MAIL_TM_PASSWORD === "undefined") {
   throw new Error("The environment variable `MAIL_TM_PASSWORD` is undefined!")
 }
 
+const mailtm = new MailTmClient({
+  address: process.env.MAIL_TM_ADDRESS,
+  password: process.env.MAIL_TM_PASSWORD,
+})
+
+beforeAll(async () => {
+  while (true) {
+    const response1 = await mailtm.getMessages()
+
+    if (response1.status >= 400) {
+      throw new Error(JSON.stringify(response1))
+    }
+
+    const ids = response1.json["hydra:member"].map(m => m.id)
+
+    if (ids.length > 0) {
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i]
+        const response2 = await mailtm.deleteMessage(id)
+
+        if (response2.status >= 400) {
+          throw new Error(JSON.stringify(response2))
+        }
+      }
+    } else {
+      break
+    }
+  }
+})
+
 test("MailTmClient", async () => {
   const gmail = new GmailMessageSender({
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_PASS,
-  })
-
-  const mailtm = new MailTmClient({
-    address: process.env.MAIL_TM_ADDRESS,
-    password: process.env.MAIL_TM_PASSWORD,
   })
 
   await (async () => {

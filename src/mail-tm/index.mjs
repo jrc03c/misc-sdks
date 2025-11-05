@@ -12,23 +12,33 @@ class MailTmClient extends BaseClient {
 
   constructor(data) {
     data = data || {}
+    data.baseUrl = data.baseUrl || BASE_URL
+
     super(data)
+
     this.address = data.address || this.address
-    this.baseUrl = data.baseUrl || BASE_URL
     this.password = data.password || this.password
     this.token = data.token || this.token
 
-    if (!this.address) {
+    if (!this.address || typeof this.address !== "string") {
       throw new Error(
         "The object passed into the `MailTmClient` constructor must have an 'address' property with a string value representing an email address!",
       )
     }
 
-    if (!this.password) {
+    if (!this.password || typeof this.password !== "string") {
       throw new Error(
         "The object passed into the `MailTmClient` constructor must have a 'password' property with a string value!",
       )
     }
+  }
+
+  get apiToken() {
+    return this.token
+  }
+
+  set apiToken(v) {
+    this.token = v
   }
 
   async authenticate() {
@@ -62,14 +72,34 @@ class MailTmClient extends BaseClient {
   }
 
   deleteMessage(id) {
+    if (typeof id !== "string") {
+      throw new Error(
+        "The value passed into the `MailTmClient.deleteMessage` method must be a string representing a message ID!",
+      )
+    }
+
     return this.delete(`/messages/${id}`)
   }
 
   getMessages(page) {
-    return this.get(`/messages?page=${page || 1}`)
+    page = page ?? 1
+
+    if (typeof page !== "number" || page < 1) {
+      throw new Error(
+        "The value passed into the `MailTmClient.getMessages` method must be a positive integer representing a page number!",
+      )
+    }
+
+    return this.get(`/messages?page=${Math.floor(page)}`)
   }
 
   getMessage(id) {
+    if (typeof id !== "string") {
+      throw new Error(
+        "The value passed into the `MailTmClient.getMessage` method must be a string representing a message ID!",
+      )
+    }
+
     return this.get(`/messages/${id}`)
   }
 
@@ -93,7 +123,7 @@ class MailTmClient extends BaseClient {
     if (!this.token) {
       const authResponse = await this.authenticate()
 
-      if (authResponse.status > 204) {
+      if (authResponse.status >= 400) {
         return authResponse
       }
     }
