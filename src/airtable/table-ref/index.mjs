@@ -7,7 +7,6 @@ import { createRecords } from "./methods/create-records.mjs"
 import { deleteRecords } from "./methods/delete-records.mjs"
 import { getRecords } from "./methods/get-records.mjs"
 import { getSchema } from "./methods/get-schema.mjs"
-import { updateRecordsCore } from "./methods/update-records-core.mjs"
 import { updateRecordsDestructively } from "./methods/update-records-destructively.mjs"
 import { updateRecordsSafely } from "./methods/update-records-safely.mjs"
 
@@ -76,10 +75,6 @@ class AirtableTableRef {
 
   getSchema() {
     return getSchema(this, ...arguments)
-  }
-
-  updateRecordsCore() {
-    return updateRecordsCore(this, ...arguments)
   }
 
   updateRecordsDestructively() {

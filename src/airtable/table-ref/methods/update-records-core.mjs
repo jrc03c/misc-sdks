@@ -34,6 +34,12 @@ function updateRecordsCore(tableRef, method, records, options) {
 
   records = records || []
 
+  if (records.length === 0) {
+    throw new Error(
+      "The array passed into the `updateRecordsCore` function must contain at least one record!",
+    )
+  }
+
   if (records.length > MAX_RECORDS_PER_REQUEST) {
     throw new Error(
       `The array passed into the \`updateRecordsCore\` function must contain no more than ${MAX_RECORDS_PER_REQUEST} record objects!`,
