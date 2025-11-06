@@ -39,6 +39,7 @@ test("AirtableTableRef.updateRecordsSafely", async () => {
       const r3 = response2.json.records.find(r => r.id === id)
       expect(r3.fields.Assignee).toBe(r1.fields.Assignee)
       expect(r3.fields.Name).toBe(r1.fields.Name)
+      expect(r3.fields.Notes).not.toBe(r1.fields.Notes)
       expect(r3.fields.Notes).toBe(r2.fields.Notes)
       expect(r3.fields.Status).toBe(r1.fields.Status)
     }
