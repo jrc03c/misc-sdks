@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, expect } from "@jrc03c/fake-jest"
 import { AirtableClient } from "../../index.mjs"
+import { MAX_RECORDS_PER_REQUEST } from "../common.mjs"
 import process from "node:process"
 
 if (typeof process.env.AIRTABLE_API_TOKEN === "undefined") {
@@ -168,7 +169,7 @@ beforeAll(async () => {
 
     if (response.json.records.length > 0) {
       const response2 = await tableRef.deleteRecords(
-        response.json.records.map(r => r.id),
+        response.json.records.slice(0, MAX_RECORDS_PER_REQUEST).map(r => r.id),
       )
 
       if (response2.status >= 400) {

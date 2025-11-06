@@ -10,6 +10,12 @@ function deleteRecords(tableRef, ids) {
     )
   }
 
+  if (ids.length === 0) {
+    throw new Error(
+      "The array passed into the `AirtableTableRef.deleteRecords` method must contain at least one record ID!",
+    )
+  }
+
   if (ids.length > MAX_RECORDS_PER_REQUEST) {
     throw new Error(
       `The array passed into the \`AirtableTableRef.deleteRecords\` method must contain no more than ${MAX_RECORDS_PER_REQUEST} record IDs!`,
