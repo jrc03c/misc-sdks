@@ -19,7 +19,7 @@ function deleteRecords(tableRef, ids) {
   const queryParams = customEncodeURIComponent({ records: ids })
 
   return tableRef.client.delete(
-    `/${tableRef.base.id}/${tableRef.id}?${queryParams}`,
+    `/${tableRef.baseRef.id}/${tableRef.id}?${queryParams}`,
   )
 }
 

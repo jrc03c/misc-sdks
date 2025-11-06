@@ -80,7 +80,7 @@ function updateRecordsCore(tableRef, method, records, options) {
     }
   }
 
-  return tableRef.client[method](`/${tableRef.base.id}/${tableRef.id}`, {
+  return tableRef.client[method](`/${tableRef.baseRef.id}/${tableRef.id}`, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...options,

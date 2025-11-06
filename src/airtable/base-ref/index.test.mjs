@@ -36,7 +36,7 @@ test("AirtableBaseRef", async () => {
 
   const table = base.getTableRef(process.env.AIRTABLE_TABLE_ID)
   expect(table instanceof AirtableTableRef).toBe(true)
-  expect(table.base).toBe(base)
+  expect(table.baseRef).toBe(base)
   expect(table.client).toBe(client)
   expect(table.id).toBe(process.env.AIRTABLE_TABLE_ID)
 })

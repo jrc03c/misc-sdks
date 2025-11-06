@@ -12,16 +12,16 @@ import { updateRecordsDestructively } from "./methods/update-records-destructive
 import { updateRecordsSafely } from "./methods/update-records-safely.mjs"
 
 class AirtableTableRef {
-  base = null
+  baseRef = null
   client = null
   id = null
 
   constructor(data) {
     data = data || {}
 
-    if (!data.base) {
+    if (!data.baseRef) {
       throw new Error(
-        "The object passed into the `AirtableTableRef` constructor must have a 'base' property pointing to an `AirtableBase` instance!",
+        "The object passed into the `AirtableTableRef` constructor must have a 'baseRef' property pointing to an `AirtableBase` instance!",
       )
     }
 
@@ -37,7 +37,7 @@ class AirtableTableRef {
       )
     }
 
-    this.base = data.base
+    this.baseRef = data.baseRef
     this.client = data.client
     this.id = data.id
   }

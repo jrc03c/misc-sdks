@@ -33,7 +33,7 @@ class AirtableBaseRef {
     }
 
     return new AirtableTableRef({
-      base: this,
+      baseRef: this,
       client: this.client,
       id,
     })

@@ -79,7 +79,7 @@ function getRecords(tableRef, a, b) {
   const queryParams = customEncodeURIComponent(options)
 
   const path =
-    `/${tableRef.base.id}/${tableRef.id}` +
+    `/${tableRef.baseRef.id}/${tableRef.id}` +
     (queryParams ? "?" + queryParams : "")
 
   return tableRef.client.get(path)

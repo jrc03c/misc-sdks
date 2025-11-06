@@ -46,7 +46,7 @@ function createRecords(tableRef, records, options) {
 
   delete options.fields
 
-  return tableRef.client.post(`/${tableRef.base.id}/${tableRef.id}`, {
+  return tableRef.client.post(`/${tableRef.baseRef.id}/${tableRef.id}`, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...options,
