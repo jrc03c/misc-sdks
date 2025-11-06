@@ -55,4 +55,15 @@ test("AirtableTableRef.getRecords", async () => {
     expect(response.status).toBe(200)
     expect(response.json.records.length).toBe(options.maxRecords)
   })()
+
+  // errors
+  await (async () => {
+    expect(async () => await tableRef.getRecords("nope", {})).toThrow()
+    expect(async () => await tableRef.getRecords([], "nope")).toThrow()
+    expect(async () => await tableRef.getRecords("nope")).toThrow()
+
+    const ids = defaultRecords.map(r => r.id)
+    const options = { filterByFormula: "nope" }
+    expect(async () => await tableRef.getRecords(ids, options)).toThrow()
+  })()
 })
