@@ -46,4 +46,13 @@ test("AirtableTableRef.getRecords", async () => {
       defaultRecords.filter(r => r.fields.Status === "In progress"),
     )
   })()
+
+  // with both `ids` and `options` arguments
+  await (async () => {
+    const ids = defaultRecords.map(r => r.id)
+    const options = { maxRecords: 3 }
+    const response = await tableRef.getRecords(ids, options)
+    expect(response.status).toBe(200)
+    expect(response.json.records.length).toBe(options.maxRecords)
+  })()
 })
