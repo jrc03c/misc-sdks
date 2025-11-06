@@ -6,6 +6,10 @@ async function batchUploadCore(tableRefMethod, records, options, progress) {
   options = options || {}
   progress = progress || (() => {})
 
+  const expectedRequestCount = Math.ceil(
+    records.length / MAX_RECORDS_PER_REQUEST,
+  )
+
   const responses = []
   const newRecords = []
   let status = 200
@@ -28,10 +32,12 @@ async function batchUploadCore(tableRefMethod, records, options, progress) {
       newRecords.push(...response.json.records)
     }
 
-    progress(i / records.length)
+    progress(responses.length / expectedRequestCount)
   }
 
-  progress(1)
+  if (responses.length < expectedRequestCount) {
+    progress(1)
+  }
 
   const data = { responses }
 

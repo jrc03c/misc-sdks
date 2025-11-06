@@ -1,3 +1,8 @@
+import { batchCreateRecords } from "./methods/batch-create-records.mjs"
+import { batchDeleteRecords } from "./methods/batch-delete-records.mjs"
+// import {batchGetRecords} from "./methods/batch-get-records.mjs"
+import { batchUpdateRecordsDestructively } from "./methods/batch-update-records-destructively.mjs"
+import { batchUpdateRecordsSafely } from "./methods/batch-update-records-safely.mjs"
 import { createRecords } from "./methods/create-records.mjs"
 import { deleteRecords } from "./methods/delete-records.mjs"
 import { getRecords } from "./methods/get-records.mjs"
@@ -35,6 +40,22 @@ class AirtableTableRef {
     this.base = data.base
     this.client = data.client
     this.id = data.id
+  }
+
+  batchCreateRecords() {
+    return batchCreateRecords(this, ...arguments)
+  }
+
+  batchDeleteRecords() {
+    return batchDeleteRecords(this, ...arguments)
+  }
+
+  batchUpdateRecordsDestructively() {
+    return batchUpdateRecordsDestructively(this, ...arguments)
+  }
+
+  batchUpdateRecordsSafely() {
+    return batchUpdateRecordsSafely(this, ...arguments)
   }
 
   createRecords() {
