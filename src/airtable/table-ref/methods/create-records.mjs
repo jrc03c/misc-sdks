@@ -12,9 +12,15 @@ function createRecords(tableRef, records, options) {
 
   records = records || []
 
+  if (records.length === 0) {
+    throw new Error(
+      "The array passed into the `AirtableTableRef.createRecords` method must contain at least one record to create!",
+    )
+  }
+
   if (records.length > MAX_RECORDS_PER_REQUEST) {
     throw new Error(
-      `The array passed into the \`AirtableTable.createRecords\` method must contain no more than ${MAX_RECORDS_PER_REQUEST} record objects!`,
+      `The array passed into the \`AirtableTableRef.createRecords\` method must contain no more than ${MAX_RECORDS_PER_REQUEST} record objects!`,
     )
   }
 
@@ -23,7 +29,7 @@ function createRecords(tableRef, records, options) {
 
     if (typeof record !== "object") {
       throw new Error(
-        "The array passed into the `AirtableTable.createRecords` method must contain objects (representing records) with 'fields' properties!",
+        "The array passed into the `AirtableTableRef.createRecords` method must contain objects (representing records) with 'fields' properties!",
       )
     }
 
@@ -31,7 +37,7 @@ function createRecords(tableRef, records, options) {
 
     if (typeof record.fields === "undefined") {
       throw new Error(
-        "Each record object included in the array passed into the `AirtableTable.createRecords` method must have a 'fields' property with an object value whose key-value pairs correspond to field names and values in the given table!",
+        "Each record object included in the array passed into the `AirtableTableRef.createRecords` method must have a 'fields' property with an object value whose key-value pairs correspond to field names and values in the given table!",
       )
     }
   }

@@ -21,7 +21,7 @@ class AirtableTableRef {
 
     if (!data.baseRef) {
       throw new Error(
-        "The object passed into the `AirtableTableRef` constructor must have a 'baseRef' property pointing to an `AirtableBase` instance!",
+        "The object passed into the `AirtableTableRef` constructor must have a 'baseRef' property pointing to an `AirtableBaseRef` instance!",
       )
     }
 
