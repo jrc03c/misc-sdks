@@ -18,11 +18,11 @@ class TestRecord {
   id = ""
 
   fields = {
+    Assignee: "",
+    DueDate: "",
     Name: "",
     Notes: "",
-    Assignee: "",
     Status: "",
-    DueDate: "",
   }
 
   constructor(data) {
