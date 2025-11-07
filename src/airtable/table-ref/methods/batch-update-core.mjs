@@ -1,7 +1,7 @@
 import { AirtableClientResponse } from "../../response.mjs"
 import { MAX_RECORDS_PER_REQUEST } from "../common.mjs"
 
-async function batchUploadCore(tableRefMethod, records, options, progress) {
+async function batchUpdateCore(tableRefMethod, records, options, progress) {
   records = records || []
   options = options || {}
   progress = progress || (() => {})
@@ -53,4 +53,4 @@ async function batchUploadCore(tableRefMethod, records, options, progress) {
   })
 }
 
-export { batchUploadCore }
+export { batchUpdateCore }

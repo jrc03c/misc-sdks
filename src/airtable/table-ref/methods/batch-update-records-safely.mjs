@@ -1,7 +1,7 @@
-import { batchUploadCore } from "./batch-upload-core.mjs"
+import { batchUpdateCore } from "./batch-update-core.mjs"
 
 function batchUpdateRecordsSafely(tableRef, records, options, progress) {
-  return batchUploadCore(
+  return batchUpdateCore(
     tableRef.updateRecordsSafely.bind(tableRef),
     records,
     options,

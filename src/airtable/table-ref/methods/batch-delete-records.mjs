@@ -1,7 +1,7 @@
-import { batchUploadCore } from "./batch-upload-core.mjs"
+import { batchUpdateCore } from "./batch-update-core.mjs"
 
 function batchDeleteRecords(tableRef, ids, options, progress) {
-  return batchUploadCore(
+  return batchUpdateCore(
     tableRef.deleteRecords.bind(tableRef),
     ids,
     options,
