@@ -33,4 +33,10 @@ test("AirtableTableRef.batchDeleteRecords", async () => {
   expect(response2.json.responses.length).toBe(
     Math.ceil(newRecords.length / MAX_RECORDS_PER_REQUEST),
   )
+
+  expect(
+    response2.json.responses.every(v => v instanceof AirtableClientResponse),
+  ).toBe(true)
+
+  expect(response2.json.responses.every(v => v.status <= response2.status))
 })

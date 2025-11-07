@@ -34,6 +34,11 @@ test("AirtableTableRef.batchCreateRecords", async () => {
     Math.ceil(newRecords.length / MAX_RECORDS_PER_REQUEST),
   )
 
+  expect(
+    response.json.responses.every(v => v instanceof AirtableClientResponse),
+  ).toBe(true)
+
+  expect(response.json.responses.every(v => v.status <= response.status))
   expect(response.json.records.length).toBe(newRecords.length)
   confirmRecordsAreEqual(response.json.records, newRecords)
 })
