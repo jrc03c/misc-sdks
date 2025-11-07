@@ -1,7 +1,7 @@
 import { batchCreateRecords } from "./methods/batch-create-records.mjs"
 import { batchDeleteRecords } from "./methods/batch-delete-records.mjs"
-import { batchGetRecordsById } from "./methods/batch-get-records-by-id.mjs"
 import { batchGetRecordsByFormula } from "./methods/batch-get-records-by-formula.mjs"
+import { batchGetRecordsById } from "./methods/batch-get-records-by-id.mjs"
 import { batchUpdateRecordsDestructively } from "./methods/batch-update-records-destructively.mjs"
 import { batchUpdateRecordsSafely } from "./methods/batch-update-records-safely.mjs"
 import { createRecords } from "./methods/create-records.mjs"
