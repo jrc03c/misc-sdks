@@ -4,34 +4,38 @@ import { PAGE_SIZE } from "../common.mjs"
 async function batchGetRecordsByFormula(tableRef, formula, options, progress) {
   formula = formula || ""
   options = options || {}
-  options.maxCount = options.maxCount || 100
+  options.filterByFormula = formula || options.filterByFormula || ""
+  options.maxRecords = options.maxRecords || 100
   progress = progress || (() => {})
 
-  if (typeof formula !== "string" || formula.length === 0) {
+  if (
+    typeof options.filterByFormula !== "string" ||
+    options.filterByFormula.length === 0
+  ) {
     throw new Error(
       "The first argument passed into the `AirtableTableRef.batchGetRecordsByFormula` method must be a non-empty string representing a formula!",
     )
   }
 
   if (
-    typeof options.maxCount !== "number" ||
-    options.maxCount < 0 ||
-    options.maxCount === Infinity
+    typeof options.maxRecords !== "number" ||
+    options.maxRecords < 0 ||
+    options.maxRecords === Infinity
   ) {
     throw new Error(
-      "The options object passed as the second argument into the `AirtableTableRef.batchGetRecordsByFormula` method must have a 'maxCount' property with a finite, positive integer value representing a maximum number of records to return!",
+      "The options object passed as the second argument into the `AirtableTableRef.batchGetRecordsByFormula` method must have a 'maxRecords' property with a finite, positive integer value representing a maximum number of records to return!",
     )
   }
 
-  options.maxCount = Math.ceil(options.maxCount)
+  options.maxRecords = Math.ceil(options.maxRecords)
 
-  const expectedResponseCount = Math.ceil(options.maxCount / PAGE_SIZE)
+  const expectedResponseCount = Math.ceil(options.maxRecords / PAGE_SIZE)
   const responses = []
   const records = []
   let status = 200
   let offset
 
-  while (records.length < options.maxCount) {
+  while (records.length < options.maxRecords) {
     if (offset) {
       options.offset = offset
     }
