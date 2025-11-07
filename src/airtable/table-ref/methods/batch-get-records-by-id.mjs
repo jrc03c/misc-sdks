@@ -4,8 +4,6 @@ import { PAGE_SIZE } from "../common.mjs"
 async function batchGetRecordsById(tableRef, ids, options, progress) {
   ids = ids || []
   options = options || {}
-  delete options.maxCount
-  delete options.filterByFormula
   progress = progress || (() => {})
 
   if (
@@ -24,6 +22,9 @@ async function batchGetRecordsById(tableRef, ids, options, progress) {
   let status = 200
 
   for (let i = 0; i < ids.length; i += PAGE_SIZE) {
+    delete options.maxCount
+    delete options.filterByFormula
+
     const chunk = ids.slice(i, i + PAGE_SIZE)
     const response = await tableRef.getRecords(chunk, options)
     responses.push(response)
