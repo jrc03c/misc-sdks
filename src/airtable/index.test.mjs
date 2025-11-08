@@ -1,5 +1,5 @@
-import { AirtableClient } from "./index.mjs"
 import { AirtableBaseRef } from "./base-ref/index.mjs"
+import { AirtableClient } from "./index.mjs"
 import { expect, test } from "@jrc03c/fake-jest"
 
 test("AirtableClient", () => {
@@ -11,8 +11,8 @@ test("AirtableClient", () => {
   expect(client.exponentialBackoffHelper.ms).toBe(1000 / 50)
   expect(client.token).toBe("foobar")
 
-  const base = client.getBaseRef("whatevs")
-  expect(base instanceof AirtableBaseRef).toBe(true)
-  expect(base.client).toBe(client)
-  expect(base.id).toBe("whatevs")
+  const baseRef = client.getBaseRef("whatevs")
+  expect(baseRef instanceof AirtableBaseRef).toBe(true)
+  expect(baseRef.client).toBe(client)
+  expect(baseRef.id).toBe("whatevs")
 })

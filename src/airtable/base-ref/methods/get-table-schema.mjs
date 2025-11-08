@@ -16,11 +16,16 @@ async function getTableSchema(baseRef, id) {
   const schema = response.json.tables.find(t => t.id === id)
 
   if (!schema) {
+    const data = {
+      error:
+        "The specified table was not found, or you do not have permission to access it.",
+    }
+
     return new AirtableClientResponse({
       ...response,
-      json: { error: "NOT_FOUND" },
+      json: data,
       status: 404,
-      text: '{"error":"NOT_FOUND"}',
+      text: JSON.stringify(data),
     })
   }
 
