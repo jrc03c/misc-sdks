@@ -107,4 +107,76 @@ function standardizeEmailAddress(x, options) {
   return username + "@" + domain
 }
 
-export { GmailMessageSender, safeParse, standardizeEmailAddress }
+function toNodemailerAddressFormat(
+  x,
+  shouldStandardizeEmailAddress,
+  emailStandardizationOptions,
+) {
+  shouldStandardizeEmailAddress = shouldStandardizeEmailAddress ?? true
+
+  let address = ""
+  let name = ""
+
+  if (typeof x === "object") {
+    if (x instanceof Array) {
+      return x.map(v =>
+        toNodemailerAddressFormat(
+          v,
+          shouldStandardizeEmailAddress,
+          emailStandardizationOptions,
+        ),
+      )
+    }
+
+    address = x.address || address
+    name = x.name || name
+  } else if (typeof x === "string") {
+    const matches = x.match(/"?.*?"? <.*?>,?/gs)
+
+    if (matches && matches.length > 0) {
+      if (matches.length > 1) {
+        return matches.map(v =>
+          toNodemailerAddressFormat(
+            v,
+            shouldStandardizeEmailAddress,
+            emailStandardizationOptions,
+          ),
+        )
+      } else {
+        const match = matches[0]
+
+        address = match
+          .match(/<.*?>/gs)[0]
+          .replace("<", "")
+          .replace(">", "")
+          .trim()
+
+        name = match
+          .replaceAll(/<.*?>/gs, "")
+          .trim()
+          .replace(/,$/, "")
+          .trim()
+          .replaceAll('"', "")
+      }
+    } else {
+      address = x
+    }
+  } else {
+    throw new Error(
+      `The value passed into the \`toNodemailerAddressFormat\` function must be a string or an object (with 'address' and (optionally) 'name' properties)!`,
+    )
+  }
+
+  if (shouldStandardizeEmailAddress) {
+    address = standardizeEmailAddress(address, emailStandardizationOptions)
+  }
+
+  return { address, name: name || address }
+}
+
+export {
+  GmailMessageSender,
+  safeParse,
+  standardizeEmailAddress,
+  toNodemailerAddressFormat,
+}

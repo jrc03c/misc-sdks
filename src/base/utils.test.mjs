@@ -1,5 +1,6 @@
 import { expect, test } from "@jrc03c/fake-jest"
-import { standardizeEmailAddress } from "./utils.mjs"
+import { isEqual } from "@jrc03c/js-math-tools"
+import { standardizeEmailAddress, toNodemailerAddressFormat } from "./utils.mjs"
 
 test("standardizeEmailAddress", () => {
   // non-email-address strings
@@ -96,4 +97,72 @@ test("standardizeEmailAddress", () => {
   for (let i = 0; i < wrongs.length; i++) {
     expect(() => standardizeEmailAddress(wrongs[i])).toThrow()
   }
+})
+
+test("toNodemailerAddressFormat", () => {
+  expect(
+    isEqual(toNodemailerAddressFormat("someone@example.com"), {
+      address: "someone@example.com",
+      name: "someone@example.com",
+    }),
+  ).toBe(true)
+
+  expect(
+    isEqual(toNodemailerAddressFormat("Foo Bar <someone@example.com>"), {
+      address: "someone@example.com",
+      name: "Foo Bar",
+    }),
+  ).toBe(true)
+
+  expect(
+    isEqual(toNodemailerAddressFormat(`"Bar, Foo" <someone@example.com>`), {
+      address: "someone@example.com",
+      name: `Bar, Foo`,
+    }),
+  ).toBe(true)
+
+  expect(
+    isEqual(
+      toNodemailerAddressFormat({
+        address: "someone@example.com",
+        name: "Foo Bar",
+      }),
+      {
+        address: "someone@example.com",
+        name: "Foo Bar",
+      },
+    ),
+  ).toBe(true)
+
+  expect(
+    isEqual(
+      toNodemailerAddressFormat([
+        `alice@example.com`,
+        `Bob <bob@example.com>`,
+        { address: "cindy@example.com", name: "Cindy Lu Who" },
+      ]),
+      [
+        { address: "alice@example.com", name: "alice@example.com" },
+        { address: "bob@example.com", name: "Bob" },
+        { address: "cindy@example.com", name: "Cindy Lu Who" },
+      ],
+    ),
+  ).toBe(true)
+
+  expect(
+    isEqual(
+      toNodemailerAddressFormat(
+        [
+          `"Alice" <alice@example.com>`,
+          `Bob <bob@example.com>`,
+          `Cindy Lu Who <cindy@example.com>`,
+        ].join(", "),
+      ),
+      [
+        { address: "alice@example.com", name: "Alice" },
+        { address: "bob@example.com", name: "Bob" },
+        { address: "cindy@example.com", name: "Cindy Lu Who" },
+      ],
+    ),
+  ).toBe(true)
 })
