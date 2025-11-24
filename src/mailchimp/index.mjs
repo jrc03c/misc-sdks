@@ -15,6 +15,9 @@ import { updateListMemberInfo } from "./methods/update-list-member-info.mjs"
 import { updateListMemberStatus } from "./methods/update-list-member-status.mjs"
 import { updateListMemberTags } from "./methods/update-list-member-tags.mjs"
 
+const DEFAULT_API_VERSION = "3.0"
+const DEFAULT_DATACENTER = "us0"
+
 class MailchimpClient extends BaseClient {
   static MemberStatus = {
     ARCHIVED: "archived",
@@ -32,11 +35,20 @@ class MailchimpClient extends BaseClient {
   }
 
   apiKey = ""
-  apiVersion = "3.0"
-  datacenter = "us0"
+  apiVersion = DEFAULT_API_VERSION
+  datacenter = DEFAULT_DATACENTER
 
   constructor(data) {
     data = data || {}
+
+    const dc =
+      data.datacenter ||
+      (data.apiKey ? data.apiKey.split("-").at(-1).trim() : DEFAULT_DATACENTER)
+
+    const version = data.apiVersion || DEFAULT_API_VERSION
+
+    data.baseUrl = data.baseUrl || `https://${dc}.api.mailchimp.com/${version}`
+
     super(data)
 
     if (!data.apiKey) {
@@ -47,11 +59,7 @@ class MailchimpClient extends BaseClient {
 
     this.apiKey = data.apiKey
     this.apiVersion = data.apiVersion || this.apiVersion
-    this.datacenter = data.datacenter || this.apiKey.split("-").at(-1).trim()
-
-    this.baseUrl =
-      data.baseUrl ||
-      `https://${this.datacenter}.api.mailchimp.com/${this.apiVersion}`
+    this.datacenter = dc
   }
 
   addMemberToList() {
