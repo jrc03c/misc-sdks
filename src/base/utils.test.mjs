@@ -1,0 +1,92 @@
+import { expect, test } from "@jrc03c/fake-jest"
+import { standardizeEmailAddress } from "./utils.mjs"
+
+test("standardizeEmailAddress", () => {
+  // non-email-address strings
+  expect(standardizeEmailAddress("")).toBe("")
+  expect(standardizeEmailAddress("someone")).toBe("someone")
+
+  expect(standardizeEmailAddress("someone@a@b@c@example.com")).toBe(
+    "someone@a@b@c@example.com",
+  )
+
+  // plain ol' email addresses
+  expect(standardizeEmailAddress("someone@example.com")).toBe(
+    "someone@example.com",
+  )
+
+  // upper-case
+  expect(standardizeEmailAddress("SoMeOnE@eXaMpLe.CoM")).toBe(
+    "someone@example.com",
+  )
+
+  // whitespace
+  expect(standardizeEmailAddress("s o m e o n e @ e x a m p l e . c o m")).toBe(
+    "someone@example.com",
+  )
+
+  // diacritical marks
+  expect(standardizeEmailAddress("sömeoné@exåmple.com")).toBe(
+    "someone@example.com",
+  )
+
+  expect(
+    standardizeEmailAddress("sömeoné@exåmple.com", {
+      shouldRemoveDiacriticalMarks: false,
+    }),
+  ).toBe("sömeoné@exåmple.com")
+
+  // periods in username
+  expect(standardizeEmailAddress("s.o.m.e.o.n.e@example.com")).toBe(
+    "s.o.m.e.o.n.e@example.com",
+  )
+
+  expect(
+    standardizeEmailAddress("s.o.m.e.o.n.e@example.com", {
+      shouldRemovePeriodsInUsername: true,
+    }),
+  ).toBe("someone@example.com")
+
+  // tags in username
+  expect(standardizeEmailAddress("someone+test@example.com")).toBe(
+    "someone+test@example.com",
+  )
+
+  expect(
+    standardizeEmailAddress("someone+test@example.com", {
+      shouldRemoveTagsInUsername: true,
+    }),
+  ).toBe("someone@example.com")
+
+  const wrongs = [
+    0,
+    1,
+    2.3,
+    -2.3,
+    234n,
+    -234n,
+    Infinity,
+    -Infinity,
+    NaN,
+    true,
+    false,
+    null,
+    undefined,
+    Symbol.for("Hello, world!"),
+    [2, 3, 4],
+    [
+      [2, 3, 4],
+      [5, 6, 7],
+    ],
+    x => x,
+    function (x) {
+      return x
+    },
+    { hello: "world" },
+    new Date(),
+  ]
+
+  for (let i = 0; i < wrongs.length; i++) {
+    expect(() => standardizeEmailAddress(wrongs[i])).toThrow()
+  }
+})

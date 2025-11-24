@@ -12,8 +12,8 @@ importers:
         specifier: ^0.0.3
         version: 0.0.3
       '@jrc03c/js-text-tools':
-        specifier: ^0.0.102
-        version: 0.0.102
+        specifier: ^0.0.105
+        version: 0.0.105
     devDependencies:
       '@eslint/js':
         specifier: ^9.12.0
@@ -108,10 +108,6 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
-  '@jrc03c/bash-colors@0.0.8':
-    resolution: {integrity: sha512-VyGXA1zUqtjap/JuOVHZW+jbvjyCI1i+9GNM4QAcHZWOxrAyxGEOILfyuZH1ezlaKdgmIKv8GRHWKBbIKkNSkA==}
-    hasBin: true
-
   '@jrc03c/bash-colors@0.0.9':
     resolution: {integrity: sha512-9ZXLRBes94L9tMgNt9sTg0XPfcz4xDMjEcHv7gNqzzL5DIAhLqC3BqBc+r95Y/+kA0ubLbrjIcHhVJefZrFHPw==}
     hasBin: true
@@ -132,15 +128,16 @@ packages:
   '@jrc03c/js-math-tools@0.0.87':
     resolution: {integrity: sha512-Ub8QWkdOq908M7/ImbcJ7hezUi3U5C/s/FjzljxehBJqmZB9K4GdOy+jg6Yq+V72nz49Kne9dc+TlEExwJTE8A==}
 
-  '@jrc03c/js-math-tools@0.0.99':
-    resolution: {integrity: sha512-A+ERWXwqTqVKgIT9szFCOt9rFa7iXAY6C6ZJcFNJw5yme9o0yuEUC8wAp0EfEn8h12LVtff7stLBETMeSmnDNw==}
-
-  '@jrc03c/js-text-tools@0.0.102':
-    resolution: {integrity: sha512-y1+YzMx7vyTT11fzaB98zmz1gSliswNeNXYSxHd6lwkBfn+9WcxCyhA38jlM45ceKPET8oKWnhCN6dzU2LuONw==}
+  '@jrc03c/js-text-tools@0.0.105':
+    resolution: {integrity: sha512-ez0Mzhxw7Vb7rsGGUR3ERLYGHnA+bCM5oqJUn8D0zPBcDXpkLkpIVtP8JxNhVzZ0mrbQDeYXzVL1CMG2lck1vQ==}
     hasBin: true
 
   '@jrc03c/make-key@0.0.40':
     resolution: {integrity: sha512-a4vWqCgnQ1kaf6YOHZyDDKGgMwCLdEGPCkRmyNsAj5GamMK21PyIZdo6KbvUgXCQr4VFK+FMlHs5e9PdUewung==}
+    hasBin: true
+
+  '@jrc03c/make-key@0.0.41':
+    resolution: {integrity: sha512-NFoQ2oKZnZdcWZnc8WSV1FGJ8LB6c+wvFUu0XLwIP/KbfJZIio2mvTRfWNlgVmEtxlgqMKBI3I1LhRlZrdGeOA==}
     hasBin: true
 
   '@jrc03c/pause@0.0.12':
@@ -776,8 +773,6 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@jrc03c/bash-colors@0.0.8': {}
-
   '@jrc03c/bash-colors@0.0.9': {}
 
   '@jrc03c/exponential-backoff@0.0.3':
@@ -796,15 +791,15 @@ snapshots:
 
   '@jrc03c/js-math-tools@0.0.87': {}
 
-  '@jrc03c/js-math-tools@0.0.99': {}
-
-  '@jrc03c/js-text-tools@0.0.102':
+  '@jrc03c/js-text-tools@0.0.105':
     dependencies:
-      '@jrc03c/bash-colors': 0.0.8
-      '@jrc03c/js-math-tools': 0.0.99
-      '@jrc03c/make-key': 0.0.40
+      '@jrc03c/bash-colors': 0.0.9
+      '@jrc03c/js-math-tools': 0.0.104
+      '@jrc03c/make-key': 0.0.41
 
   '@jrc03c/make-key@0.0.40': {}
+
+  '@jrc03c/make-key@0.0.41': {}
 
   '@jrc03c/pause@0.0.12': {}
 

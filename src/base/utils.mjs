@@ -1,3 +1,4 @@
+import { removeDiacriticalMarks } from "@jrc03c/js-text-tools"
 import nodemailer from "nodemailer"
 
 class GmailMessageSender {
@@ -43,4 +44,49 @@ function safeParse(x) {
   }
 }
 
-export { GmailMessageSender, safeParse }
+function standardizeEmailAddress(x, options) {
+  // NOTE: This function does not confirm that the string it receives is a valid
+  // email address!
+
+  if (typeof x !== "string") {
+    throw new Error(
+      "The value passed into the `standardizeEmailAddress` function must be a string!",
+    )
+  }
+
+  options = options || {}
+
+  // remove diacritical marks by default
+  const shouldRemoveDiacriticalMarks =
+    options.shouldRemoveDiacriticalMarks ?? true
+
+  // do NOT remove periods in username by default
+  const shouldRemovePeriodsInUsername =
+    options.shouldRemovePeriodsInUsername ?? false
+
+  // do NOT remove tags in username by default
+  const shouldRemoveTagsInUsername = options.shouldRemoveTagsInUsername ?? false
+
+  x = x.toLowerCase()
+  x = x.replaceAll(/\s/g, "")
+
+  if (shouldRemoveDiacriticalMarks) {
+    x = removeDiacriticalMarks(x)
+  }
+
+  if (shouldRemovePeriodsInUsername) {
+    const parts = x.split("@")
+    const username = parts[0].replaceAll(/\./g, "")
+    x = username + "@" + parts.slice(1).join("@")
+  }
+
+  if (shouldRemoveTagsInUsername) {
+    const parts = x.split("@")
+    const username = parts[0].split("+")[0]
+    x = username + "@" + parts.slice(1).join("@")
+  }
+
+  return x
+}
+
+export { GmailMessageSender, safeParse, standardizeEmailAddress }
