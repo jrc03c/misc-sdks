@@ -25,5 +25,5 @@
     "pub": "pnpm version patch --force && pnpm publish --access=public"
   },
   "type": "module",
-  "version": "0.0.12"
+  "version": "0.0.13"
 }
