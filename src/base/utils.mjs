@@ -54,11 +54,19 @@ function standardizeEmailAddress(x, options) {
     )
   }
 
+  if (!x.includes("@")) {
+    return x
+  }
+
   options = options || {}
 
-  // remove diacritical marks by default
-  const shouldRemoveDiacriticalMarks =
-    options.shouldRemoveDiacriticalMarks ?? true
+  // remove diacritical marks in username by default
+  const shouldRemoveDiacriticalMarksInUsername =
+    options.shouldRemoveDiacriticalMarksInUsername ?? true
+
+  // do NOT remove diacritical marks in domain by default
+  const shouldRemoveDiacriticalMarksInDomain =
+    options.shouldRemoveDiacriticalMarksInDomain ?? false
 
   // do NOT remove periods in username by default
   const shouldRemovePeriodsInUsername =
@@ -70,23 +78,33 @@ function standardizeEmailAddress(x, options) {
   x = x.toLowerCase()
   x = x.replaceAll(/\s/g, "")
 
-  if (shouldRemoveDiacriticalMarks) {
-    x = removeDiacriticalMarks(x)
+  const parts = x.split("@")
+  let username = parts[0]
+  let domain = parts.slice(1).join("@")
+
+  if (shouldRemoveDiacriticalMarksInUsername) {
+    username = removeDiacriticalMarks(username)
+  }
+
+  if (shouldRemoveDiacriticalMarksInDomain) {
+    // eslint-disable-next-line no-control-regex
+    const pattern = /[^\x00-\x7F]/
+
+    domain = domain
+      .split(".")
+      .map(v => (pattern.test(v) ? new URL(`http://${v}`).hostname : v))
+      .join(".")
   }
 
   if (shouldRemovePeriodsInUsername) {
-    const parts = x.split("@")
-    const username = parts[0].replaceAll(/\./g, "")
-    x = username + "@" + parts.slice(1).join("@")
+    username = username.replaceAll(/\./g, "")
   }
 
   if (shouldRemoveTagsInUsername) {
-    const parts = x.split("@")
-    const username = parts[0].split("+")[0]
-    x = username + "@" + parts.slice(1).join("@")
+    username = username.split("+")[0]
   }
 
-  return x
+  return username + "@" + domain
 }
 
 export { GmailMessageSender, safeParse, standardizeEmailAddress }

@@ -26,15 +26,22 @@ test("standardizeEmailAddress", () => {
   )
 
   // diacritical marks
+  // (should be removed in username by default but not in domain name)
   expect(standardizeEmailAddress("sömeoné@exåmple.com")).toBe(
-    "someone@example.com",
+    "someone@exåmple.com",
   )
 
   expect(
     standardizeEmailAddress("sömeoné@exåmple.com", {
-      shouldRemoveDiacriticalMarks: false,
+      shouldRemoveDiacriticalMarksInUsername: false,
     }),
   ).toBe("sömeoné@exåmple.com")
+
+  expect(
+    standardizeEmailAddress("sömeoné@exåmple.com", {
+      shouldRemoveDiacriticalMarksInDomain: true,
+    }),
+  ).toBe("someone@xn--exmple-jua.com")
 
   // periods in username
   expect(standardizeEmailAddress("s.o.m.e.o.n.e@example.com")).toBe(
