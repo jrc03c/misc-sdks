@@ -155,14 +155,34 @@ test("toNodemailerAddressFormat", () => {
         [
           `"Alice" <alice@example.com>`,
           `Bob <bob@example.com>`,
-          `Cindy Lu Who <cindy@example.com>`,
+          `cindy@example.com`,
         ].join(", "),
       ),
       [
         { address: "alice@example.com", name: "Alice" },
         { address: "bob@example.com", name: "Bob" },
-        { address: "cindy@example.com", name: "Cindy Lu Who" },
+        { address: "cindy@example.com", name: "cindy@example.com" },
       ],
+    ),
+  ).toBe(true)
+
+  expect(
+    isEqual(toNodemailerAddressFormat("sömeoné@exåmple.com"), {
+      address: "someone@exåmple.com",
+      name: "someone@exåmple.com",
+    }),
+  ).toBe(true)
+
+  expect(
+    isEqual(
+      toNodemailerAddressFormat("sömeoné@exåmple.com", true, {
+        shouldRemoveDiacriticalMarksInDomain: true,
+        shouldRemoveDiacriticalMarksInUsername: false,
+      }),
+      {
+        address: "sömeoné@xn--exmple-jua.com",
+        name: "sömeoné@xn--exmple-jua.com",
+      },
     ),
   ).toBe(true)
 })

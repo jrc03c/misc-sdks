@@ -2,6 +2,8 @@ import { removeDiacriticalMarks } from "@jrc03c/js-text-tools"
 import nodemailer from "nodemailer"
 
 class GmailMessageSender {
+  emailStandardizationOptions = null
+  shouldStandardizeEmailAddresses = true
   transport = null
 
   constructor(data) {
@@ -12,6 +14,13 @@ class GmailMessageSender {
         "The object passed into the `GmailMessageSender` constructor must have 'user' and 'pass' properties with string values representing a valid Gmail username and password!",
       )
     }
+
+    this.emailStandardizationOptions =
+      data.emailStandardizationOptions || this.emailStandardizationOptions
+
+    this.shouldStandardizeEmailAddresses =
+      data.shouldStandardizeEmailAddresses ??
+      this.shouldStandardizeEmailAddresses
 
     this.transport = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -32,7 +41,24 @@ class GmailMessageSender {
     // - subject
     // - text
     // - to
-    return await this.transport.sendMail(payload)
+
+    if (this.shouldStandardizeEmailAddresses) {
+      payload = structuredClone(payload)
+      const fields = ["bcc", "cc", "from", "to"]
+
+      for (const field of fields) {
+        if (payload[field]) {
+          payload[field] = toNodemailerAddressFormat(
+            payload[field],
+            true,
+            this.emailStandardizationOptions,
+          )
+        }
+      }
+    }
+
+    return console.log(payload)
+    // return await this.transport.sendMail(payload)
   }
 }
 
@@ -112,66 +138,94 @@ function toNodemailerAddressFormat(
   shouldStandardizeEmailAddress,
   emailStandardizationOptions,
 ) {
+  const customSplit = x => {
+    const out = []
+    let isInQuotes = false
+    let temp = ""
+
+    for (let i = 0; i < x.length; i++) {
+      const char = x[i]
+
+      if (char === '"') {
+        isInQuotes = !isInQuotes
+        continue
+      }
+
+      if (char === "\\") {
+        temp += char + (x[i + 1] || "")
+        i++
+        continue
+      }
+
+      if (char === "," && !isInQuotes) {
+        out.push(temp.trim())
+        temp = ""
+      } else {
+        temp += char
+      }
+    }
+
+    if (temp.length > 0) {
+      out.push(temp.trim())
+    }
+
+    return out
+  }
+
   shouldStandardizeEmailAddress = shouldStandardizeEmailAddress ?? true
 
-  let address = ""
-  let name = ""
+  const helper = x => {
+    let address = ""
+    let name = ""
 
-  if (typeof x === "object") {
-    if (x instanceof Array) {
-      return x.map(v =>
-        toNodemailerAddressFormat(
-          v,
-          shouldStandardizeEmailAddress,
-          emailStandardizationOptions,
-        ),
+    if (typeof x === "object") {
+      if (x instanceof Array) {
+        return x.map(v => helper(v))
+      }
+
+      address = x.address || address
+      name = x.name || name
+    } else if (typeof x === "string") {
+      const subvalues = customSplit(x)
+
+      if (subvalues.length > 1) {
+        return subvalues.map(v => helper(v))
+      } else {
+        let sub = subvalues[0]
+        const matches = sub.match(/"?.*?"?\s*<.*?>/gs)
+
+        if (matches && matches.length > 0) {
+          const match = matches[0]
+
+          address = match
+            .match(/<.*?>/gs)[0]
+            .replace(/^</, "")
+            .replace(/>$/, "")
+
+          name = match
+            .replace(/<.*?>/gs, "")
+            .trim()
+            .replace(/^"/, "")
+            .replace(/"$/, "")
+            .trim()
+        } else {
+          address = sub
+        }
+      }
+    } else {
+      throw new Error(
+        `The value passed into the \`toNodemailerAddressFormat\` function must be a string or an object (with 'address' and (optionally) 'name' properties)!`,
       )
     }
 
-    address = x.address || address
-    name = x.name || name
-  } else if (typeof x === "string") {
-    const matches = x.match(/"?.*?"? <.*?>,?/gs)
-
-    if (matches && matches.length > 0) {
-      if (matches.length > 1) {
-        return matches.map(v =>
-          toNodemailerAddressFormat(
-            v,
-            shouldStandardizeEmailAddress,
-            emailStandardizationOptions,
-          ),
-        )
-      } else {
-        const match = matches[0]
-
-        address = match
-          .match(/<.*?>/gs)[0]
-          .replace("<", "")
-          .replace(">", "")
-          .trim()
-
-        name = match
-          .replaceAll(/<.*?>/gs, "")
-          .trim()
-          .replace(/,$/, "")
-          .trim()
-          .replaceAll('"', "")
-      }
-    } else {
-      address = x
+    if (shouldStandardizeEmailAddress) {
+      address = standardizeEmailAddress(address, emailStandardizationOptions)
     }
-  } else {
-    throw new Error(
-      `The value passed into the \`toNodemailerAddressFormat\` function must be a string or an object (with 'address' and (optionally) 'name' properties)!`,
-    )
+
+    return { address, name: name || address }
   }
 
-  if (shouldStandardizeEmailAddress) {
-    address = standardizeEmailAddress(address, emailStandardizationOptions)
-  }
-
-  return { address, name: name || address }
+  return helper(x)
 }
 
 export {
