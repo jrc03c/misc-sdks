@@ -1,4 +1,5 @@
 import { isEmailAddress } from "@jrc03c/js-text-tools"
+import { standardizeEmailAddress } from "../../base/utils.mjs"
 
 function updateListMemberTags(client, listId, emailAddress, tags, options) {
   if (!listId || typeof listId !== "string") {
@@ -10,6 +11,13 @@ function updateListMemberTags(client, listId, emailAddress, tags, options) {
   if (!isEmailAddress(emailAddress)) {
     throw new Error(
       "The second argument passed into the `MailchimpClient.updateListMemberTags` method must be a string representing an email address!",
+    )
+  }
+
+  if (client.shouldStandardizeEmailAddresses) {
+    emailAddress = standardizeEmailAddress(
+      emailAddress,
+      client.emailStandardizationOptions,
     )
   }
 

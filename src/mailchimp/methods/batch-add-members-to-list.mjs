@@ -1,4 +1,5 @@
 import { isEmailAddress } from "@jrc03c/js-text-tools"
+import { standardizeEmailAddress } from "../../base/utils.mjs"
 
 const MAX_MEMBERS_PER_REQUEST = 500
 
@@ -32,6 +33,13 @@ function batchAddMembersToList(client, listId, members, options) {
       let member = members[i]
 
       if (typeof member === "string") {
+        if (client.shouldStandardizeEmailAddresses) {
+          member = standardizeEmailAddress(
+            member,
+            client.emailStandardizationOptions,
+          )
+        }
+
         member = {
           email_address: member,
           email_type: "html",

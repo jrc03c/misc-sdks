@@ -1,4 +1,5 @@
 import { isEmailAddress } from "@jrc03c/js-text-tools"
+import { standardizeEmailAddress } from "../../base/utils.mjs"
 
 function addMemberToList(client, listId, member, options) {
   // options include:
@@ -7,6 +8,13 @@ function addMemberToList(client, listId, member, options) {
   // if `member` is an email address string rather than a member object, then
   // convert it to a member object
   if (typeof member === "string") {
+    if (client.shouldStandardizeEmailAddresses) {
+      member = standardizeEmailAddress(
+        member,
+        client.emailStandardizationOptions,
+      )
+    }
+
     member = {
       email_address: member,
       email_type: "html",

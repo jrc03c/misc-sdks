@@ -3,6 +3,7 @@ import { addTagsToListMember } from "./methods/add-tags-to-list-member.mjs"
 import { archiveListMember } from "./methods/archive-list-member.mjs"
 import { BaseClient } from "../base/index.mjs"
 import { batchAddMembersToList } from "./methods/batch-add-members-to-list.mjs"
+import { EmailStandardizationOptions } from "../base/utils.mjs"
 import { getListInfo } from "./methods/get-list-info.mjs"
 import { getListMemberInfo } from "./methods/get-list-member-info.mjs"
 import { getListMemberStatus } from "./methods/get-list-member-status.mjs"
@@ -37,6 +38,8 @@ class MailchimpClient extends BaseClient {
   apiKey = ""
   apiVersion = DEFAULT_API_VERSION
   datacenter = DEFAULT_DATACENTER
+  emailStandardizationOptions = null
+  shouldStandardizeEmailAddresses = true
 
   constructor(data) {
     data = data || {}
@@ -60,6 +63,14 @@ class MailchimpClient extends BaseClient {
     this.apiKey = data.apiKey
     this.apiVersion = data.apiVersion || this.apiVersion
     this.datacenter = dc
+
+    this.emailStandardizationOptions = new EmailStandardizationOptions(
+      data.emailStandardizationOptions || this.emailStandardizationOptions,
+    )
+
+    this.shouldStandardizeEmailAddresses =
+      data.shouldStandardizeEmailAddresses ??
+      this.shouldStandardizeEmailAddresses
   }
 
   addMemberToList() {
