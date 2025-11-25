@@ -57,8 +57,7 @@ class GmailMessageSender {
       }
     }
 
-    return console.log(payload)
-    // return await this.transport.sendMail(payload)
+    return await this.transport.sendMail(payload)
   }
 }
 
