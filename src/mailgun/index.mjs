@@ -1,4 +1,11 @@
 import { BaseClient } from "../base/index.mjs"
+
+import {
+  EmailStandardizationOptions,
+  standardizeEmailAddress,
+  toNodemailerAddressFormat,
+} from "../base/utils.mjs"
+
 import { MailgunClientResponse } from "./response.mjs"
 import { MailgunEmailPayload } from "./email-payload.mjs"
 import { urlPathJoin } from "@jrc03c/js-text-tools"
@@ -8,7 +15,9 @@ const MAILGUN_BASE_URL = "https://api.mailgun.net"
 class MailgunClient extends BaseClient {
   apiKey = null
   apiVersion = 3
+  emailStandardizationOptions = null
   senderDomain = null
+  shouldStandardizeEmailAddresses = true
 
   constructor(data) {
     data = data || {}
@@ -33,7 +42,16 @@ class MailgunClient extends BaseClient {
 
     this.apiKey = data.apiKey
     this.apiVersion = data.apiVersion || this.apiVersion
+
+    this.emailStandardizationOptions = new EmailStandardizationOptions(
+      data.emailStandardizationOptions || this.emailStandardizationOptions,
+    )
+
     this.senderDomain = data.senderDomain
+
+    this.shouldStandardizeEmailAddresses =
+      data.shouldStandardizeEmailAddresses ??
+      this.shouldStandardizeEmailAddresses
   }
 
   async send(path, options) {
@@ -67,12 +85,35 @@ class MailgunClient extends BaseClient {
       )
     }
 
+    const standardize = v => {
+      let { address, name } = toNodemailerAddressFormat(v)
+      const areTheSame = address === name
+
+      address = standardizeEmailAddress(
+        address,
+        this.emailStandardizationOptions,
+      )
+
+      if (areTheSame) {
+        return `"${address}" <${address}>`
+      } else {
+        return `"${name}" <${address}>`
+      }
+    }
+
     if (!(payload instanceof MailgunEmailPayload)) {
       payload = new MailgunEmailPayload(payload)
     }
 
     if (!payload.from) {
       payload.from = `noreply@${this.senderDomain}`
+    }
+
+    if (this.shouldStandardizeEmailAddresses) {
+      payload = payload.copy()
+      payload.from = standardize(payload.from)
+      payload.replyTo = standardize(payload.replyTo)
+      payload.to = payload.to.map(v => standardize(v))
     }
 
     return await this.post(urlPathJoin("/", this.senderDomain, "messages"), {

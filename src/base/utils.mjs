@@ -1,6 +1,44 @@
 import { removeDiacriticalMarks } from "@jrc03c/js-text-tools"
 import nodemailer from "nodemailer"
 
+function customCommaSplit(x) {
+  if (typeof x !== "string") {
+    throw new Error(
+      "The value passed into the `customCommaSplit` function must be a string!",
+    )
+  }
+
+  // splits along commas that are *not* inside (double) quotation marks; note
+  // that it strips leading and trailing whitespace from results
+  const out = []
+  let isInQuotes = false
+  let temp = ""
+
+  for (let i = 0; i < x.length; i++) {
+    const char = x[i]
+
+    if (char === '"') {
+      isInQuotes = !isInQuotes
+    }
+
+    if (char === "\\") {
+      temp += char + (x[i + 1] || "")
+      i++
+      continue
+    }
+
+    if (char === "," && !isInQuotes) {
+      out.push(temp.trim())
+      temp = ""
+    } else {
+      temp += char
+    }
+  }
+
+  out.push(temp.trim())
+  return out
+}
+
 class EmailStandardizationOptions {
   shouldRemoveDiacriticalMarksInDomain = false
   shouldRemoveDiacriticalMarksInUsername = true
@@ -147,40 +185,6 @@ function toNodemailerAddressFormat(
   shouldStandardizeEmailAddress,
   emailStandardizationOptions,
 ) {
-  const customSplit = x => {
-    const out = []
-    let isInQuotes = false
-    let temp = ""
-
-    for (let i = 0; i < x.length; i++) {
-      const char = x[i]
-
-      if (char === '"') {
-        isInQuotes = !isInQuotes
-        continue
-      }
-
-      if (char === "\\") {
-        temp += char + (x[i + 1] || "")
-        i++
-        continue
-      }
-
-      if (char === "," && !isInQuotes) {
-        out.push(temp.trim())
-        temp = ""
-      } else {
-        temp += char
-      }
-    }
-
-    if (temp.length > 0) {
-      out.push(temp.trim())
-    }
-
-    return out
-  }
-
   shouldStandardizeEmailAddress = shouldStandardizeEmailAddress ?? true
 
   const helper = x => {
@@ -195,7 +199,7 @@ function toNodemailerAddressFormat(
       address = x.address || address
       name = x.name || name
     } else if (typeof x === "string") {
-      const subvalues = customSplit(x)
+      const subvalues = customCommaSplit(x)
 
       if (subvalues.length > 1) {
         return subvalues.map(v => helper(v))
@@ -238,6 +242,7 @@ function toNodemailerAddressFormat(
 }
 
 export {
+  customCommaSplit,
   EmailStandardizationOptions,
   GmailMessageSender,
   safeParse,

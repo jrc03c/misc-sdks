@@ -1,3 +1,6 @@
+import { customCommaSplit } from "../base/utils.mjs"
+import { flatten } from "@jrc03c/js-math-tools"
+
 class MailgunEmailPayload {
   static isPayloadish(x) {
     return (
@@ -48,13 +51,9 @@ class MailgunEmailPayload {
 
     if (data.to) {
       if (data.to instanceof Array) {
-        this.to = data.to
+        this.to = data.to || this.to
       } else if (typeof data.to === "string") {
-        if (data.to.includes(",")) {
-          this.to = data.to.split(",")
-        } else {
-          this.to = [data.to]
-        }
+        this.to = flatten(customCommaSplit(data.to))
       } else {
         throw new Error(
           "The 'to' property on the options object passed into the `MailgunEmailPayload` constructor must have a value that's either (1) a string representing a recipient email address or (2) an array of strings representing recipient email addresses!",
@@ -79,6 +78,13 @@ class MailgunEmailPayload {
 
   set replyTo(v) {
     this._replyTo = v
+  }
+
+  copy() {
+    return new MailgunEmailPayload({
+      ...structuredClone(this),
+      replyTo: this.replyTo,
+    })
   }
 
   toFormData() {
