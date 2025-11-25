@@ -1,6 +1,31 @@
 import { removeDiacriticalMarks } from "@jrc03c/js-text-tools"
 import nodemailer from "nodemailer"
 
+class EmailStandardizationOptions {
+  shouldRemoveDiacriticalMarksInDomain = false
+  shouldRemoveDiacriticalMarksInUsername = true
+  shouldRemovePeriodsInUsername = false
+  shouldRemoveTagsInUsername = false
+
+  constructor(data) {
+    data = data || {}
+
+    this.shouldRemoveDiacriticalMarksInDomain =
+      data.shouldRemoveDiacriticalMarksInDomain ??
+      this.shouldRemoveDiacriticalMarksInDomain
+
+    this.shouldRemoveDiacriticalMarksInUsername =
+      data.shouldRemoveDiacriticalMarksInUsername ??
+      this.shouldRemoveDiacriticalMarksInUsername
+
+    this.shouldRemovePeriodsInUsername =
+      data.shouldRemovePeriodsInUsername ?? this.shouldRemovePeriodsInUsername
+
+    this.shouldRemoveTagsInUsername =
+      data.shouldRemoveTagsInUsername ?? this.shouldRemoveTagsInUsername
+  }
+}
+
 class GmailMessageSender {
   emailStandardizationOptions = null
   shouldStandardizeEmailAddresses = true
@@ -83,22 +108,7 @@ function standardizeEmailAddress(x, options) {
     return x
   }
 
-  options = options || {}
-
-  // remove diacritical marks in username by default
-  const shouldRemoveDiacriticalMarksInUsername =
-    options.shouldRemoveDiacriticalMarksInUsername ?? true
-
-  // do NOT remove diacritical marks in domain by default
-  const shouldRemoveDiacriticalMarksInDomain =
-    options.shouldRemoveDiacriticalMarksInDomain ?? false
-
-  // do NOT remove periods in username by default
-  const shouldRemovePeriodsInUsername =
-    options.shouldRemovePeriodsInUsername ?? false
-
-  // do NOT remove tags in username by default
-  const shouldRemoveTagsInUsername = options.shouldRemoveTagsInUsername ?? false
+  options = new EmailStandardizationOptions(options)
 
   x = x.toLowerCase()
   x = x.replaceAll(/\s/g, "")
@@ -107,11 +117,11 @@ function standardizeEmailAddress(x, options) {
   let username = parts[0]
   let domain = parts.slice(1).join("@")
 
-  if (shouldRemoveDiacriticalMarksInUsername) {
+  if (options.shouldRemoveDiacriticalMarksInUsername) {
     username = removeDiacriticalMarks(username)
   }
 
-  if (shouldRemoveDiacriticalMarksInDomain) {
+  if (options.shouldRemoveDiacriticalMarksInDomain) {
     // eslint-disable-next-line no-control-regex
     const pattern = /[^\x00-\x7F]/
 
@@ -121,11 +131,11 @@ function standardizeEmailAddress(x, options) {
       .join(".")
   }
 
-  if (shouldRemovePeriodsInUsername) {
+  if (options.shouldRemovePeriodsInUsername) {
     username = username.replaceAll(/\./g, "")
   }
 
-  if (shouldRemoveTagsInUsername) {
+  if (options.shouldRemoveTagsInUsername) {
     username = username.split("+")[0]
   }
 
@@ -228,6 +238,7 @@ function toNodemailerAddressFormat(
 }
 
 export {
+  EmailStandardizationOptions,
   GmailMessageSender,
   safeParse,
   standardizeEmailAddress,

@@ -1,6 +1,11 @@
 import { expect, test } from "@jrc03c/fake-jest"
 import { isEqual } from "@jrc03c/js-math-tools"
-import { standardizeEmailAddress, toNodemailerAddressFormat } from "./utils.mjs"
+
+import {
+  EmailStandardizationOptions,
+  standardizeEmailAddress,
+  toNodemailerAddressFormat,
+} from "./utils.mjs"
 
 test("standardizeEmailAddress", () => {
   // non-email-address strings
@@ -33,15 +38,21 @@ test("standardizeEmailAddress", () => {
   )
 
   expect(
-    standardizeEmailAddress("sömeoné@exåmple.com", {
-      shouldRemoveDiacriticalMarksInUsername: false,
-    }),
+    standardizeEmailAddress(
+      "sömeoné@exåmple.com",
+      new EmailStandardizationOptions({
+        shouldRemoveDiacriticalMarksInUsername: false,
+      }),
+    ),
   ).toBe("sömeoné@exåmple.com")
 
   expect(
-    standardizeEmailAddress("sömeoné@exåmple.com", {
-      shouldRemoveDiacriticalMarksInDomain: true,
-    }),
+    standardizeEmailAddress(
+      "sömeoné@exåmple.com",
+      new EmailStandardizationOptions({
+        shouldRemoveDiacriticalMarksInDomain: true,
+      }),
+    ),
   ).toBe("someone@xn--exmple-jua.com")
 
   // periods in username
@@ -50,9 +61,12 @@ test("standardizeEmailAddress", () => {
   )
 
   expect(
-    standardizeEmailAddress("s.o.m.e.o.n.e@example.com", {
-      shouldRemovePeriodsInUsername: true,
-    }),
+    standardizeEmailAddress(
+      "s.o.m.e.o.n.e@example.com",
+      new EmailStandardizationOptions({
+        shouldRemovePeriodsInUsername: true,
+      }),
+    ),
   ).toBe("someone@example.com")
 
   // tags in username
@@ -61,9 +75,12 @@ test("standardizeEmailAddress", () => {
   )
 
   expect(
-    standardizeEmailAddress("someone+test@example.com", {
-      shouldRemoveTagsInUsername: true,
-    }),
+    standardizeEmailAddress(
+      "someone+test@example.com",
+      new EmailStandardizationOptions({
+        shouldRemoveTagsInUsername: true,
+      }),
+    ),
   ).toBe("someone@example.com")
 
   const wrongs = [
