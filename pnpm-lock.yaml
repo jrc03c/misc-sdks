@@ -24,6 +24,9 @@ importers:
       '@jrc03c/js-math-tools':
         specifier: ^0.0.104
         version: 0.0.104
+      '@jrc03c/logger':
+        specifier: ^0.0.25
+        version: 0.0.25
       '@jrc03c/make-key':
         specifier: ^0.0.40
         version: 0.0.40
@@ -128,9 +131,16 @@ packages:
   '@jrc03c/js-math-tools@0.0.87':
     resolution: {integrity: sha512-Ub8QWkdOq908M7/ImbcJ7hezUi3U5C/s/FjzljxehBJqmZB9K4GdOy+jg6Yq+V72nz49Kne9dc+TlEExwJTE8A==}
 
+  '@jrc03c/js-text-tools@0.0.103':
+    resolution: {integrity: sha512-pvcn+JiWo9/EjqsGIdT46+8Qa49mA3OB49HKnPoz9eaxk0gd65wVpj1zI/jqFblgojG+VjdGCj+vfULjHlnOjg==}
+    hasBin: true
+
   '@jrc03c/js-text-tools@0.0.105':
     resolution: {integrity: sha512-ez0Mzhxw7Vb7rsGGUR3ERLYGHnA+bCM5oqJUn8D0zPBcDXpkLkpIVtP8JxNhVzZ0mrbQDeYXzVL1CMG2lck1vQ==}
     hasBin: true
+
+  '@jrc03c/logger@0.0.25':
+    resolution: {integrity: sha512-zLEz34XDTm9gfMKWBLWkiLMp/stEdDCP0iDF2pfQjpuCYJhcNyw+F2lmzAiBY+c4jry3HbFpuIQHQQN+lwMGBw==}
 
   '@jrc03c/make-key@0.0.40':
     resolution: {integrity: sha512-a4vWqCgnQ1kaf6YOHZyDDKGgMwCLdEGPCkRmyNsAj5GamMK21PyIZdo6KbvUgXCQr4VFK+FMlHs5e9PdUewung==}
@@ -791,10 +801,22 @@ snapshots:
 
   '@jrc03c/js-math-tools@0.0.87': {}
 
+  '@jrc03c/js-text-tools@0.0.103':
+    dependencies:
+      '@jrc03c/bash-colors': 0.0.9
+      '@jrc03c/js-math-tools': 0.0.104
+      '@jrc03c/make-key': 0.0.41
+
   '@jrc03c/js-text-tools@0.0.105':
     dependencies:
       '@jrc03c/bash-colors': 0.0.9
       '@jrc03c/js-math-tools': 0.0.104
+      '@jrc03c/make-key': 0.0.41
+
+  '@jrc03c/logger@0.0.25':
+    dependencies:
+      '@jrc03c/bash-colors': 0.0.9
+      '@jrc03c/js-text-tools': 0.0.103
       '@jrc03c/make-key': 0.0.41
 
   '@jrc03c/make-key@0.0.40': {}

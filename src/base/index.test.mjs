@@ -12,11 +12,13 @@ test("BaseClient", () => {
       const minTimeBetweenRequests = 100
       let lastTime = performance.now()
       let responseTrue
+      let sentAtLeastOne429Response = false
 
       app.use((request, response, next) => {
         const now = performance.now()
 
         if (now - lastTime < minTimeBetweenRequests) {
+          sentAtLeastOne429Response = true
           return response.status(429).send("Too fast!")
         }
 
@@ -83,18 +85,19 @@ test("BaseClient", () => {
         expect(!!methods["PUT"]).toBe(true)
         await pause(minTimeBetweenRequests * 1.5)
 
-        let encounteredAtLeastOne429Status = false
+        let receivedAtLeastOne429Response = false
 
         for (let i = 0; i < 100; i++) {
           const response = await client.get("/")
 
           if (response.status === 429) {
-            encounteredAtLeastOne429Status = true
+            receivedAtLeastOne429Response = true
             break
           }
         }
 
-        expect(encounteredAtLeastOne429Status).toBe(false)
+        expect(sentAtLeastOne429Response).toBe(true)
+        expect(receivedAtLeastOne429Response).toBe(false)
 
         server.close()
         resolve()

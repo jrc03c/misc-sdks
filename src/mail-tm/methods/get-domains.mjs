@@ -1,7 +1,3 @@
-import { MailTmClientResponse } from "../response.mjs"
-import { safeParse } from "../../base/utils.mjs"
-import { urlPathJoin } from "@jrc03c/js-text-tools"
-
 async function getDomains(client, page) {
   page = page ?? 1
 
@@ -11,18 +7,13 @@ async function getDomains(client, page) {
     )
   }
 
-  const url = urlPathJoin(client.baseUrl, `/domains?page=${Math.floor(page)}`)
-  const response = await fetch(url)
-  const raw = await response.text()
-  const data = safeParse(raw)
+  const shouldAuthenticate = false
 
-  return new MailTmClientResponse({
-    endpoint: url,
-    json: data,
-    method: "GET",
-    status: response.status,
-    text: raw,
-  })
+  return await client.send(
+    `/domains?page=${Math.floor(page)}`,
+    null,
+    shouldAuthenticate,
+  )
 }
 
 export { getDomains }

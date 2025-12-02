@@ -75,6 +75,8 @@ test("MailTmClient", async () => {
     expect(response.status).toBeGreaterThanOrEqualTo(200)
     expect(response.status).toBeLessThanOrEqualTo(204)
     expect(typeof response.text).toBe("string")
+    expect(mailtm.id).toBe(response.json.id)
+    expect(mailtm.token).toBe(response.json.token)
   })()
 
   await (async () => {
