@@ -2,6 +2,9 @@ import { isEmailAddress } from "@jrc03c/js-text-tools"
 import { standardizeEmailAddress } from "../../base/utils.mjs"
 
 function addMemberToList(client, listId, member, options) {
+  // NOTE: This method uses the PUT endpoint that upserts members (rather than
+  // the POST endpoint that merely adds members).
+
   // options include:
   // - shouldSkipMergeValidation (boolean; default = false)
 
@@ -31,14 +34,14 @@ function addMemberToList(client, listId, member, options) {
   }
 
   member.email_type = member.email_type || "html"
-  member.status = client.constructor.MemberStatus.SUBSCRIBED
+  member.status_if_new = client.constructor.MemberStatus.SUBSCRIBED
   options = options || {}
 
   const path =
-    `/lists/${listId}/members` +
+    `/lists/${listId}/members/${encodeURIComponent(member.email_address)}` +
     (options.shouldSkipMergeValidation ? "?skip_merge_validation=true" : "")
 
-  return client.post(path, {
+  return client.put(path, {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(member),
   })
