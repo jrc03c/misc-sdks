@@ -8,13 +8,6 @@ function addMemberToList(client, listId, member, options) {
   // if `member` is an email address string rather than a member object, then
   // convert it to a member object
   if (typeof member === "string") {
-    if (client.shouldStandardizeEmailAddresses) {
-      member = standardizeEmailAddress(
-        member,
-        client.emailStandardizationOptions,
-      )
-    }
-
     member = {
       email_address: member,
       email_type: "html",
@@ -22,7 +15,20 @@ function addMemberToList(client, listId, member, options) {
     }
   }
 
-  if (typeof member !== "object" || !isEmailAddress(member.email_address)) {
+  if (typeof member !== "object" || !member.email_address) {
+    throw new Error(
+      "The second argument passed into the `MailchimpClient.addMemberToList` method must either be (1) a string representing an email address or (2) an options object with an 'email_address' property (with a string value representing an email address)!",
+    )
+  }
+
+  if (client.shouldStandardizeEmailAddresses) {
+    member.email_address = standardizeEmailAddress(
+      member.email_address,
+      client.emailStandardizationOptions,
+    )
+  }
+
+  if (!isEmailAddress(member.email_address)) {
     throw new Error(
       "The second argument passed into the `MailchimpClient.addMemberToList` method must either be (1) a string representing an email address or (2) an options object with an 'email_address' property (with a string value representing an email address)!",
     )
