@@ -6,6 +6,16 @@ import {
 } from "./airtable/index.mjs"
 
 import { BaseClient, BaseClientResponse } from "./base/index.mjs"
+
+import {
+  customCommaSplit,
+  EmailStandardizationOptions,
+  GmailMessageSender,
+  safeParse,
+  standardizeEmailAddress,
+  toNodemailerAddressFormat,
+} from "./base/utils.mjs"
+
 import { MailchimpClient, MailchimpClientResponse } from "./mailchimp/index.mjs"
 
 import {
@@ -23,6 +33,9 @@ export {
   AirtableTableRef,
   BaseClient,
   BaseClientResponse,
+  customCommaSplit,
+  EmailStandardizationOptions,
+  GmailMessageSender,
   MailchimpClient,
   MailchimpClientResponse,
   MailgunClient,
@@ -30,4 +43,7 @@ export {
   MailgunEmailPayload,
   MailTmClient,
   MailTmClientResponse,
+  safeParse,
+  standardizeEmailAddress,
+  toNodemailerAddressFormat,
 }
