@@ -8,11 +8,7 @@ function addMemberToList(client, listId, member, options) {
   // if `member` is an email address string rather than a member object, then
   // convert it to a member object
   if (typeof member === "string") {
-    member = {
-      email_address: member,
-      email_type: "html",
-      status: client.constructor.MemberStatus.SUBSCRIBED,
-    }
+    member = { email_address: member }
   }
 
   if (typeof member !== "object" || !member.email_address) {
@@ -34,6 +30,7 @@ function addMemberToList(client, listId, member, options) {
     )
   }
 
+  member.email_type = member.email_type || "html"
   member.status = client.constructor.MemberStatus.SUBSCRIBED
   options = options || {}
 
