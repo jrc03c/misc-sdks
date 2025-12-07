@@ -36,7 +36,7 @@ function batchAddMembersToList(client, listId, members, options) {
         if (client.shouldStandardizeEmailAddresses) {
           member = standardizeEmailAddress(
             member,
-            client.emailStandardizationOptions,
+            client.emailAddressStandardizationOptions,
           )
         }
 

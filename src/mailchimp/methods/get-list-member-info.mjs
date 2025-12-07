@@ -17,7 +17,7 @@ function getListMemberInfo(client, listId, emailAddress, options) {
   if (client.shouldStandardizeEmailAddresses) {
     emailAddress = standardizeEmailAddress(
       emailAddress,
-      client.emailStandardizationOptions,
+      client.emailAddressStandardizationOptions,
     )
   }
 

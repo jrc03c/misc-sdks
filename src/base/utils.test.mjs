@@ -3,7 +3,7 @@ import { isEqual } from "@jrc03c/js-math-tools"
 
 import {
   customCommaSplit,
-  EmailStandardizationOptions,
+  EmailAddressStandardizationOptions,
   standardizeEmailAddress,
   toNodemailerAddressFormat,
 } from "./utils.mjs"
@@ -71,7 +71,7 @@ test("standardizeEmailAddress", () => {
   expect(
     standardizeEmailAddress(
       "sömeoné@exåmple.com",
-      new EmailStandardizationOptions({
+      new EmailAddressStandardizationOptions({
         shouldRemoveDiacriticalMarksInUsername: false,
       }),
     ),
@@ -80,7 +80,7 @@ test("standardizeEmailAddress", () => {
   expect(
     standardizeEmailAddress(
       "sömeoné@exåmple.com",
-      new EmailStandardizationOptions({
+      new EmailAddressStandardizationOptions({
         shouldRemoveDiacriticalMarksInDomain: true,
       }),
     ),
@@ -94,7 +94,7 @@ test("standardizeEmailAddress", () => {
   expect(
     standardizeEmailAddress(
       "s.o.m.e.o.n.e@example.com",
-      new EmailStandardizationOptions({
+      new EmailAddressStandardizationOptions({
         shouldRemovePeriodsInUsername: true,
       }),
     ),
@@ -108,7 +108,7 @@ test("standardizeEmailAddress", () => {
   expect(
     standardizeEmailAddress(
       "someone+test@example.com",
-      new EmailStandardizationOptions({
+      new EmailAddressStandardizationOptions({
         shouldRemoveTagsInUsername: true,
       }),
     ),

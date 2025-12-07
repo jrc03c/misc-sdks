@@ -21,7 +21,7 @@ function updateListMemberInfo(client, listId, member, options) {
   if (client.shouldStandardizeEmailAddresses) {
     member.email_address = standardizeEmailAddress(
       member.email_address,
-      client.emailStandardizationOptions,
+      client.emailAddressStandardizationOptions,
     )
   }
 

@@ -39,7 +39,7 @@ function customCommaSplit(x) {
   return out
 }
 
-class EmailStandardizationOptions {
+class EmailAddressStandardizationOptions {
   shouldRemoveDiacriticalMarksInDomain = false
   shouldRemoveDiacriticalMarksInUsername = true
   shouldRemovePeriodsInUsername = false
@@ -65,7 +65,7 @@ class EmailStandardizationOptions {
 }
 
 class GmailMessageSender {
-  emailStandardizationOptions = null
+  emailAddressStandardizationOptions = null
   shouldStandardizeEmailAddresses = true
   transport = null
 
@@ -78,8 +78,9 @@ class GmailMessageSender {
       )
     }
 
-    this.emailStandardizationOptions =
-      data.emailStandardizationOptions || this.emailStandardizationOptions
+    this.emailAddressStandardizationOptions =
+      data.emailAddressStandardizationOptions ||
+      this.emailAddressStandardizationOptions
 
     this.shouldStandardizeEmailAddresses =
       data.shouldStandardizeEmailAddresses ??
@@ -114,7 +115,7 @@ class GmailMessageSender {
           payload[field] = toNodemailerAddressFormat(
             payload[field],
             true,
-            this.emailStandardizationOptions,
+            this.emailAddressStandardizationOptions,
           )
         }
       }
@@ -146,7 +147,7 @@ function standardizeEmailAddress(x, options) {
     return x
   }
 
-  options = new EmailStandardizationOptions(options)
+  options = new EmailAddressStandardizationOptions(options)
 
   x = x.toLowerCase()
   x = x.replaceAll(/\s/g, "")
@@ -183,7 +184,7 @@ function standardizeEmailAddress(x, options) {
 function toNodemailerAddressFormat(
   x,
   shouldStandardizeEmailAddress,
-  emailStandardizationOptions,
+  emailAddressStandardizationOptions,
 ) {
   shouldStandardizeEmailAddress = shouldStandardizeEmailAddress ?? true
 
@@ -232,7 +233,10 @@ function toNodemailerAddressFormat(
     }
 
     if (shouldStandardizeEmailAddress) {
-      address = standardizeEmailAddress(address, emailStandardizationOptions)
+      address = standardizeEmailAddress(
+        address,
+        emailAddressStandardizationOptions,
+      )
     }
 
     return { address, name: name || address }
@@ -243,7 +247,7 @@ function toNodemailerAddressFormat(
 
 export {
   customCommaSplit,
-  EmailStandardizationOptions,
+  EmailAddressStandardizationOptions,
   GmailMessageSender,
   safeParse,
   standardizeEmailAddress,

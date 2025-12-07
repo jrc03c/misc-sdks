@@ -9,7 +9,7 @@ import { BaseClient, BaseClientResponse } from "./base/index.mjs"
 
 import {
   customCommaSplit,
-  EmailStandardizationOptions,
+  EmailAddressStandardizationOptions,
   GmailMessageSender,
   safeParse,
   standardizeEmailAddress,
@@ -34,7 +34,7 @@ export {
   BaseClient,
   BaseClientResponse,
   customCommaSplit,
-  EmailStandardizationOptions,
+  EmailAddressStandardizationOptions,
   GmailMessageSender,
   MailchimpClient,
   MailchimpClientResponse,

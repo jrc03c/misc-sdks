@@ -1,7 +1,7 @@
 import { BaseClient } from "../base/index.mjs"
 
 import {
-  EmailStandardizationOptions,
+  EmailAddressStandardizationOptions,
   standardizeEmailAddress,
   toNodemailerAddressFormat,
 } from "../base/utils.mjs"
@@ -15,7 +15,7 @@ const MAILGUN_BASE_URL = "https://api.mailgun.net"
 class MailgunClient extends BaseClient {
   apiKey = null
   apiVersion = 3
-  emailStandardizationOptions = null
+  emailAddressStandardizationOptions = null
   senderDomain = null
   shouldStandardizeEmailAddresses = true
 
@@ -43,9 +43,11 @@ class MailgunClient extends BaseClient {
     this.apiKey = data.apiKey
     this.apiVersion = data.apiVersion || this.apiVersion
 
-    this.emailStandardizationOptions = new EmailStandardizationOptions(
-      data.emailStandardizationOptions || this.emailStandardizationOptions,
-    )
+    this.emailAddressStandardizationOptions =
+      new EmailAddressStandardizationOptions(
+        data.emailAddressStandardizationOptions ||
+          this.emailAddressStandardizationOptions,
+      )
 
     this.senderDomain = data.senderDomain
 
@@ -91,7 +93,7 @@ class MailgunClient extends BaseClient {
 
       address = standardizeEmailAddress(
         address,
-        this.emailStandardizationOptions,
+        this.emailAddressStandardizationOptions,
       )
 
       if (areTheSame) {

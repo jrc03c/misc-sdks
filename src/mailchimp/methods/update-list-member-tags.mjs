@@ -17,7 +17,7 @@ function updateListMemberTags(client, listId, emailAddress, tags, options) {
   if (client.shouldStandardizeEmailAddresses) {
     emailAddress = standardizeEmailAddress(
       emailAddress,
-      client.emailStandardizationOptions,
+      client.emailAddressStandardizationOptions,
     )
   }
 
