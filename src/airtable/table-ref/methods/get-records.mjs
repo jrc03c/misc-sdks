@@ -1,5 +1,3 @@
-import { customEncodeURIComponent } from "../../utils.mjs"
-
 function getRecords(tableRef, a, b) {
   // valid call forms:
   // - getRecords(tableRef)
@@ -9,6 +7,11 @@ function getRecords(tableRef, a, b) {
 
   // note: be aware that this function will return a 200 response even when that
   // response contains 0 records!
+  // -----
+  // note: be aware that this function uses the POST version of the request
+  // instead of the GET version. you can see airtable's api documentation for
+  // this endpoint for more info, though in practice this shouldn't make any
+  // difference to users of this library (as far as i can tell).
   // -----
   // https://airtable.com/developers/web/api/list-records#query
   // options include:
@@ -76,13 +79,13 @@ function getRecords(tableRef, a, b) {
     options.filterByFormula = `FIND(RECORD_ID(), "${ids.join(",")}")`
   }
 
-  const queryParams = customEncodeURIComponent(options)
-
-  const path =
-    `/${tableRef.baseRef.id}/${tableRef.id}` +
-    (queryParams ? "?" + queryParams : "")
-
-  return tableRef.client.get(path)
+  return tableRef.client.post(
+    `/${tableRef.baseRef.id}/${tableRef.id}/listRecords`,
+    {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(options),
+    },
+  )
 }
 
 export { getRecords }
