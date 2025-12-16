@@ -57,6 +57,11 @@ async function batchGetRecordsByFormula(tableRef, formula, options, progress) {
     }
 
     offset = response.json.offset
+
+    if (!offset) {
+      break
+    }
+
     progress(responses.length / expectedResponseCount)
   }
 
