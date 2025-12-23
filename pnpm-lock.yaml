@@ -12,8 +12,8 @@ importers:
         specifier: ^0.0.3
         version: 0.0.3
       '@jrc03c/js-text-tools':
-        specifier: ^0.0.105
-        version: 0.0.105
+        specifier: ^0.0.106
+        version: 0.0.106
     devDependencies:
       '@eslint/js':
         specifier: ^9.12.0
@@ -135,8 +135,8 @@ packages:
     resolution: {integrity: sha512-pvcn+JiWo9/EjqsGIdT46+8Qa49mA3OB49HKnPoz9eaxk0gd65wVpj1zI/jqFblgojG+VjdGCj+vfULjHlnOjg==}
     hasBin: true
 
-  '@jrc03c/js-text-tools@0.0.105':
-    resolution: {integrity: sha512-ez0Mzhxw7Vb7rsGGUR3ERLYGHnA+bCM5oqJUn8D0zPBcDXpkLkpIVtP8JxNhVzZ0mrbQDeYXzVL1CMG2lck1vQ==}
+  '@jrc03c/js-text-tools@0.0.106':
+    resolution: {integrity: sha512-gAG+lh28skLJQB8nmiH2Bah4lUXLfN660Ljg9JAbb4P8NB3XSJaB/+7MGx7u1m0JD4vlYbF+wKQX2cQnSJTc2A==}
     hasBin: true
 
   '@jrc03c/logger@0.0.25':
@@ -807,7 +807,7 @@ snapshots:
       '@jrc03c/js-math-tools': 0.0.104
       '@jrc03c/make-key': 0.0.41
 
-  '@jrc03c/js-text-tools@0.0.105':
+  '@jrc03c/js-text-tools@0.0.106':
     dependencies:
       '@jrc03c/bash-colors': 0.0.9
       '@jrc03c/js-math-tools': 0.0.104

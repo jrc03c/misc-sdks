@@ -1,4 +1,4 @@
-import { removeDiacriticalMarks } from "@jrc03c/js-text-tools"
+import { standardizeEmailAddress } from "@jrc03c/js-text-tools"
 import nodemailer from "nodemailer"
 
 function customCommaSplit(x) {
@@ -37,31 +37,6 @@ function customCommaSplit(x) {
 
   out.push(temp.trim())
   return out
-}
-
-class EmailAddressStandardizationOptions {
-  shouldRemoveDiacriticalMarksInDomain = false
-  shouldRemoveDiacriticalMarksInUsername = true
-  shouldRemovePeriodsInUsername = false
-  shouldRemoveTagsInUsername = false
-
-  constructor(data) {
-    data = data || {}
-
-    this.shouldRemoveDiacriticalMarksInDomain =
-      data.shouldRemoveDiacriticalMarksInDomain ??
-      this.shouldRemoveDiacriticalMarksInDomain
-
-    this.shouldRemoveDiacriticalMarksInUsername =
-      data.shouldRemoveDiacriticalMarksInUsername ??
-      this.shouldRemoveDiacriticalMarksInUsername
-
-    this.shouldRemovePeriodsInUsername =
-      data.shouldRemovePeriodsInUsername ?? this.shouldRemovePeriodsInUsername
-
-    this.shouldRemoveTagsInUsername =
-      data.shouldRemoveTagsInUsername ?? this.shouldRemoveTagsInUsername
-  }
 }
 
 class GmailMessageSender {
@@ -133,54 +108,6 @@ function safeParse(x) {
   }
 }
 
-function standardizeEmailAddress(x, options) {
-  // NOTE: This function does not confirm that the string it receives is a valid
-  // email address!
-
-  if (typeof x !== "string") {
-    throw new Error(
-      "The value passed into the `standardizeEmailAddress` function must be a string!",
-    )
-  }
-
-  if (!x.includes("@")) {
-    return x
-  }
-
-  options = new EmailAddressStandardizationOptions(options)
-
-  x = x.toLowerCase()
-  x = x.replaceAll(/\s/g, "")
-
-  const parts = x.split("@")
-  let username = parts[0]
-  let domain = parts.slice(1).join("@")
-
-  if (options.shouldRemoveDiacriticalMarksInUsername) {
-    username = removeDiacriticalMarks(username)
-  }
-
-  if (options.shouldRemoveDiacriticalMarksInDomain) {
-    // eslint-disable-next-line no-control-regex
-    const pattern = /[^\x00-\x7F]/
-
-    domain = domain
-      .split(".")
-      .map(v => (pattern.test(v) ? new URL(`http://${v}`).hostname : v))
-      .join(".")
-  }
-
-  if (options.shouldRemovePeriodsInUsername) {
-    username = username.replaceAll(/\./g, "")
-  }
-
-  if (options.shouldRemoveTagsInUsername) {
-    username = username.split("+")[0]
-  }
-
-  return username + "@" + domain
-}
-
 function toNodemailerAddressFormat(
   x,
   shouldStandardizeEmailAddress,
@@ -247,9 +174,7 @@ function toNodemailerAddressFormat(
 
 export {
   customCommaSplit,
-  EmailAddressStandardizationOptions,
   GmailMessageSender,
   safeParse,
-  standardizeEmailAddress,
   toNodemailerAddressFormat,
 }

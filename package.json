@@ -2,7 +2,7 @@
   "author": "jrc03c",
   "dependencies": {
     "@jrc03c/exponential-backoff": "^0.0.3",
-    "@jrc03c/js-text-tools": "^0.0.105"
+    "@jrc03c/js-text-tools": "^0.0.106"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
@@ -26,5 +26,5 @@
     "pub": "pnpm version patch --force && pnpm publish --access=public"
   },
   "type": "module",
-  "version": "0.0.21"
+  "version": "0.0.22"
 }
