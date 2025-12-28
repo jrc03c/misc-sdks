@@ -1,13 +1,14 @@
 import { BaseClient } from "../base/index.mjs"
 
 import {
-  EmailAddressStandardizationOptions,
-  toNodemailerAddressFormat,
-} from "../base/utils.mjs"
+  EmailAddressStandardizer,
+  standardizeEmailAddress,
+  urlPathJoin,
+} from "@jrc03c/js-text-tools"
 
 import { MailgunClientResponse } from "./response.mjs"
 import { MailgunEmailPayload } from "./email-payload.mjs"
-import { standardizeEmailAddress, urlPathJoin } from "@jrc03c/js-text-tools"
+import { toNodemailerAddressFormat } from "../base/utils.mjs"
 
 const MAILGUN_BASE_URL = "https://api.mailgun.net"
 
@@ -42,11 +43,10 @@ class MailgunClient extends BaseClient {
     this.apiKey = data.apiKey
     this.apiVersion = data.apiVersion || this.apiVersion
 
-    this.emailAddressStandardizationOptions =
-      new EmailAddressStandardizationOptions(
-        data.emailAddressStandardizationOptions ||
-          this.emailAddressStandardizationOptions,
-      )
+    this.emailAddressStandardizationOptions = new EmailAddressStandardizer(
+      data.emailAddressStandardizationOptions ||
+        this.emailAddressStandardizationOptions,
+    )
 
     this.senderDomain = data.senderDomain
 
