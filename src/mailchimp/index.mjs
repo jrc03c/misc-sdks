@@ -3,7 +3,7 @@ import { addTagsToListMember } from "./methods/add-tags-to-list-member.mjs"
 import { archiveListMember } from "./methods/archive-list-member.mjs"
 import { BaseClient } from "../base/index.mjs"
 import { batchAddMembersToList } from "./methods/batch-add-members-to-list.mjs"
-import { EmailAddressStandardizationOptions } from "../base/utils.mjs"
+import { EmailAddressStandardizer } from "@jrc03c/js-text-tools"
 import { getListInfo } from "./methods/get-list-info.mjs"
 import { getListMemberInfo } from "./methods/get-list-member-info.mjs"
 import { getListMemberStatus } from "./methods/get-list-member-status.mjs"
@@ -64,11 +64,10 @@ class MailchimpClient extends BaseClient {
     this.apiVersion = data.apiVersion || this.apiVersion
     this.datacenter = dc
 
-    this.emailAddressStandardizationOptions =
-      new EmailAddressStandardizationOptions(
-        data.emailAddressStandardizationOptions ||
-          this.emailAddressStandardizationOptions,
-      )
+    this.emailAddressStandardizationOptions = new EmailAddressStandardizer(
+      data.emailAddressStandardizationOptions ||
+        this.emailAddressStandardizationOptions,
+    )
 
     this.shouldStandardizeEmailAddresses =
       data.shouldStandardizeEmailAddresses ??
