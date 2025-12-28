@@ -1,5 +1,4 @@
-import { isEmailAddress } from "@jrc03c/js-text-tools"
-import { standardizeEmailAddress } from "../../base/utils.mjs"
+import { isEmailAddress, standardizeEmailAddress } from "@jrc03c/js-text-tools"
 
 const MAX_MEMBERS_PER_REQUEST = 500
 

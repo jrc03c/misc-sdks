@@ -1,5 +1,4 @@
-import { isEmailAddress } from "@jrc03c/js-text-tools"
-import { standardizeEmailAddress } from "../../base/utils.mjs"
+import { isEmailAddress, standardizeEmailAddress } from "@jrc03c/js-text-tools"
 
 function getListMemberInfo(client, listId, emailAddress, options) {
   if (!listId || typeof listId !== "string") {

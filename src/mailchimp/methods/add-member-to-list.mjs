@@ -1,5 +1,4 @@
-import { isEmailAddress } from "@jrc03c/js-text-tools"
-import { standardizeEmailAddress } from "../../base/utils.mjs"
+import { isEmailAddress, standardizeEmailAddress } from "@jrc03c/js-text-tools"
 
 function addMemberToList(client, listId, member, options) {
   // NOTE: This method uses the PUT endpoint that upserts members (rather than

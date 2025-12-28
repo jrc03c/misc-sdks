@@ -2,13 +2,12 @@ import { BaseClient } from "../base/index.mjs"
 
 import {
   EmailAddressStandardizationOptions,
-  standardizeEmailAddress,
   toNodemailerAddressFormat,
 } from "../base/utils.mjs"
 
 import { MailgunClientResponse } from "./response.mjs"
 import { MailgunEmailPayload } from "./email-payload.mjs"
-import { urlPathJoin } from "@jrc03c/js-text-tools"
+import { standardizeEmailAddress, urlPathJoin } from "@jrc03c/js-text-tools"
 
 const MAILGUN_BASE_URL = "https://api.mailgun.net"
 
