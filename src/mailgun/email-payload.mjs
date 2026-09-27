@@ -25,7 +25,16 @@ class MailgunEmailPayload {
   constructor(data) {
     data = data || {}
 
-    this.deliveryTime = data.deliveryTime ?? this.deliveryTime
+    this.deliveryTime = data.deliveryTime
+      ? new Date(data.deliveryTime)
+      : new Date()
+
+    if (this.deliveryTime.toString() === "Invalid Date") {
+      throw new Error(
+        `Invalid \`deliveryTime\` value: "${data.deliveryTime}"! Valid values include any accepted by the \`Date\` constructor! Please see the documentation here for more info: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date`,
+      )
+    }
+
     this.from = data.from || this.from
 
     if (data.html) {
@@ -94,7 +103,7 @@ class MailgunEmailPayload {
     out.set("from", this.from)
     out.set("html", this.html)
     out.set("h:reply-to", this.replyTo)
-    out.set("o:deliverytime", this.deliveryTime ?? new Date().toUTCString())
+    out.set("o:deliverytime", this.deliveryTime.toUTCString())
     out.set("subject", this.subject)
     out.set("text", this.text)
     out.set("to", this.to.join(","))
