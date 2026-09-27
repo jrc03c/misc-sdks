@@ -15,6 +15,7 @@ class MailgunEmailPayload {
   // "noreply@<senderDomain>") if one isn't supplied.)
 
   _replyTo = ""
+  deliveryTime = null
   from = ""
   html = ""
   subject = ""
@@ -24,6 +25,7 @@ class MailgunEmailPayload {
   constructor(data) {
     data = data || {}
 
+    this.deliveryTime = data.deliveryTime ?? this.deliveryTime
     this.from = data.from || this.from
 
     if (data.html) {
@@ -92,6 +94,7 @@ class MailgunEmailPayload {
     out.set("from", this.from)
     out.set("html", this.html)
     out.set("h:reply-to", this.replyTo)
+    out.set("o:deliverytime", this.deliveryTime ?? new Date().toUTCString())
     out.set("subject", this.subject)
     out.set("text", this.text)
     out.set("to", this.to.join(","))
