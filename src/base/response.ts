@@ -1,12 +1,19 @@
+interface BaseClientResponseData {
+  endpoint?: string
+  json?: object | null | undefined
+  method?: string
+  status?: number
+  text?: string
+}
+
 class BaseClientResponse {
   endpoint = ""
-  json = null
+  json: object | null | undefined = null
   method = ""
   status = 0
   text = ""
 
-  constructor(data) {
-    data = data || {}
+  constructor(data: BaseClientResponseData = {}) {
     this.endpoint = data.endpoint ?? this.endpoint
     this.json = data.json ?? this.json
     this.method = data.method ?? this.method
@@ -31,4 +38,4 @@ class BaseClientResponse {
   }
 }
 
-export { BaseClientResponse }
+export { BaseClientResponse, BaseClientResponseData }
