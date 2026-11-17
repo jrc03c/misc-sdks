@@ -3,4 +3,4 @@ interface NodemailerAddress {
   name?: string
 }
 
-export { NodemailerAddress }
+export { type NodemailerAddress }

@@ -14,5 +14,5 @@ interface EmailAddressStandardizationOptions {
 
 export {
   DEFAULT_EMAIL_ADDRESS_STANDARDIZATION_OPTIONS,
-  EmailAddressStandardizationOptions,
+  type EmailAddressStandardizationOptions,
 }
