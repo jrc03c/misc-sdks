@@ -1,5 +1,4 @@
 import { defineConfig, globalIgnores } from "eslint/config"
-import css from "@eslint/css"
 import globals from "globals"
 import js from "@eslint/js"
 import json from "@eslint/json"
@@ -59,11 +58,5 @@ export default defineConfig([
     plugins: { markdown },
     language: "markdown/commonmark",
     extends: ["markdown/recommended"],
-  },
-  {
-    files: ["**/*.css"],
-    plugins: { css },
-    language: "css/css",
-    extends: ["css/recommended"],
   },
 ])
